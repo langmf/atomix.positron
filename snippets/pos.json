@@ -1,0 +1,124 @@
+{
+
+	"new proc": {
+		"prefix": "proc",					"description": "new proc...",
+		"body": [
+			"Proc $1($2)",
+				"\t$0",
+			"EndProc"
+		]
+	},
+
+	"new sub": {
+		"prefix": "sub",						"description": "new sub...",
+		"body": [
+			"Sub $1()",
+				"\t$0",
+			"EndSub"
+		]
+	},
+
+	"if statement": {
+		"prefix": "if",							"description": "if then...",
+		"body": [
+			"If ${1:True} Then",
+				"\t$0",
+			"EndIf"
+		]
+	},
+
+	"if else statement": {
+		"prefix": "if else",					"description": "if else then...",
+		"body": [
+			"If ${1:True} Then",
+				"\t$0${2:",
+			"Else",
+				"\t}",
+			"EndIf"
+		]
+	},
+
+	"elseif statement": {
+		"prefix": "elseif",						"description": "elseif...",
+		"body": [
+			"ElseIf ${1:True} Then",
+				"\t$0"
+		]
+	},
+
+	"else statement": {
+		"prefix": "else",						"description": "else...",
+		"body": [
+			"Else",
+				"\t${0:True}"
+		]
+	},
+    
+	"select case": {
+		"prefix": "select case",				"description": "select case...",
+		"body": [
+			"Select Case ${1:statement}",
+				"",
+				"\tCase ${0}",
+				"\t\t",
+				"\tCase Else",
+				"\t\t",
+			"EndSelect"
+		]
+	},
+
+	"for... next": {
+		"prefix": "for",						"description": "for... next",
+		"body": [
+			"For ${1:i} = 0 To ${2:value}",
+				"\t$0",
+			"Next"
+		]
+	},
+
+	"for... step": {
+		"prefix": "for",						"description": "for... step",
+		"body": [
+			"For ${1:i} = 0 To ${2:value} Step ${3:value}",
+				"\t$0",
+			"Next"
+		]
+	},
+    
+	"do loop until": {
+		"prefix": "do",							"description": "do loop until",
+		"body": [
+			"Do",
+				"\t$0",
+			"Loop Until ${1:statement}"
+		]
+	},
+
+	"do loop while": {
+		"prefix": "do",							"description": "do loop while",
+		"body": [
+			"Do",
+				"\t$0",
+			"Loop While ${1:statement}"
+		]
+	},
+
+	"repeat until": {
+		"prefix": "repeat",							"description": "repeat until",
+		"body": [
+			"Repeat",
+				"\t$0",
+			"Until ${1:statement}"
+		]
+	},
+    
+    "while wend": {
+		"prefix": "while",							"description": "while wend",
+		"body": [
+			"While ${1:statement}",
+				"\t$0",
+			"Wend"
+		]
+	}
+
+}

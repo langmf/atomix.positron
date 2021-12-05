@@ -1,0 +1,215 @@
+{
+    "name": "Positron",
+    "scopeName": "source.pos",
+    "comment": "",
+    
+    "patterns":
+    [ 
+        {   "include": "#comments"      },
+        {   "include": "#brackets"      },
+        {   "include": "#custom"        },
+        {   "include": "#strings"       },
+        {   "include": "#procs"         },
+        {   "include": "#labels"        },
+        {   "include": "#types"         },
+        {   "include": "#operators"     },
+        {   "include": "#numbers"       },
+        {   "include": "#keywords"      },
+        {   "include": "#preprocessor"  },
+        {   "include": "#device"        },
+        {   "include": "#declare"       },
+        {   "include": "#positron"      },
+        {   "include": "#assembler"     },
+        {   "include": "#pic18_reg"     },
+        {   "include": "#asm18_cmd"     }
+    ],
+    
+    "repository":
+    {
+        "custom":  {
+                "patterns": [
+                    {
+                        "begin": "(?i)\\u00A7([\\w\\d\\-_]*)\\(",               "beginCaptures": {  "0": {"name": "keyword.other.unit.pos"}},
+                        "end":   "\\)",                                         "endCaptures"  : {  "0": {"name": "keyword.other.unit.pos"}},
+                        "patterns": [{    "include": "source.mf"    }]
+                    }, {
+                        "begin": "(?i)\\u00A7([\\w\\d\\-_]*)\\{",               "beginCaptures": {  "0": {"name": "keyword.other.unit.pos"}},
+                        "end":   "\\}",                                         "endCaptures"  : {  "0": {"name": "keyword.other.unit.pos"}},
+                        "patterns": [{    "include": "source.mf"    }]
+                    }, {
+                        "begin": "(?i)\\u00A7([\\w\\d\\\\-_]*)\\[",             "beginCaptures": {  "0": {"name": "keyword.other.unit.pos"}},
+                        "end":   "\\]",                                         "endCaptures"  : {  "0": {"name": "keyword.other.unit.pos"}},
+                        "patterns": [{    "include": "source.mf"    }]
+                    }, {
+                        "begin": "(?i)\\u00A7custom\\b",                        "beginCaptures": {  "0": {"name": "keyword.other.unit.pos"}},
+                        "end":   "\\n",
+                        "patterns": [{    "match": "(?<=-{1,2}|/)\\w+",         "name": "support.class.pos" },    { "include": "#numbers" }]
+                    }, {
+                        "match": "(?i)\\u00A7(major|minor|release|build)",      "name": "keyword.other.unit.pos"
+                    }, {
+                        "match": "->",                                          "name": "keyword.other.unit.pos"     
+                    }, {
+                        "begin": "(?i)^\\s*(type)\\s+([a-zA-Z\\u0400-\\u04FF]\\w*)\\s*\\{",     "beginCaptures": {  "1": {"name": "storage.type.class.mf"},     "2": {"name": "entity.name.class.pos"}},
+                        "end":   "\\}",
+                        "patterns": [{    "include": "$self"    }]
+                    }
+                ]
+        },
+        "comments": {
+                "patterns": [
+                    {   "begin": "'|;",         "end": "\\n",           "name": "comment.line.pos"     },
+                    {   "begin": "\\(\\*",      "end": "\\*\\)",        "name": "comment.block.pos"    }
+                ]
+        },
+        "brackets": {
+                "begin": "\\(",                 "beginCaptures": {"0": {"name": "punctuation.section.brackets.begin.pos"}   },
+                "end"  : "\\)",                 "endCaptures"  : {"0": {"name": "punctuation.section.brackets.end.pos"}     },
+                "name": "meta.brackets",        "patterns":      [{  "include": "$self"  }]
+        },
+        "strings":  {
+                "begin": "\"",                  "beginCaptures": {"0": {"name": "punctuation.definition.string.begin.pos"}  },
+                "end":   "\"",                  "endCaptures"  : {"0": {"name": "punctuation.definition.string.end.pos"}    },
+                "name":  "string.quoted.double.pos",
+                "patterns": [
+                    {   "match": "\"\"",                                "name": "constant.character.escape.apostrophe.pos"}
+                ]
+        },
+        "procs": {
+                "begin": "(?i)\\s*(proc|sub)\\s+([a-z\\u0400-\\u04FF]\\w*)\\s*(\\()",       "beginCaptures": {"1": {"name": "storage.type.function.pos"},                   "2": {"name": "entity.name.function.pos"},      "3": {"name": "punctuation.definition.parameters.begin.pos"} },
+                "end":   "(?i)(\\))(\\s*,\\s*([a-z\\u0400-\\u04FF]\\w*))?",                 "endCaptures"  : {"1": {"name": "punctuation.definition.parameters.end.pos"},   "3": {"name": "support.type.pos"} },
+                "patterns": [
+                    {   "include": "$self"                                                                            },
+                    {   "match": "(?i)\\b[a-z\\u0400-\\u04FF]\\w*\\b",   "name": "variable.parameter.function.pos"    },
+                    {   "match": ",",                                    "name": "meta.separator.comma.pos"           }
+                ]
+        },
+        "labels": {
+                 "name": "entity.name.function.pos",    "match": "(?i)^\\s*([a-z\\u0400-\\u04FF]\\w*):(?=[\\s;']|$)"
+        },    
+        "numbers": {
+                "name": "constant.numeric.pos",         "match": "(?i)(?<![\\w\\d#])((%\\d+)|((0|0x|\\$)[0-9a-f]+)|(-?(\\d+\\.?\\d*)|-?(\\.\\d+))(e(-|\\+)?\\d+)?)\\b"
+        },
+        "types":   {
+                "patterns": [
+                {"name": "support.type.pos",            "match": "(?i)\\b(Bit|Pin|Byte|SByte|Word|SWord|Long|Dword|SDword|Float|Double|String)\\b"  },
+                {"name": "support.type.pos",            "match": "(?i)\\b((Code|Flash)(F|8|16|24|32)|Pin_[A-L]([0-9]|1[0-5]))\\b"                   },
+                {"name": "support.type.pos",            "match": "(?i)(?<=\\s+as\\s+)(\\b[a-z\\u0400-\\u04FF]\\w*\\b)"                              }
+                ]
+        },
+        "operators": {
+                "patterns": [
+                {"name": "keyword.operator.pos",         "match": "(?i)\\b(Mod|And|Not|Or|Xor)\\b"      },
+                {"name": "variable.other.pos",           "match": "(?i)\\b(System|Access|Heap|At)\\b"   },
+                {"name": "keyword.other.unit.pos",       "match": "(?i)\\b(Include)\\b"                 }
+                ]
+        },
+        "keywords":  {
+                "patterns": [
+                {"name": "keyword.control.pos",         "match": "(?i)\\b(If|Then|Else|ElseIf|End ?If|For|Step|(Up|Down)?To|Next|While|Wend|Repeat|Until|Do|Loop|Case|Select|End ?Select)\\b" },
+                {"name": "keyword.control.pos",         "match": "(?i)\\b(Global|Static|Symbol|Org|Call|Break|Continue|Return|Result|Resume|Stop|(On )?GoSub|(On )?GoToL?|(C|L|E|HE)data)\\b" },
+                {"name": "keyword.control.pos",         "match": "(?i)\\b(Dim|As|ByVal|Byc?Ref|(Exit|End)?Proc|(Exit|End)?Sub|On_(Low_|Hardware_)?Interrupt|Context( Save| Restore)?)\\b" },
+                {"name": "keyword.control.pos",         "match": "(?i)\\b(Inc|Rep|Str|Strn|(C|E)Str|I?S?Bin(\\d{0,2})?|I?S?Hex[1-8]?|I?S?Dec([0-9]|10)?)\\b" },
+                {"name": "keyword.control.pos",         "match": "(?i)\\b((Low|High)S?(Byte|Word)|Bit\\d{0,2}|Byte[0-7]|Word[0-3]|SByte[0-3]|SWord[0-1])\\b" }
+                ]
+        },
+        "positron":  {
+                "patterns": [
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(ADin|Counter|DTMFout|Freqout|Button|Inkey|Pot|Servo|SonyIn|Pulse(In|Out)|RC5?in|H?PWM|Sound2?)\\b" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Clear|Let|Set|High|Low|Input|Output|Toggle|Pin(Clear|Get|Mode|Pullup|Set|Input|Output|High|Low))\\b" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(SHin|SHout|Xin|Xout|Oread|Owrite|I2C(in|out)|USB(init|in|out|poll)|Delay(MS|US|CS))\\b" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(HB(Start|Stop|Restart|usAck|usNack|usin|usout)|Bstart|Bstop|Brestart|Bus(Ack|Nack|in|out))\\b" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Ser(in|out)|Rs(in|out|outLn)|HRs(in[2-4]?|out[2-4]?|out[2-4]?Ln)|HSer(in[2-4]?|out[2-4]?|out[2-4]?Ln))\\b" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Snooze|Sleep|swap|Dig|Tern|Bound|SizeOf|AddressOf|Seed|Random|Pop|Push|Rol|Ror)\\b" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(BranchL?|Look(DownL?|UpL?)|(Get|Set|Load|Clear)Bit|(Left|Mid|Right|Str)\\$)(?![\\w\\d])" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Ptr(8|16|24|32)|cPtr(8|16|24|32)|CErase|(C|L|E)read|(C|E)write|(C|L)Read(8|16|24|32))\\b" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Len|Val|ToLower|ToUpper|Cls|Box|Circle|Cursor|LCDread|LCDwrite|Pixel|Print|Line(To)?|(Un)?Plot)\\b" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Abs|Dcd|Exp|Pow|Ncd|Log|Log10|Ceil|I?Sqr|(A|I)?(Cos|Sin)|A?Tan)\\b" }
+                ]
+        },
+        "preprocessor": {
+                "patterns": [
+                {"name": "variable.interpolation.pos",  "match": "(?i)(?<![\\w\\d])\\$(define|defeval|undef|ifn?def|ifn?eq|if|else|elseif|elif|endif)\\b" },
+                {"name": "variable.interpolation.pos",  "match": "(?i)(?<![\\w\\d])\\$(eval|error|send(error|hint|warning|message))\\b" },
+                {"name": "variable.interpolation.pos",  "match": "(?i)\\b_(xtal|device|e?core|type|ram|code|ports|adc|adc_res|block|eeprom|uart|pps|usb|usart|flash|mssp|defined)\\b" },
+                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(db|on|off)\\b" }
+                ]
+        },
+        "assembler":  {
+                "patterns": [
+                {"name": "entity.name.tag.pos",         "match": "(?i)\\b(Macro-?|(M|L)sb(First|Post|Pre)(_H|_L)?|Config([1-7]?H?L?|_Start|_End)|(End)?Asm-?)(?![\\w\\d])" },
+                {"name": "entity.name.tag.pos",         "match": "(?i)\\b(Endm|Exitm|Prm_Count|Prm_\\d+|Return_(Var|Type|WREG|Bit|Float|S?D?Word|S?Byte))\\b" },
+                {"name": "entity.name.tag.pos",         "match": "(?i)(?<![\\w\\d])#(define|undefine|ifn?def|if|else|endif|while|endw|sym|error|enable|disable)\\b" },
+                {"name": "entity.name.tag.pos",         "match": "(?i)(?<![\\w\\d])#((end)?ifMacro-?|(end)?ifn?Sym-?|Sym)(?![\\w\\d])" }
+                ]
+        },
+        "declare":    {
+                "patterns": [
+                {"name": "keyword.other.unit.pos",      "match": "(?i)\\b(Declare)\\b"  },
+                {"name": "variable.interpolation.pos",  "match": "(?i)\\b((High_|Low_)?Int_Sub_(Start|End)|RAM_Banks?|Bank(A|[0-9]|1[0-5])_(End|Start)|Reset_Bank|Bank_Select_Switch|Set_Bank|Actual_Banks|Available_RAM|Reserve_RAM|Auto_Heap_(Arrays|Strings)|Auto_Variable_(Arrange|Bank_Cross))\\b" },
+                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(CCP([1-9]|10)_Pin|HPWM([1-9]|10)_Pin|HRSOut[1-4]?_Pin|HRSIn[1-4]?_Pin|HSCL[1-2]?_Pin|HSDA[1-2]?_Pin|HRSOut[2-4]?_Pace|Hserial[2-4]?_(Baud|Clear|Parity|RCSTA|SPBRG|TXSTA)|Serial_Terminator|HSerial[1-4]?_Terminator|Hbus(1|2)?_Bitrate|Serial_(Baud|Parity)|RSIn_(Mode|Pin|Timeout)|RSOut_(Mode|Pace|Pin|Baud))\\b" },
+                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(LCD_(CommandUs|DataUs|DTPin|DTPort|(Data([0-9]|1[0-5])_|CS1|CS2|EN|CD|CE|RS|RD|RW|WR|RST)Pin|Font_Width|Font_Height|X_Res|Y_Res|Text_Pages|Graphic_Pages|RAM_Size|Text_Home_Address|Interface|Lines|Type)|GLCD_(CS_Invert|Fast_Strobe)|Touch_(DIN|DOUT|CLK|CS)Pin)\\b" },
+                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(Xtal|Core|Optimiser_Level|Dead_Code_Remove|Reminders|Warnings|Hints|Watchdog|UnHandled|Bootloader|Variable|Auto_Context_Save|All_Digital|Stack_(Size|Start_Address)|MSSP_Type|Button_Delay|Byte_Math|Count_Errors|DMA|Create_Coff|EEPROM_Size|Flash_Capable|Float_(Display_Type|Rounding)|ICD_Req|Internal_(Bus|Font)|Keypad_Port|Font_Addr|HEF_(Address|Size))\\b" },
+                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(Onboard_(ADC|UART|USB)|Adin_(Res|Tad|Stime)|(RC5In|Sonyin|SCL|SDA)_Pin|USB_(Class_File|Descriptor|Show_Enum|Sense_Pin|Self_Power_Pin)|(USBIn|USBOut)_Auto_Poll|PLL_Req|PORTB_Pullups|TRIS_Offset|Pulse?in_Maximum|Shift_DelayUs|Slow_Bus|Bus_SCL|Small_Micro_Model|Single_Page_Micro|Page|PICmicro_Pages|Show_All_BitNames|MemWrite_Int_Control|Label_Bank_Resets)\\b" }
+                ]
+        },
+        "pic18_reg":  {
+                "patterns": [
+                {"name": "markup.raw.pos",              "match": "(?i)\\b((ANSEL|TRIS|PORT|LAT|DDR)[A-H]|(PLUSW|PREINC|POSTINC|POSTDEC|INDF|PMD|ADCON|VREFCON)[0-2]|(DACCON|SRCON|CCPTMRS)[0-1])\\b" },
+                {"name": "markup.raw.pos",              "match": "(?i)\\b((PIE|PIR|IPR)[1-5]|(R|WDT|FVR|SLR|H?LVD|(PSTR|PWM)[1-3]?|CCP[1-5])CON|EECON[1-2]|EEDAT(L|A))\\b" },
+                {"name": "markup.raw.pos",              "match": "(?i)\\b(WREG|STATUS|BSR|STKPTR|INTCON|INTCON2|INTCON3|TABLAT|BAUDCTL|WPUB|IOCB|OSCTUNE|OSCCON2?|PCL?|EEADRH?)\\b" },
+                {"name": "markup.raw.pos",              "match": "(?i)\\b(PCLAT(H|U)|TOS(L|LH|H|U)|TBLPTR(L|LH|H|LHH|LHHH|U)|(PROD|FSR0|FSR1|FSR2|TMR0|TMR1|TMR3|TMR5)(L|LH|H))\\b" },
+                {"name": "markup.raw.pos",              "match": "(?i)\\b(BAUDCON[1-2]?|CM12CON|CM2CON1|CM[1-2]CON0?|CTMUICONH?|CTMUCON(0|1|L|H|LH)?|(ADRES|CCPR[1-5])(L|LH|H)?)\\b" },
+                {"name": "markup.raw.pos",              "match": "(?i)\\b((RC|TX)(REG|STA)[1-2]?|SPBRG[1-2]?H?|ECCP[1-3]?AS|CCP[2-3]AS|SSP[1-2]?(BUF|MSK|ADD|STAT|CON[1-3]))\\b" },
+                {"name": "markup.raw.pos",              "match": "(?i)\\b(T[0-6]CON|(TMR|PR)(2|4|6)|T(1|3|5)GCON)\\b" }
+                ]
+        },
+        "asm18_cmd":  {
+                "patterns": [
+                {"name": "support.class.pos",           "match": "(?i)\\b(Add(fsr|lw|wf|wfc)|Andlw|Andwf|Bc|Bcf|Bdc|Bk|Bn|Bnc|Bnn|Bnov|Bnz|Bov|Bra|Brw|Bsf|Btfsc|Btfss|Bz)\\b" },
+                {"name": "support.class.pos",           "match": "(?i)\\b(Clr(c|dc|f|w|wdt|z)|Comf|Cpfs(eq|gt|lt)|Daw|Dcfsnz|Decf|Decfsz|Djc|Djnc|Djnz|Djz|Fast|Swapf)\\b" },
+                {"name": "support.class.pos",           "match": "(?i)\\b(Ij(c|nc|nz|z)|Incf|Incfsz|Infsnz|Input_PullUp|Iorlw|Iorwf|Jump|LCall|LGoto|Lfsr|Lslf|Lsrf)\\b" },
+                {"name": "support.class.pos",           "match": "(?i)\\b(Mov(f|ff|ffl|lb|lp|lw|wf|wi|iw)|Mullw|Mulwf|Negf|Negw|Nop|Rcall|Reset|Ret|Retfie|Retlw|Tstfsz|Xorlw|Xorwf)\\b" },
+                {"name": "support.class.pos",           "match": "(?i)\\b(Rlcf|Rlf|Rlncf|Rrcf|Rrf|Rrncf|Set(c|dc|f|z)|Skp(c|dc|nc|ndc|nz|z)|Sub(fwb|fsr|lw|wf|wfb)|Tblrd|Tblwt)\\b" }
+                ]
+        },
+        "device": {                    
+                "begin": "(?i)\\b(Device)\\b",          "beginCaptures": {"1": {"name": "keyword.other.unit.pos"} },
+                "end":   "(?=[:;']|$)",
+                "patterns": [
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(10F200|10F202|10F204|10F206|10F222|10F220|10F320|10F322|10LF320|10LF322|12C508|12C508A|12C509|12C509A|12C671|12C672|12CE518|12CE519|12CE673|12CE674|12F508|12F509|12F510|12F519|12F609|12F615|12F617|12F629|12F635|12F675|12F683|12F752|12F1571|12F1501|12F1572|12F1612|12F1822|12F1840|12HV609|12HV615|12HV752|12LF1501|12LF1552|12LF1571|12LF1572|12LF1612|12LF1822)\\b"    },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(12LF1840|12LF1840T39A|12LF1840T48A|16C54|16C54A|16C54B|16C54C|16C55|16C55A|16C56|16C56A|16C57|16C57C|16C58A|16C58B|16C61|16C62|16C62A|16C62B|16C63|16C64|16C64A|16C63A|16C65|16C65A|16C65B|16C66|16C67|16C71|16C72|16C72A|16C73|16C73A|16C73B|16C74|16C74A|16C74B|16C76|16C84|16C432|16C433|16C505|16C554|16C558|16C77|16C620|16C620A|16C621|16C621A|16C622|16C622A)\\b"      },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(16C642|16C662|16C710|16C711|16C712|16C715|16C717|16C716|16C745|16C765|16C770|16C771|16C773|16C774|16C781|16C782|16C923|16C924|16CE623|16CE624|16CE625|16CR54|16CR54A|16CR57A|16CR57B|16CR57C|16CR58A|16CR58B|16CR62|16CR63|16CR64|16CR65|16CR72|16CR83|16CR84|16F54|16F57|16F72|16F74|16F76|16F77|16F73|16F83|16F84|16F84A|16F87|16F88|16F505|16F506|16F526|16F610)\\b"       },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(16F616|16F627|16F627A|16F628|16F628A|16F630|16F631|16F636|16F639|16F648A|16F676|16F677|16F684|16F685|16F688|16F687|16F689|16F690|16F707|16F716|16F720|16F721|16F722|16F722A|16F723|16F723A|16F724|16F726|16F727|16F737|16F747|16F753|16F767|16F777|16F785|16F818|16F819|16F870|16F871|16F872|16F873|16F873A|16F874|16F874A|16F876|16F876A|16F877|16F877A|16F882|16F883)\\b"   },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(16F884|16F886|16F887|16F914|16F916|16F917|16F946|16F1454|16F1455|16F1459|16F1503|16F1507|16F913|16F1508|16F1509|16F1512|16F1513|16F1516|16F1517|16F1518|16F1519|16F1526|16F1527|16F1574|16F1575|16F1578|16F1579|16F1613|16F1614|16F1615|16F1618|16F1619|16F1703|16F1704|16F1705|16F1707|16F1708|16F1709|16F1713|16F1716|16F1717|16F1718|16F1719|16F1764|16F1765|16F1768)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(16F1769|16F1773|16F1776|16F1777|16F1778|16F1779|16F1782|16F1783|16F1784|16F1786|16F1787|16F1788|16F1789|16F1823|16F1824|16F1825|16F1826|16F1827|16F1828|16F1829|16F1829LIN|16F1847|16F1933|16F1934|16F1936|16F1937|16F1938|16F1939|16F1946|16F1947|16F15313|16F15323|16F15324|16F15325|16F15344|16F15345|16F15354|16F15355|16F15356|16F15375|16F15376|16F15385|16F15386)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(16F18313|16F18323|16F18324|16F18325|16F18326|16F18344|16F18345|16F18346|16F18424|16F18425|16F18426|16F18444|16F18445|16F18446|16F18455|16F18456|16F18854|16F18855|16F18856|16F18857|16F18875|16F18876|16F18877|16F19155|16F19156|16F19175|16F19176|16F19185|16F19186|16F19195|16F19196|16F19197|16HV540|16HV610|16HV616|16HV753|16HV785|16LF707|16LF720|16LF721|16LF722)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(16LF722A|16LF723|16LF723A|16LF724|16LF726|16LF727|16LF1454|16LF1455|16LF1459|16LF1503|16LF1507|16LF1508|16LF1509|16LF1512|16LF1513|16LF1516|16LF1517|16LF1518|16LF1519|16LF1526|16LF1527|16LF1554|16LF1559|16LF1574|16LF1575|16LF1578|16LF1579|16LF1613|16LF1614|16LF1615|16LF1618|16LF1619|16LF1703|16LF1704|16LF1705|16LF1707|16LF1708|16LF1709|16LF1713|16LF1716)\\b"      },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(16LF1717|16LF1718|16LF1719|16LF1764|16LF1765|16LF1768|16LF1769|16LF1773|16LF1776|16LF1777|16LF1778|16LF1779|16LF1782|16LF1783|16LF1784|16LF1786|16LF1787|16LF1788|16LF1789|16LF1823|16LF1824|16LF1825|16LF1826|16LF1827|16LF1828|16LF1829|16LF1847|16LF1902|16LF1903|16LF1904|16LF1906|16LF1907|16LF1933|16LF1934|16LF1936|16LF1937|16LF1938|16LF1939|16LF1946|16LF1947)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(16LF15313|16LF15323|16LF15324|16LF15325|16LF15344|16LF15345|16LF15354|16LF15355|16LF15356|16LF15375|16LF15376|16LF15385|16LF15386|16LF18313|16LF18323|16LF18324|16LF18325|16LF18326|16LF18344|16LF18345|16LF18346|16LF18426|16LF18446|16LF18854|16LF18855|16LF18856|16LF18857|16LF18875|16LF18876|16LF18877|16LF19155|16LF19156|16LF19175|16LF19176|16LF19185|16LF19186)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(16LF19195|16LF19196|16LF19197|18F13K22|18F13K50|18F14K22|18F14K50|18F23K20|18F23K22|18F24J10|18F24J11|18F24J50|18F24K20|18F24K22|18F24K40|18F24K42|18F24K50|18F24Q10|18F25J10|18F25J11|18F25J50|18F25K20|18F25K22|18F25K40|18F25K42|18F25K50|18F25K80|18F25K83|18F25Q10|18F25Q43|18F26J11|18F26J13|18F26J50|18F26J53|18F26K20|18F26K22|18F26K40|18F26K42|18F26K80)\\b"        },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(18F26K83|18F26Q10|18F26Q43|18F27J13|18F27J53|18F27K40|18F27K42|18F27Q10|18F27Q43|18F43K20|18F43K22|18F44J10|18F44J11|18F44J50|18F44K20|18F44K22|18F45J10|18F45J11|18F45J50|18F45K20|18F45K22|18F45K40|18F45K42|18F45K50|18F45K80|18F45Q10|18F45Q43|18F46J11|18F46J13|18F46J50|18F46J53|18F46K20|18F46K22|18F46K40|18F46K42|18F46K80|18F46Q10|18F46Q43|18F47J13|18F47J53)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(18F47K40|18F47K42|18F47Q10|18F47Q43|18F55K42|18F55Q43|18F56K42|18F56Q43|18F57K42|18F57Q43|18F63J11|18F63J90|18F64J11|18F64J90|18F65J10|18F65J11|18F65J15|18F65J50|18F65J90|18F65J94|18F65K22|18F65K40|18F65K80|18F65K90|18F66J10|18F66J11|18F66J15|18F66J16|18F66J50|18F66J55|18F66J60|18F66J65|18F66J90|18F66J93|18F66J94|18F66J99|18F66K22|18F66K40|18F66K80|18F66K90)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(18F67J10|18F67J11|18F67J50|18F67J60|18F67J90|18F67J93|18F67J94|18F67K22|18F67K40|18F67K90|18F83J11|18F83J90|18F84J11|18F84J90|18F85J10|18F85J11|18F85J15|18F85J50|18F85J90|18F85J94|18F85K22|18F85K90|18F86J10|18F86J11|18F86J15|18F86J16|18F86J50|18F86J55|18F86J60|18F86J65|18F86J72|18F86J90|18F86J93|18F86J94|18F86J99|18F86K22|18F86K90|18F87J10|18F87J11|18F87J50)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(18F87J60|18F87J72|18F87J90|18F87J93|18F87J94|18F87K22|18F95J94|18F96J60|18F87K90|18F96J65|18F96J94|18F96J99|18F97J60|18F97J94|18F242|18F248|18F252|18F258|18F442|18F448|18F452|18F458|18F1220|18F1230|18F1320|18F1330|18F2220|18F2221|18F2320|18F2321|18F2331|18F2410|18F2420|18F2423|18F2431|18F2439|18F2450|18F2455|18F2458|18F2480|18F2510|18F2515|18F2520|18F2523)\\b"    },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(18F2525|18F2539|18F2550|18F2553|18F2580|18F2585|18F2610|18F2620|18F2680|18F2682|18F2685|18F4220|18F4221|18F4320|18F4321|18F4331|18F4410|18F4420|18F4423|18F4431|18F4439|18F4450|18F4455|18F4458|18F4480|18F4510|18F4515|18F4520|18F4523|18F4525|18F4539|18F4550|18F4553|18F4580|18F4585|18F4610|18F4620|18F4680|18F4682|18F4685|18F6310|18F6390|18F6393|18F6410|18F6490)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(18F6493|18F6520|18F6525|18F6527|18F6585|18F6620|18F6621|18F6622|18F6627|18F6628|18F6680|18F6720|18F6722|18F6723|18F8310|18F8390|18F8393|18F8410|18F8490|18F8493|18F8520|18F8525|18F8527|18F8585|18F8620|18F8621|18F8622|18F8627|18F8628|18F8680|18F8720|18F8722|18F8723|18LF13K22|18LF13K50|18LF14K22|18LF14K50|18LF23K20|18LF24J10|18LF24J11|18LF24J50|18LF24K20)\\b"        },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(18LF24K40|18LF24K42|18LF24K50|18LF24Q10|18LF25J10|18LF25J11|18LF25J50|18LF25K20|18LF25K40|18LF25K42|18LF25K50|18LF25K80|18LF25K83|18LF25Q10|18LF26J11|18LF26J13|18LF26J50|18LF26J53|18LF26K20|18LF26K40|18LF26K42|18LF26K80|18LF26K83|18LF27J13|18LF27J53|18LF27K40|18LF27K42|18LF43K20|18LF44J10|18LF44J11|18LF44J50|18LF44K20|18LF45J10|18LF45J11|18LF45J50|18LF45K20)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(18LF45K40|18LF45K42|18LF45K50|18LF45K80|18LF46J11|18LF46J13|18LF46J50|18LF46J53|18LF46K20|18LF46K40|18LF46K42|18LF46K80|18LF47J13|18LF47J53|18LF47K40|18LF47K42|18LF55K42|18LF56K42|18LF57K42|18LF65K22|18LF65K40|18LF65K80|18LF66K22|18LF66K40|18LF66K80|18LF67K22|18LF67K40|18LF85K22|18LF86K22|18LF87K22|24EP32GP202|24EP32GP203|24EP32GP204|24EP32MC202|24EP32MC203)\\b"  },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(24EP32MC204|24EP64GP202|24EP64GP203|24EP64GP204|24EP64GP206|24EP64MC202|24EP64MC203|24EP64MC204|24EP64MC206|24EP128GP202|24EP128GP204|24EP128GP206|24EP128MC202|24EP128MC204|24EP128MC206|24EP256GP202|24EP256GP204|24EP256GP206|24EP256GU810|24EP256GU814|24EP256MC202|24EP256MC204|24EP256MC206|24EP512GP806|24EP512GU810|24EP512GU814|24F04KA200|24F04KA201)\\b"           },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(24F04KL100|24F04KL101|24F08KA101|24F08KA102|24F08KL200|24F08KL201|24F08KL301|24F08KL302|24F08KL401|24F08KL402|24F16KA101|24F16KA102|24F16KA301|24F16KA302|24F16KA304|24F16KL401|24F16KL402|24F32KA301|24F32KA302|24F32KA304|24FJ16GA002|24FJ16GA004|24FJ16MC101|24FJ16MC102|24FJ32GA002|24FJ32GA004|24FJ32GA102|24FJ32GA104|24FJ32GB002|24FJ32GB004|24FJ32MC104)\\b"          },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(24FJ48GA002|24FJ48GA004|24FJ64GA002|24FJ64GA004|24FJ64GA006|24FJ64GA008|24FJ64GA010|24FJ64GA102|24FJ64GA104|24FJ64GA106|24FJ64GA108|24FJ64GA110|24FJ64GA306|24FJ64GA308|24FJ64GA310|24FJ64GA406|24FJ64GA702|24FJ64GA704|24FJ64GA705|24FJ64GB002|24FJ64GB004|24FJ64GB106|24FJ64GB108|24FJ64GB110|24FJ64GC006|24FJ64GL306|24FJ96GA006|24FJ96GA008|24FJ96GA010)\\b"              },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(24FJ128DA106|24FJ128DA110|24FJ128DA206|24FJ128DA210|24FJ128GA006|24FJ128GA008|24FJ128GA010|24FJ128GA106|24FJ128GA108|24FJ128GA110|24FJ128GA306|24FJ128GA308|24FJ128GA310|24FJ128GA406|24FJ128GA606|24FJ128GA702|24FJ128GA704|24FJ128GA705|24FJ128GB106|24FJ128GB108|24FJ128GB110|24FJ128GB206|24FJ128GB210|24FJ128GC006|24FJ128GL306|24FJ128GL406|24FJ128GU406)\\b"           },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(24FJ192GA106|24FJ192GA108|24FJ192GA110|24FJ192GB106|24FJ192GB108|24FJ192GB110|24FJ256DA106|24FJ256DA110|24FJ256DA206|24FJ256DA210|24FJ256GA106|24FJ256GA108|24FJ256GA110|24FJ256GA406|24FJ256GA606|24FJ256GA702|24FJ256GA704|24FJ256GA705|24FJ256GB106|24FJ256GB108|24FJ256GB110|24FJ256GB206|24FJ256GB210|24FJ256GL406|24FJ256GU406|24FJ512GA606|24FJ512GL406)\\b"           },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(24FJ512GU406|24FJ1024GA606|24FV16KA301|24FV16KA302|24FV16KA304|24FV32KA301|24FV32KA302|24FV32KA304|24HJ12GP201|24HJ12GP202|24HJ16GP304|24HJ32GP202|24HJ32GP204|24HJ32GP302|24HJ32GP304|24HJ64GP202|24HJ64GP204|24HJ64GP206|24HJ64GP206A|24HJ64GP210|24HJ64GP210A|24HJ64GP502|24HJ64GP504|24HJ64GP506|24HJ64GP506A|24HJ64GP510|24HJ64GP510A|24HJ128GP202|24HJ128GP204)\\b"     },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(24HJ128GP206|24HJ128GP206A|24HJ128GP210|24HJ128GP210A|24HJ128GP306|24HJ128GP306A|24HJ128GP310|24HJ128GP310A|24HJ128GP502|24HJ128GP504|24HJ128GP506|24HJ128GP506A|24HJ128GP510|24HJ128GP510A|24HJ256GP206|24HJ256GP206A|24HJ256GP210|24HJ256GP210A|24HJ256GP610|24HJ256GP610A|32MX110F016B|33CK32MP102|33CK32MP103|33CK32MP105|33CK32MP202|33CK32MP203|33CK32MP205)\\b"        },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(33CK32MP206|33CK32MP502|33CK32MP503|33CK32MP505|33CK32MP506|33CK64MP102|33CK64MP103|33CK64MP105|33CK64MP202|33CK64MP203|33CK64MP205|33CK64MP206|33CK64MP208|33CK64MP502|33CK64MP503|33CK64MP505|33CK64MP506|33CK64MP508|33CK128MP202|33CK256MP208|33CK256MP502|33CK256MP503|33CK256MP505|33CK256MP506|33CK256MP508|33EP16GS502|33EP16GS504|33EP16GS505|33EP16GS506)\\b"       },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(33EP32GP502|33EP32GP503|33EP32GP504|33EP32GS502|33EP32GS504|33EP32GS505|33EP32GS506|33EP32MC202|33EP32MC203|33EP32MC204|33EP32MC502|33EP32MC503|33EP32MC504|33EP64GP502|33EP64GP503|33EP64GP504|33EP64GP506|33EP64GS502|33EP64GS504|33EP64GS505|33EP64GS506|33EP64MC202|33EP64MC203|33EP64MC204|33EP64MC206|33EP64MC502|33EP64MC503|33EP64MC504|33EP64MC506)\\b"              },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(33EP128GP502|33EP128GP504|33EP128GP506|33EP128MC202|33EP128MC204|33EP128MC206|33EP128MC502|33EP128MC504|33EP128MC506|33EP256GP502|33EP256GP504|33EP256GP506|33EP256MC202|33EP256MC204|33EP256MC206|33EP256MC502|33EP256MC504|33EP256MC506|33EP256MU806|33EP256MU810|33EP256MU814|33EP512GP806|33EP512MC806|33EP512MU810|33EP512MU814|33EV32GM002|33FJ06GS001)\\b"             },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(33FJ06GS101|33FJ06GS101A|33FJ06GS102|33FJ06GS102A|33FJ06GS202|33FJ06GS202A|33FJ09GS302|33FJ12GP201|33FJ12GP202|33FJ12MC201|33FJ12MC202|33FJ16GP101|33FJ16GP102|33FJ16GP304|33FJ16GS402|33FJ16GS404|33FJ16GS502|33FJ16GS504|33FJ16MC101|33FJ16MC102|33FJ16MC304|33FJ32GP202|33FJ32GP204|33FJ32GP302|33FJ32GP304|33FJ32GS406|33FJ32GS606|33FJ32GS608|33FJ32GS610)\\b"           },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(33FJ32MC104|33FJ32MC202|33FJ32MC204|33FJ32MC302|33FJ32MC304|33FJ64GP202|33FJ64GP204|33FJ64GP206|33FJ64GP206A|33FJ64GP306|33FJ64GP306A|33FJ64GP310|33FJ64GP310A|33FJ64GP706|33FJ64GP706A|33FJ64GP708|33FJ64GP708A|33FJ64GP710|33FJ64GP710A|33FJ64GP802|33FJ64GP804|33FJ64GS406|33FJ64GS606|33FJ64GS608|33FJ64GS610|33FJ64MC202|33FJ64MC204|33FJ64MC506|33FJ64MC506A)\\b"       },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(33FJ64MC508|33FJ64MC508A|33FJ64MC510|33FJ64MC510A|33FJ64MC706|33FJ64MC706A|33FJ64MC710|33FJ64MC710A|33FJ64MC802|33FJ64MC804|33FJ128GP202|33FJ128GP204|33FJ128GP206|33FJ128GP206A|33FJ128GP306|33FJ128GP306A|33FJ128GP310|33FJ128GP310A|33FJ128GP706|33FJ128GP706A|33FJ128GP708|33FJ128GP708A|33FJ128GP710|33FJ128GP710A|33FJ128GP802|33FJ128GP804|33FJ128MC202)\\b"           },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(33FJ128MC204|33FJ128MC506|33FJ128MC506A|33FJ128MC510|33FJ128MC510A|33FJ128MC706|33FJ128MC706A|33FJ128MC708|33FJ128MC708A|33FJ128MC710|33FJ128MC710A|33FJ128MC802|33FJ128MC804|33FJ256GP506|33FJ256GP506A|33FJ256GP510|33FJ256GP510A|33FJ256GP710|33FJ256GP710A|33FJ256MC510|33FJ256MC510A|33FJ256MC710|33FJ256MC710A)\\b"                                                     }
+                ]
+        }
+    }
+}
