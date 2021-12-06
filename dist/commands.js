@@ -66,7 +66,7 @@ async function runCompile(clearOut = true) {
     if (!runInit(clearOut)) return;
     
     const cfg = vscode.workspace.getConfiguration("pos");
-    const exe = cfg.get("compiler");
+    const exe = cfg.get("main.compiler");
     const doc = vscode.window.activeTextEditor.document;
 
     if (cfg.get("saveAllFilesBeforeRun") && !(await vscode.workspace.saveAll())) { vscode.window.showErrorMessage("All files can' be saved");     return; }
@@ -80,7 +80,7 @@ async function runProgram(clearOut = true) {
     if (!runInit(clearOut)) return;
     
     const cfg = vscode.workspace.getConfiguration("pos");
-    const exe = cfg.get("programmer");
+    const exe = cfg.get("main.programmer");
     const doc = vscode.window.activeTextEditor.document;
     const fn  = getFName(doc.fileName);
     
@@ -89,7 +89,7 @@ async function runProgram(clearOut = true) {
     const txt = fs.readFileSync(fn + ".pbe");
     const dev = /^\d{2}\w+/i.exec(txt);
     
-    let params = cfg.get("programmerArgs");
+    let params = cfg.get("main.programmerArgs");
     params = params.replace(/\$hex-filename\$/ig, fn + ".hex");
     params = params.replace(/\$target-device\$/ig, dev ? dev[0] : "notfound");
     params = params.replace(/\$exe-path\$/ig, path.dirname(exe));
@@ -113,11 +113,21 @@ function stopCompile() {
 }
 
 
-function viewFile(ext = "") {
+async function viewFile(ext = "") {
     if (!vscode.window.activeTextEditor) return;
-    const doc = vscode.window.activeTextEditor.document;
-    const fn  = vscode.Uri.file(getFName(doc.fileName) + ext);
-    vscode.commands.executeCommand('vscode.open', fn);
+    
+    let editor = vscode.window.activeTextEditor;
+    let doc    = editor.document;
+    let text   = (editor.selection && !editor.selection.isEmpty) ? doc.getText(editor.selection) : doc.lineAt(editor.selection.active.line).text.trim();
+
+    doc    = await vscode.workspace.openTextDocument(vscode.Uri.file(getFName(doc.fileName) + ext));
+    editor = await vscode.window.showTextDocument(doc, {viewColumn: vscode.ViewColumn.Beside });
+
+    const idx  = doc.getText().toLowerCase().indexOf(text.toLowerCase());           if (idx == -1) return;
+    const pos1 = doc.positionAt(idx),   pos2 = doc.positionAt(idx + text.length),   range = new vscode.Range(pos1, pos2);
+    
+    editor.selections = [new vscode.Selection(pos1,pos2)];
+    editor.revealRange(range);    
 }
 
 

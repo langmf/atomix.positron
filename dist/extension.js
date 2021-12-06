@@ -2,18 +2,35 @@
 
 Object.defineProperty(exports, "__esModule", { value: true });
 
-const vscode_1 = require("vscode");
-const cmds_1 = require("./commands");
+const vscode = require("vscode");
+const cmds = require("./commands");
+
 
 function activate() {
-    vscode_1.commands.registerCommand("pos.runCompile",  () => {    cmds_1.runCompile();       });
-    vscode_1.commands.registerCommand("pos.runProgram",  () => {    cmds_1.runProgram();       });
-    vscode_1.commands.registerCommand("pos.runCombine",  () => {    cmds_1.runCombine();       });
-    vscode_1.commands.registerCommand("pos.stopCompile", () => {    cmds_1.stopCompile();      });
-    vscode_1.commands.registerCommand("pos.viewAsm",     () => {    cmds_1.viewFile(".asm");   });
-    vscode_1.commands.registerCommand("pos.viewLst",     () => {    cmds_1.viewFile(".lst");   });
+    vscode.commands.registerCommand("pos.runCompile",  () => {    runWait(cmds.runCompile); });
+    vscode.commands.registerCommand("pos.runProgram",  () => {    runWait(cmds.runProgram); });
+    vscode.commands.registerCommand("pos.runCombine",  () => {    runWait(cmds.runCombine); });
+    vscode.commands.registerCommand("pos.stopCompile", () => {    cmds.stopCompile();       });
+    vscode.commands.registerCommand("pos.viewAsm",     () => {    cmds.viewFile(".asm");    });
+    vscode.commands.registerCommand("pos.viewLst",     () => {    cmds.viewFile(".lst");    });
+    
+    if (vscode.workspace.getConfiguration("pos").output.ClickHide) {
+        vscode.window.onDidChangeTextEditorSelection(sel => {
+            if (sel.textEditor.document.languageId !== "pos" || sel.kind != vscode.TextEditorSelectionChangeKind.Mouse) return;
+            vscode.commands.executeCommand("workbench.action.closePanel");
+        });
+    }
 }
-exports.activate = activate;
+
+
+async function runWait(f) {
+    await f();
+    const cfg = vscode.workspace.getConfiguration("pos").output;
+    setTimeout(function(){ if (cfg.DelayHide) vscode.commands.executeCommand("workbench.action.closePanel"); }, cfg.DelayHide);
+}
+
+
 function deactivate() { }
+
+exports.activate = activate;
 exports.deactivate = deactivate;
-//# sourceMappingURL=extension.js.map

@@ -91,7 +91,13 @@
             </dict>
             <dict>
                 <key>match</key>
-                <string>(?i)^ *(program compiled ok|\d+ variables used)(.*)</string>
+                <string>(?i)^ *(program compiled ok\.|\d+ variables used)(.*)</string>
+                <key>name</key>
+                <string>markup.link</string>
+            </dict>
+            <dict>
+                <key>match</key>
+                <string>(?i)^((program|operation) succeeded\.?)$</string>
                 <key>name</key>
                 <string>markup.link</string>
             </dict>

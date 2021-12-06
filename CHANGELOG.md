@@ -8,3 +8,9 @@
 ## Version 0.9.8 (05/12/2021)
 - Fix args command line
 - Added view assembler and listing
+
+## Version 0.9.9 (06/12/2021)
+- Added view assembler with find by current line or selection
+
+## Version 1.0.0 (07/12/2021)
+- Added settings delay time and mouse click for auto hide output window

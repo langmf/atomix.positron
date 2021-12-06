@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "0.9.8",
+	"version": "1.0.0",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -109,20 +109,30 @@
 			"type":  "object",
 			"title": "Positron",
 			"properties": {
-				"pos.compiler": {
+				"pos.main.compiler": {
 					"type": "string",
 					"default": "C:\\Program Files (x86)\\ProtonIDE\\PDS\\Loader.exe",
 					"description": "Path to loader for positron compiler"
 				},
-				"pos.programmer": {
+				"pos.main.programmer": {
 					"type": "string",
 					"default": "C:\\Program Files (x86)\\Microchip\\Pickit 2 v2\\pk2cmd.exe",
 					"description": "Path to programmer for program Flash-based PIC® Microcontroller Units"
 				},
-				"pos.programmerArgs": {
+				"pos.main.programmerArgs": {
 					"type": "string",
 					"default": "-L1 -H1 -R -J -E -M -PPIC$target-device$ -F$hex-filename$ -B$exe-path$",
 					"description": "Arguments for programmer"
+				},
+                "pos.output.ClickHide": {
+					"type": "boolean",
+					"default": false,
+					"description": "Hide the panel (output, terminal, etc.) when the user clicks into a text editor."
+				},
+				"pos.output.DelayHide": {
+					"type": "number",
+					"default": 0,
+					"description": "How long to wait (ms.) before hiding the panel."
 				},
 				"pos.showItemsInContextMenu": {
 					"type": "boolean",
