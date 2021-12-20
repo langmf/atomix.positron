@@ -14,3 +14,9 @@
 
 ## Version 1.0.0 (07/12/2021)
 - Added settings delay time and mouse click for auto hide output window
+
+## Version 1.0.1 (19/12/2021)
+- Added outline tree view
+
+## Version 1.0.2 (20/12/2021)
+- Added labels and removed duplicate items from outline

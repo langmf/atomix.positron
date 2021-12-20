@@ -84,7 +84,7 @@
                 ]
         },
         "labels": {
-                 "name": "entity.name.function.pos",    "match": "(?i)^\\s*([a-z\\u0400-\\u04FF]\\w*):(?=[\\s;']|$)"
+                 "name": "entity.name.function.pos",    "match": "(?i)(?<=^|:)\\s*([a-z\\u0400-\\u04FF]\\w*):(?=[\\s;']|$)"
         },    
         "numbers": {
                 "name": "constant.numeric.pos",         "match": "(?i)(?<![\\w\\d#])((%\\d+)|((0|0x|\\$)[0-9a-f]+)|(-?(\\d+\\.?\\d*)|-?(\\.\\d+))(e(-|\\+)?\\d+)?)\\b"

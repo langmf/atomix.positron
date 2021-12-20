@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.0.0",
+	"version": "1.0.2",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -157,6 +157,12 @@
 					"default": true,
 					"description": "Whether to save the current file before running.",
 					"scope": "resource"
+				},
+                "pos.outline.showRegisters": {
+					"type": "boolean",
+					"default": true,
+					"description": "Whether to show registers of device.",
+					"scope": "resource"
 				}
 			}
 		},
@@ -202,6 +208,10 @@
 				"path": "./snippets/pos.json"
 			}
 		]
+	},
+    "scripts": {
+		"package": "vsce package",
+		"publish": "vsce publish"
 	},
 	"license": "MIT",
 	"repository": {

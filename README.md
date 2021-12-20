@@ -14,6 +14,7 @@ This package provide not only syntax highlighting, but also basic snippets integ
 ## Features
 - Complete syntax highlighting for Positron
 - Run Compile and Program
+- Outline
 
 ## Snippets
 Auto Indentation Rules
