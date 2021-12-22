@@ -2,8 +2,8 @@
 
 Object.defineProperty(exports, "__esModule", { value: true });
 
-const vscode = require( "vscode");
-const cmds    = require("./commands");
+const vscode = require("vscode");
+const cmds   = require("./commands");
 
 async function runWait(f) {
     await f();
@@ -11,7 +11,7 @@ async function runWait(f) {
     setTimeout(function(){ if (cfg.DelayHide) vscode.commands.executeCommand("workbench.action.closePanel"); }, cfg.DelayHide);
 }
 
-exports.registerCommands = () => {
+exports.registerCmds = () => {
     vscode.commands.registerCommand("pos.runCompile",  () => {    runWait(cmds.runCompile); });
     vscode.commands.registerCommand("pos.runProgram",  () => {    runWait(cmds.runProgram); });
     vscode.commands.registerCommand("pos.runCombine",  () => {    runWait(cmds.runCombine); });

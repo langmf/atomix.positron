@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -124,7 +124,21 @@
 					"default": "-L1 -H1 -R -J -E -M -PPIC$target-device$ -F$hex-filename$ -B$exe-path$",
 					"description": "Arguments for programmer"
 				},
-                "pos.output.ClickHide": {
+				"pos.main.includeDirs": {
+					"type": "array",
+					"uniqueItems": true,
+					"items": {"type": "string"},
+					"default": [ "C:\\Program Files (x86)\\ProtonIDE\\PDS\\Includes" ],
+					"description": "Custom directories with files for include statement"
+				},
+				"pos.main.includeFiles": {
+					"type": "array",
+					"uniqueItems": true,
+					"items": {"type": "string"},
+					"default": [],
+					"description": "Additional include sourcefiles for completion"
+				},
+				"pos.output.ClickHide": {
 					"type": "boolean",
 					"default": false,
 					"description": "Hide the panel (output, terminal, etc.) when the user clicks into a text editor."
