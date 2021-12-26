@@ -6,6 +6,7 @@ const cache = {};
 
 
 function get(name) {
+    if (typeof name === 'object') name = name.uri.fsPath;
     const obj = (!(name in cache)) ? cache[name] = {} : cache[name];
     return proxy(obj);
 }
