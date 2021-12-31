@@ -4,20 +4,52 @@ Object.defineProperty(exports, "__esModule", { value: true });
 
 const vscode = require("vscode");
 const fs     = require("fs");
+const os     = require("os");
 const path   = require("path");
 const cache  = require("./cache");
 const PAT    = require("./patterns");
 
 
+exports.onSelect = function(sel) {
+    const cfg = vscode.workspace.getConfiguration("pos"),  doc = sel.textEditor.document,  rxp = /include +"([^"]+)"/i;
+    const range = doc.getWordRangeAtPosition(sel.selections[0].active, rxp);
+    if (range) { const word  = doc.getText(range),  match = rxp.exec(word);    openInclude(match[1]); }
+}
+
+function openInclude(name) {
+    const check = function(nFile) { try { fs.accessSync(nFile, fs.constants.F_OK);   return nFile; }catch(e){} };
+    const cfg = vscode.workspace.getConfiguration("pos"),  doc = vscode.window.activeTextEditor.document;
+    
+    const paths = {
+        cur:  path.dirname(doc.fileName),
+        inc:  path.dirname(cfg.get("main.compiler")) + "\\Includes",
+        pds:  os.homedir() + "\\PDS\\Includes",
+        user: cfg.get("main.includeDirs")
+    }
+    
+    let f;
+    for (const x of Object.values(paths)) {
+        if (Array.isArray(x)) {
+            for (const v of x) if (f = check(v + "\\" + name)) break;
+        } else {
+            if (f = check(x + "\\" + name)) break;
+        }
+    }
+    
+    if (f) vscode.workspace.openTextDocument(vscode.Uri.file(f)).then(doc => vscode.window.showTextDocument(doc));
+}
+
+
 function provideDocumentSymbols(doc) {
     console.time("provider_Symbols");
     
+    let match;
+    
     const Blocks = [],  cfg = vscode.workspace.getConfiguration("pos"),  SYM = cache.get(doc).symbols;
-    let line, match;
 
-    const newSymbol = function(name, obj, r = line?.range || 0) {
-        if (typeof r === 'number') r = doc.lineAt(doc.positionAt(r)).range;
-        if (typeof obj !== 'object') return new vscode.DocumentSymbol(name, "", obj, r, r);
+    const newSymbol = function(name, obj, r) {
+        if (typeof name === 'object') { r = new vscode.Range(doc.positionAt(name.start), doc.positionAt(name.end));   name = name.name; }
+        if (typeof obj !== 'object') { r = r || doc.lineAt(0).range;   return new vscode.DocumentSymbol(name, "", obj, r, r); }
         if (!obj._items) obj._items = {};
         if (name in obj._items) return; else obj._items[name] = true;
         const sym = new vscode.DocumentSymbol(name, "", obj.kind, r, r);
@@ -44,12 +76,12 @@ function provideDocumentSymbols(doc) {
     };
     
     if ((match = PAT.DEVICE.exec(doc.getText())) !== null) {
-        const name = "Ρ" + match[2],  kind = vscode.SymbolKind.EnumMember;
+        const name = "Ρ" + match[2],  kind = vscode.SymbolKind.EnumMember,  rd = doc.lineAt(doc.positionAt(match.index)).range;
         
         if (SYM.list.DEVICE.$.name === name) {
-            list.DEVICE = SYM.list.DEVICE.$;        SYM.device.match = match;
+            list.DEVICE = SYM.list.DEVICE.$;        list.DEVICE.range = list.DEVICE.selectionRange = rd;        SYM.device.match = match;
         } else {
-            list.DEVICE = newSymbol(name,  kind);
+            list.DEVICE = newSymbol(name,  kind, rd);
 
             let txt,  r = doc.lineAt(0).range,  dev = { ok: true, match };
             
@@ -70,24 +102,15 @@ function provideDocumentSymbols(doc) {
         SYM.device = {};
     }
     
-    for (match of PAT.LABEL.matchAll(doc.getText())) newSymbol(match[1], list.LBLS, match.index);
-       
-    for (let lineNum = 0; lineNum < doc.lineCount; lineNum++) {
-        line = doc.lineAt(lineNum);
-        
-        if (line.isEmptyOrWhitespace || line.text.charAt(line.firstNonWhitespaceCharacterIndex) === "'") continue;
-        
-        const LineTextNoComment = (/^([^';\n\r]*).*$/m).exec(line.text);
-        
-        for (const txt of LineTextNoComment[1].split(":")) {
-            if ((match = PAT.PROC.exec(txt))    !== null) newSymbol(match[4], list.PROC);
-            if ((match = PAT.VAR.exec(txt))     !== null) newSymbol(match[2], list.VARS);
-            if ((match = PAT.SYMBOL.exec(txt))  !== null) newSymbol(match[2], list.CONS);
-            if ((match = PAT.DECLARE.exec(txt)) !== null) newSymbol(match[2], list.DECL);
-            if ((match = PAT.INCLUDE.exec(txt)) !== null) newSymbol(match[2], list.INCL);
-            if ((match = PAT.DEFINE.exec(txt))  !== null) newSymbol(match[2], list.DEFS);
-            if ((match = PAT.ENDPROC.exec(txt)) !== null) Blocks.pop();
-        }
+    for (const x of PAT.SYMBOLS(doc.getText())) {
+        if      (x.is('proc','sub'))            newSymbol(x, list.PROC);
+        else if (x.is('label'))                 newSymbol(x, list.LBLS);
+        else if (x.is('dim'))                   newSymbol(x, list.VARS);
+        else if (x.is('symbol'))                newSymbol(x, list.CONS);
+        else if (x.is('declare'))               newSymbol(x, list.DECL);
+        else if (x.is('include'))               newSymbol(x, list.INCL);
+        else if (x.is('$define', '$defeval'))   newSymbol(x, list.DEFS);
+        else if (x.is('endproc'))               Blocks.pop();
     }
     
     //for (let i=0;i<30;i++) list.LBLS.children.push(new vscode.DocumentSymbol("a_"+i, "", i, doc.lineAt(0).range, doc.lineAt(0).range));

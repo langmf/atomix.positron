@@ -43,11 +43,8 @@ async function run(exe, arg = "", workDir) {
     return new Promise( (resolve) => { _process.on('close', resolve) });
 }
 
-function checkFile(nFile, flags) {
-    try {
-        fs.accessSync(nFile, flags || (fs.constants.R_OK | fs.constants.W_OK));
-        return true;
-    } catch(e) { output.appendLine(e.toString()); }
+function checkFile(nFile) {
+  try { fs.accessSync(nFile, fs.constants.F_OK);   return true; }catch(e){ output.appendLine(e.toString()); }
 }
 
 function getFName(fn = "") {

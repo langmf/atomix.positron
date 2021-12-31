@@ -8,17 +8,19 @@ const semantic = require("./semantic");
 
 const { registerCmds } = require('./registerCmds');
 
+    
 function activate(ctx) {
     ctx.subscriptions.push(symbols, semantic);
     
     registerCmds();
-  
-    if (vscode.workspace.getConfiguration("pos").output.ClickHide) {
-        vscode.window.onDidChangeTextEditorSelection(sel => {
-            if (sel.textEditor.document.languageId !== "pos" || sel.kind != vscode.TextEditorSelectionChangeKind.Mouse) return;
-            vscode.commands.executeCommand("workbench.action.closePanel");
-        });
-    }
+        
+    vscode.window.onDidChangeTextEditorSelection(sel => {
+        if (sel.textEditor.document.languageId !== "pos") return;
+        if (sel.kind == vscode.TextEditorSelectionChangeKind.Command) symbols.onSelect(sel);
+        if (sel.kind == vscode.TextEditorSelectionChangeKind.Mouse) {
+            if (vscode.workspace.getConfiguration("pos").output.ClickHide) vscode.commands.executeCommand("workbench.action.closePanel");
+        }
+    });
 }
 
 
