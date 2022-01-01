@@ -117,7 +117,11 @@ function provideDocumentSymbols(doc) {
     
     SYM.list = list;
     
-    const result = Object.values(list).filter(value => value.children.length);
+    const root = cfg.get("outline.showInRoot").split(",").map(v => v.trim().toLowerCase());
+    const result = Object.values(list).reduce((res, v) => {
+        if (v.children.length) { if (root.includes(v.name.toLowerCase())) return res.concat(v.children);  else  res.push(v); }
+        return res;
+    }, []);
 
     console.timeEnd("provider_Symbols");
     

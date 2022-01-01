@@ -20,3 +20,10 @@
 
 ## Version 1.0.2 (20/12/2021)
 - Added labels and removed duplicate items from outline
+
+## Version 1.0.7 (01/01/2022)
+- Improved analysis of the main designs of the compiler.
+- Added when you click on the item in the Includes group, the corresponding file is opening
+- Added setting "outline.showInRoot" that allows you to show the specified groups of elements 
+  in the root of the Outline panel. This will allow you when setting up "Outline -> Follow Cursor" 
+  move the selected item in the Outline panel.
