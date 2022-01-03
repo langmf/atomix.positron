@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.0.7",
+	"version": "1.0.9",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -193,6 +193,14 @@
               "editor.semanticHighlighting.enabled": true
             }
         },
+        "semanticTokenScopes": [
+            {
+                "language": "pos",
+                "scopes": {
+                    "enum": ["variable.interpolation"]
+                }
+            }
+        ],
 		"languages": [
 			{
 				"id": "pos",

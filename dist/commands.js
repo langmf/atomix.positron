@@ -128,6 +128,22 @@ async function viewFile(ext = "") {
 }
 
 
+async function runWait(fnc) {
+    await fnc();
+    const cfg = vscode.workspace.getConfiguration("pos").output;
+    setTimeout(function(){ if (cfg.DelayHide) vscode.commands.executeCommand("workbench.action.closePanel"); }, cfg.DelayHide);
+}
+
+
+exports.register = () => {
+    vscode.commands.registerCommand("pos.runCompile",  () => {    runWait(runCompile); });
+    vscode.commands.registerCommand("pos.runProgram",  () => {    runWait(runProgram); });
+    vscode.commands.registerCommand("pos.runCombine",  () => {    runWait(runCombine); });
+    vscode.commands.registerCommand("pos.stopCompile", () => {    stopCompile();       });
+    vscode.commands.registerCommand("pos.viewAsm",     () => {    viewFile(".asm");    });
+    vscode.commands.registerCommand("pos.viewLst",     () => {    viewFile(".lst");    });
+};
+
 exports.runCompile  = runCompile;
 exports.runProgram  = runProgram;
 exports.runCombine  = runCombine;

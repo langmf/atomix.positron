@@ -3,23 +3,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 
 const vscode   = require("vscode");
+const common   = require("./common");
 const symbols  = require("./symbols");
 const semantic = require("./semantic");
+const cmds     = require("./commands");
 
-const { registerCmds } = require('./registerCmds');
 
-    
 function activate(ctx) {
+    vscode.workspace.onDidChangeConfiguration(common.loadConfig);           common.loadConfig();
+    
     ctx.subscriptions.push(symbols, semantic);
     
-    registerCmds();
+    cmds.register();
         
     vscode.window.onDidChangeTextEditorSelection(sel => {
         if (sel.textEditor.document.languageId !== "pos") return;
-        if (sel.kind == vscode.TextEditorSelectionChangeKind.Command) symbols.onSelect(sel);
         if (sel.kind == vscode.TextEditorSelectionChangeKind.Mouse) {
             if (vscode.workspace.getConfiguration("pos").output.ClickHide) vscode.commands.executeCommand("workbench.action.closePanel");
         }
+        else if (sel.kind == vscode.TextEditorSelectionChangeKind.Command) common.onSelect(sel);
     });
 }
 
