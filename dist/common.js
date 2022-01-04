@@ -51,9 +51,10 @@ exports.loadConfig = function() {
 exports.config = (v) => cfg.get(v);
 
 exports.onSelect = function(sel) {
-    const doc   = sel.textEditor.document,  rxp = /include +"([^"]+)"/i;
-    const range = doc.getWordRangeAtPosition(sel.selections[0].active, rxp);        if (!range) return;
-    const word  = doc.getText(range),  name = rxp.exec(word)[1],  file  = findInclude(name);
+    const editor = sel.textEditor,  doc = editor.document,  rxp = /include +"([^"]+)"/i;
+    const range  = doc.getWordRangeAtPosition(sel.selections[0].active, rxp);        if (!range) return;
+    const word   = doc.getText(range),  name = rxp.exec(word)[1],  file  = findInclude(name);
+    editor.selections = editor.selections.map( s => new vscode.Selection(s.start.translate(0,1), s.end.translate(0,1)));
     if (file) vscode.workspace.openTextDocument(vscode.Uri.file(file)).then(doc => vscode.window.showTextDocument(doc));
 }
 
