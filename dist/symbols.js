@@ -19,7 +19,6 @@ async function provideDocumentSymbols(doc) {
     }, []);
 
     console.timeEnd(tid);
-    
     return result;
 }
 

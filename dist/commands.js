@@ -129,8 +129,7 @@ async function viewFile(ext = "") {
 
 
 async function runWait(fnc) {
-    await fnc();
-    const cfg = vscode.workspace.getConfiguration("pos").output;
+    await fnc();         const cfg = vscode.workspace.getConfiguration("pos").output;
     setTimeout(function(){ if (cfg.DelayHide) vscode.commands.executeCommand("workbench.action.closePanel"); }, cfg.DelayHide);
 }
 
@@ -143,6 +142,7 @@ exports.register = () => {
     vscode.commands.registerCommand("pos.viewAsm",     () => {    viewFile(".asm");    });
     vscode.commands.registerCommand("pos.viewLst",     () => {    viewFile(".lst");    });
 };
+
 
 exports.runCompile  = runCompile;
 exports.runProgram  = runProgram;

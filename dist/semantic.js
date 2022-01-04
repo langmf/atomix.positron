@@ -42,13 +42,11 @@ function provideDocumentSemanticTokens(doc) {
         
         const text = doc.getText(),  tokens = new vscode.SemanticTokensBuilder(legend),  T = common.Types,  SYM = cache.get(doc).symbols;
 
-        const newToken = function(match, name, modif) {
-            tokens.push(new vscode.Range(doc.positionAt(match.index), doc.positionAt(match.index + match[0].length)), name, modif);
-        }
+        const newToken = function(m, name, modif){ tokens.push(new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length)), name, modif); }
 
         let res,  dev = SYM.$.device;
 
-        res = common.parseSemantic(doc, [T.procedure, T.label]);
+        res = common.parseSemantic(doc, [T.procedure, T.label]);        
         if (res.length) for (const match of PAT.WORDS(text, res))               newToken(match, 'function');
 
         res = common.parseSemantic(doc, [T.define]);
@@ -64,9 +62,7 @@ function provideDocumentSemanticTokens(doc) {
         //testColor();
     
         const result = tokens.build();
-        
         console.timeEnd(tid);
-        
         return result;
     });
 }

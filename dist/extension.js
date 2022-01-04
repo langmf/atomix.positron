@@ -10,19 +10,11 @@ const cmds     = require("./commands");
 
 
 function activate(ctx) {
-    vscode.workspace.onDidChangeConfiguration(common.loadConfig);           common.loadConfig();
+    common.activate();
+
+    cmds.register();
     
     ctx.subscriptions.push(symbols, semantic);
-    
-    cmds.register();
-        
-    vscode.window.onDidChangeTextEditorSelection(sel => {
-        if (sel.textEditor.document.languageId !== "pos") return;
-        if (sel.kind == vscode.TextEditorSelectionChangeKind.Mouse) {
-            if (vscode.workspace.getConfiguration("pos").output.ClickHide) vscode.commands.executeCommand("workbench.action.closePanel");
-        }
-        else if (sel.kind == vscode.TextEditorSelectionChangeKind.Command) common.onSelect(sel);
-    });
 }
 
 
