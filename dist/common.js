@@ -41,6 +41,7 @@ exports.loadConfig = function() {
             loader,
             include: {
                 main:   loader + "Includes\\",
+                src:    loader + "Includes\\Sources\\",
                 user:   os.homedir() + "\\PDS\\Includes\\",
                 dirs:   cfg.get("main.includeDirs").map(v => v.endsWith("\\") ? v : v + "\\")
             }
