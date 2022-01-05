@@ -6,6 +6,7 @@ const vscode   = require("vscode");
 const common   = require("./common");
 const symbols  = require("./symbols");
 const semantic = require("./semantic");
+const hovers   = require("./hovers");
 const cmds     = require("./commands");
 
 
@@ -14,7 +15,7 @@ function activate(ctx) {
 
     cmds.register();
     
-    ctx.subscriptions.push(symbols, semantic);
+    ctx.subscriptions.push(symbols, semantic, hovers);
 }
 
 

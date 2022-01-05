@@ -95,7 +95,7 @@ function findInclude(name, cur) {
 }
 
 
-function newListSymbol() {
+function listSymbols() {
     const result = {},  r = new vscode.Range(0,0,0,0);
     for (const [k,v] of Object.entries(Enums)) {
         if (v.title) { const s = new vscode.DocumentSymbol(v.title, "", v.kind, r, r);     s._items = {};     s._type = k;     result[k] = s; }
@@ -105,7 +105,7 @@ function newListSymbol() {
 
 
 function getSymbols(input) {
-    const r = /(?:"[^"]*")|[';].*$|\(\*[^\*]*\*\)|((?:^|:)[\t ]*)((\w+):(?:[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol|\$define|\$defeval)[\t ]+([\w\u0400-\u04FF]+)([^:]*?)(?=$|:))/igm;
+    const r = /(?:"[^"]*")|[';].*$|\(\*[^\*]*\*\)|((?:^|:)[\t ]*)((\w+):(?:[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+).*?('[\t ]*$[\s\S]*?(?:\r\n\r\n|\n\n|\r\r)|(?=$)))/igm;
     
     let d, m, v = [];
     
@@ -115,12 +115,14 @@ function getSymbols(input) {
         if      (m[3]) d = { name: m[3],   id: "label"   }
         else if (m[4]) d = { name: m[4],   id: "endproc" }
         else if (m[5]) d = { name: m[5],   id: "include" }            
-        else if (m[6]) d = { name: m[7],   id: m[6].toLowerCase().replace(/static[\t ]+/g,''),   value: m[8] }
+        else if (m[6]) d = { name: m[7],   id: m[6].toLowerCase().replace(/static[\t ]+/g,'') }
+        else if (m[8]) d = { name: m[9],   id: m[8].toLowerCase() }
         else continue;
         
         d.start = m.index + m[1].length;
         d.end   = m.index + m[0].length;
         d.type  = TypeID[d.id];
+        d.text  = m[2];
         
         v.push(d);
     }
@@ -129,17 +131,35 @@ function getSymbols(input) {
 }
 
 
-function parseSemantic(docPath, mask = [], skip = {}, result = []) {
-    if (typeof docPath === 'object') docPath = docPath.uri.fsPath;
+function parseDoc(docPath, mask = [], skip = {}, result = {}) {
+    let file;
+    
+    if (typeof docPath === 'object') { docPath = docPath.uri.fsPath;   file = "Local"; } else { file = path.basename(docPath); }
     if (skip[docPath]) return;  else  skip[docPath] = true;
 
-    const INC = cache.get(docPath).includes,  SYM = cache.get(docPath).symbols,  list = SYM.list.$;
+    const INC = cache.get(docPath).includes,  SYM = cache.get(docPath).symbols;
 
-    for (const item of Object.values(list).filter(v => mask.includes(v._type))) result.push(...Object.keys(item._items));
+    const obj = result[file] = {},  list = SYM.list.$;
 
-    for (const item of Object.values(INC.$)) if (item?.docPath) parseSemantic(item.docPath, mask, skip, result);
+    for (const item of Object.values(list).filter(v => mask.includes(v._type))) obj[item._type] = item._items;
+
+    for (const item of Object.values(INC.$)) if (item?.docPath) parseDoc(item.docPath, mask, skip, result);
 
     return result;
+}
+exports.parseDoc = parseDoc;
+
+
+function parseSemantic(doc, mask = [], prefix = "") {
+    const result = [],  files = parseDoc(doc, mask);
+
+    for (const [name, file] of Object.entries(files)) {
+        for (const item of Object.values(file)) result.push(...Object.keys(item));
+    }
+
+    const text = doc.getText();
+    
+    return result.length === 0 ? result : PAT.WORDS(text, result, prefix);
 }
 exports.parseSemantic = parseSemantic;
 
@@ -167,10 +187,11 @@ exports.parseIncludes = parseIncludes;
 
 
 function parseSymbols(doc) {
-    const Blocks = [],  list = newListSymbol(),  SYM = cache.get(doc).symbols;          let match;  
+    const Blocks = [],  list = listSymbols(),  SYM = cache.get(doc).symbols;          let match;  
 
     const newSymbol = function(item) {
-        const obj = list[item.type];        if (item.name in obj._items) return;  else  obj._items[item.name] = item;
+        const obj = list[item.type],  name = item.name.toLowerCase();
+        if (name in obj._items) return;  else  obj._items[name] = item;
         const r = new vscode.Range(doc.positionAt(item.start), doc.positionAt(item.end));
         const sym = new vscode.DocumentSymbol(item.name, "", obj.kind, r, r);
         if (Blocks.length === 0)  obj.children.push(sym);  else  Blocks[Blocks.length - 1].children.push(sym);

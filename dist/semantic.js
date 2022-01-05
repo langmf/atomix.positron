@@ -40,19 +40,17 @@ function provideDocumentSemanticTokens(doc) {
         const tid = "Semantic_" + doc.uri.fsPath.split("\\").pop();
         console.time(tid);
         
-        const text = doc.getText(),  tokens = new vscode.SemanticTokensBuilder(legend),  T = common.Types,  SYM = cache.get(doc).symbols;
+        const T = common.Types,  SYM = cache.get(doc).symbols,  dev = SYM.$.device;
+        
+        const tokens = new vscode.SemanticTokensBuilder(legend);
 
         const newToken = function(m, name, modif){ tokens.push(new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length)), name, modif); }
 
-        let res,  dev = SYM.$.device;
+        for (const match of common.parseSemantic(doc, [T.procedure, T.label]))      newToken(match, 'function');
 
-        res = common.parseSemantic(doc, [T.procedure, T.label]);        
-        if (res.length) for (const match of PAT.WORDS(text, res))               newToken(match, 'function');
+        for (const match of common.parseSemantic(doc, [T.define], PAT.PRF_DEF))     newToken(match, 'enum');
 
-        res = common.parseSemantic(doc, [T.define]);
-        if (res.length) for (const match of PAT.WORDS(text, res, PAT.PRF_DEF))  newToken(match, 'enum');
-
-        if (dev.sems)   for (const match of PAT.WORDS(text, dev.sems))          newToken(match, 'string');
+        if (dev.sems)   for (const match of PAT.WORDS(doc.getText(), dev.sems))     newToken(match, 'string');
 
         if (dev.ok) {
             const m = dev.match,  ofs = m.index + m[0].length - m[2].length;

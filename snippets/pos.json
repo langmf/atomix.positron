@@ -1,124 +1,142 @@
 {
-
-	"new proc": {
-		"prefix": "proc",					"description": "new proc...",
+	"New Proc": {
+		"prefix": "Proc",
 		"body": [
-			"Proc $1($2)",
+			"Proc ${1:Name}($2)",
 				"\t$0",
 			"EndProc"
-		]
+		],
+        "description": "new proc...",
 	},
-
-	"new sub": {
-		"prefix": "sub",						"description": "new sub...",
+    
+	"New Sub": {
+		"prefix": "Sub",
 		"body": [
-			"Sub $1()",
+			"Sub ${1:Name}()",
 				"\t$0",
 			"EndSub"
-		]
+		],
+        "description": "new sub...",
 	},
 
-	"if statement": {
-		"prefix": "if",							"description": "if then...",
+	"If Statement": {
+		"prefix": "If ",
+		"body": [
+			"If ${1:True} Then $0"
+		],
+        "description": "Single-line If statement",
+	},
+    
+	"If Block": {
+		"prefix": "If ",
 		"body": [
 			"If ${1:True} Then",
 				"\t$0",
 			"EndIf"
-		]
+		],
+        "description": "Multi-line If block",
 	},
 
-	"if else statement": {
-		"prefix": "if else",					"description": "if else then...",
+	"If Else Block": {
+		"prefix": "If Else",
 		"body": [
 			"If ${1:True} Then",
 				"\t$0${2:",
 			"Else",
 				"\t}",
 			"EndIf"
-		]
+		],
+        "description": "Multi-line If Else block",
 	},
 
-	"elseif statement": {
-		"prefix": "elseif",						"description": "elseif...",
+	"ElseIf Statement": {
+		"prefix": "ElseIf",
 		"body": [
 			"ElseIf ${1:True} Then",
 				"\t$0"
-		]
+		],
+        "description": "elseif...",
 	},
 
-	"else statement": {
-		"prefix": "else",						"description": "else...",
+	"Else Statement": {
+		"prefix": "Else",
 		"body": [
 			"Else",
 				"\t${0:True}"
-		]
+		],
+        "description": "else...",
 	},
     
-	"select case": {
-		"prefix": "select case",				"description": "select case...",
+	"Select Case": {
+		"prefix": "Select Case",
 		"body": [
 			"Select Case ${1:statement}",
-				"",
-				"\tCase ${0}",
-				"\t\t",
+				"\tCase ${2}",
+				"\t\t${3}",
 				"\tCase Else",
-				"\t\t",
+				"\t\t${4}",
 			"EndSelect"
-		]
+		],
+        "description": "select case...",
 	},
 
-	"for... next": {
-		"prefix": "for",						"description": "for... next",
+	"For Next": {
+		"prefix": "For Next",
 		"body": [
 			"For ${1:i} = 0 To ${2:value}",
 				"\t$0",
 			"Next"
-		]
+		],
+        "description": "for... next",
 	},
 
-	"for... step": {
-		"prefix": "for",						"description": "for... step",
+	"For Step": {
+		"prefix": "For Step",
 		"body": [
 			"For ${1:i} = 0 To ${2:value} Step ${3:value}",
 				"\t$0",
 			"Next"
-		]
+		],
+        "description": "for... step",
 	},
     
-	"do loop until": {
-		"prefix": "do",							"description": "do loop until",
+	"Do Loop Until": {
+		"prefix": "Do Until",
 		"body": [
 			"Do",
 				"\t$0",
 			"Loop Until ${1:statement}"
-		]
+		],
+        "description": "do loop until",
 	},
 
-	"do loop while": {
-		"prefix": "do",							"description": "do loop while",
+	"Do Loop While": {
+		"prefix": "Do While",
 		"body": [
 			"Do",
 				"\t$0",
 			"Loop While ${1:statement}"
-		]
+		],
+        "description": "do loop while",
 	},
 
-	"repeat until": {
-		"prefix": "repeat",							"description": "repeat until",
+	"Repeat Until": {
+		"prefix": "Repeat",
 		"body": [
 			"Repeat",
 				"\t$0",
 			"Until ${1:statement}"
-		]
+		],
+        "description": "repeat until",
 	},
     
-    "while wend": {
-		"prefix": "while",							"description": "while wend",
+    "While Wend": {
+		"prefix": "While",
 		"body": [
 			"While ${1:statement}",
 				"\t$0",
 			"Wend"
-		]
+		],
+        "description": "while wend",
 	}
-
 }
