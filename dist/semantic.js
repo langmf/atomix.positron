@@ -16,20 +16,19 @@ const tokenM  = [ 'declaration', 'definition', 'readonly', 'static', 'deprecated
 const legend  = new vscode.SemanticTokensLegend(tokenT, tokenM);
 
 
-let testColor_once = 0;
-function testColor() {
-    if (!testColor_once) {
-        vscode.window.activeTextEditor.edit(edit => {
-            for (let t=0; t < tokenT.length; t++) {
-                for (let m=0; m < tokenM.length; m++) edit.insert(new vscode.Position(0, 0), tokenT[t] + " - " + tokenM[m] + "\r\n");
-            }
-        });
-        testColor_once = 1;
-    }
-    let l=0;
-    for (let t=0; t < tokenT.length; t++) {
-        for (let m=0; m < tokenM.length; m++) {
-            tokens.push(doc.lineAt(l).range, tokenT[t], [tokenM[m]]);       l++;
+function parseSemantic(doc, tokens, data = {}) {
+    const text = doc.getText();
+    
+    for (const [token, value] of Object.entries(data)) {
+        const words = value.words || [];
+
+        if (value.mask) {
+            const files = common.parseDoc(doc, value.mask);
+            for (const [name, file] of Object.entries(files)) { for (const item of Object.values(file)) words.push(...Object.keys(item)); } 
+        }
+
+        for (const m of PAT.WORDS(text, words, value.prefix || "")) {
+            tokens.push(new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length)), token);
         }
     }
 }
@@ -40,24 +39,20 @@ function provideDocumentSemanticTokens(doc) {
         const tid = "Semantic_" + doc.uri.fsPath.split("\\").pop();
         console.time(tid);
         
-        const T = common.Types,  SYM = cache.get(doc).symbols,  dev = SYM.$.device;
-        
         const tokens = new vscode.SemanticTokensBuilder(legend);
 
-        const newToken = function(m, name, modif){ tokens.push(new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length)), name, modif); }
+        const T = common.Types,  SYM = cache.get(doc).symbols,  dev = SYM.$.device;
 
-        for (const match of common.parseSemantic(doc, [T.procedure, T.label]))      newToken(match, 'function');
-
-        for (const match of common.parseSemantic(doc, [T.define], PAT.PRF_DEF))     newToken(match, 'enum');
-
-        if (dev.sems)   for (const match of PAT.WORDS(doc.getText(), dev.sems))     newToken(match, 'string');
+        parseSemantic(doc, tokens, {
+            'function'  :   { mask:  [T.procedure, T.label]              },
+            'enum'      :   { mask:  [T.define],     prefix: PAT.PRF_DEF },
+            'string'    :   { words: dev.sems                            }
+        });
 
         if (dev.ok) {
             const m = dev.match,  ofs = m.index + m[0].length - m[2].length;
             tokens.push(new vscode.Range(doc.positionAt(ofs), doc.positionAt(ofs + m[2].length)), 'function');
         }
-      
-        //testColor();
     
         const result = tokens.build();
         console.timeEnd(tid);

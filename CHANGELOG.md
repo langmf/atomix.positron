@@ -37,3 +37,6 @@
 
 ## Version 1.0.9 (03/01/2022)
 - Added highlight names (procedure, define, label) in full text
+
+## Version 1.1.5 (06/01/2022)
+- Added hovers show information about the symbol/object that's below the mouse cursor.

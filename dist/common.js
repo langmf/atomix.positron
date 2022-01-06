@@ -44,8 +44,6 @@ function onDidChangeConfiguration() {
     
     const loader = path.dirname(cfg.get("main.compiler")) + "\\";
     
-    exports.showInRoot = cfg.get("outline.showInRoot").split(",").map(v => v.trim().toLowerCase());
-    
     exports.pos = pos = {
         path: {
             loader,
@@ -104,6 +102,18 @@ function listSymbols() {
 }
 
 
+function filterSymbols(list) {
+    const showInRoot = cfg.get("outline.showInRoot").split(",").map(v => v.trim().toLowerCase());
+    return Object.values(list).reduce((res, v) => {
+        if (v.children.length) {
+            if (showInRoot.includes(v.name.toLowerCase())) return res.concat(v.children);  else  res.push(v);
+        }
+        return res;
+    }, []);
+}
+exports.filterSymbols = filterSymbols;
+
+
 function getSymbols(input) {
     const r = /(?:"[^"]*")|[';].*$|\(\*[^\*]*\*\)|((?:^|:)[\t ]*)((\w+):(?:[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+).*?('[\t ]*$[\s\S]*?(?:\r\n\r\n|\n\n|\r\r)|(?=$)))/igm;
     
@@ -150,22 +160,8 @@ function parseDoc(docPath, mask = [], skip = {}, result = {}) {
 exports.parseDoc = parseDoc;
 
 
-function parseSemantic(doc, mask = [], prefix = "") {
-    const result = [],  files = parseDoc(doc, mask);
-
-    for (const [name, file] of Object.entries(files)) {
-        for (const item of Object.values(file)) result.push(...Object.keys(item));
-    }
-
-    const text = doc.getText();
-    
-    return result.length === 0 ? result : PAT.WORDS(text, result, prefix);
-}
-exports.parseSemantic = parseSemantic;
-
-
-async function parseIncludes(doc, list) {
-    const INC = cache.get(doc).includes,  arr = list[Types.include]?.children || [];
+async function parseIncludes(doc, timeout = 5000) {
+    const INC = cache.get(doc).includes,  SYM = cache.get(doc).symbols,  arr = SYM.list.$[Types.include]?.children || [];
 
     for (const v of Object.values(INC.$)) v.del = true;
 
@@ -175,8 +171,15 @@ async function parseIncludes(doc, list) {
         const f = findInclude(v.name, path.dirname(doc.fileName));      if (!f) continue;
         
         const iDoc = await vscode.workspace.openTextDocument(vscode.Uri.file(f));
-        const iSym = await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', iDoc.uri);
-        i.docPath = iDoc.uri.fsPath;
+        const iSym = vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', iDoc.uri);
+        
+        await new Promise(resolve => {
+            const tmo = setTimeout(() => {
+                vscode.window.showWarningMessage(`May be circular includes in "${iDoc.uri.fsPath}"`);
+                resolve();
+            }, timeout);
+            iSym.then(() => { clearTimeout(tmo);    i.docPath = iDoc.uri.fsPath;    resolve(); });
+        });
     }
 
     for (const [k,v] of Object.entries(INC.$)) if (v.del) delete INC[k];

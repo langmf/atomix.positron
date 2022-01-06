@@ -26,8 +26,9 @@ function newRXP(rxp) {
 function getWords(input, words, prefix = "") {
     if (Array.isArray(words)) words = words.join("|");
     else if (typeof words === 'object') words = Object.keys(words).join("|");
+    if (!words) return [];
     let m,  v = [],  r = RegExp(`(?:"[^"]*")|[';].*$|\\(\\*[^\\*]*\\*\\)|${prefix}\\b(${words})\\b`, 'igm');
-    if (words) { while ((m = r.exec(input)) !== null) if (m[1]) v.push(m); }
+    while ((m = r.exec(input)) !== null) if (m[1]) v.push(m);
     return v;
 }
 
