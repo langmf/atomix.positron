@@ -43,8 +43,12 @@ async function run(exe, arg = "", workDir) {
     return new Promise( (resolve) => { _process.on('close', resolve) });
 }
 
-function checkFile(nFile) {
-  try { fs.accessSync(nFile, fs.constants.F_OK);   return true; }catch(e){ output.appendLine(e.toString()); }
+function checkFileOut(nFile) {
+    try{  fs.accessSync(nFile, fs.constants.F_OK);   return true;  }catch(e){  output.appendLine(e.toString());  }
+}
+
+function checkFileMsg(nFile) {
+    try{  fs.accessSync(nFile, fs.constants.F_OK);   return true;  }catch(e){ vscode.window.showErrorMessage(e.toString()); }
 }
 
 function getFName(fn = "") {
@@ -81,7 +85,7 @@ async function runProgram(clearOut = true) {
     const doc = vscode.window.activeTextEditor.document;
     const fn  = getFName(doc.fileName);
     
-    if (!checkFile(fn + ".pbe") || !checkFile(fn + ".hex")) return;
+    if (!checkFileOut(fn + ".pbe") || !checkFileOut(fn + ".hex")) return;
     
     const txt = fs.readFileSync(fn + ".pbe");
     const dev = /^\d{2}\w+/i.exec(txt);
@@ -117,7 +121,9 @@ async function viewFile(ext = "") {
     let doc    = editor.document;
     let text   = (editor.selection && !editor.selection.isEmpty) ? doc.getText(editor.selection) : doc.lineAt(editor.selection.active.line).text.trim();
 
-    doc    = await vscode.workspace.openTextDocument(vscode.Uri.file(getFName(doc.fileName) + ext));
+    const file = getFName(doc.fileName) + ext;        if (!checkFileMsg(file)) return;
+
+    doc    = await vscode.workspace.openTextDocument(vscode.Uri.file(file));
     editor = await vscode.window.showTextDocument(doc, {viewColumn: vscode.ViewColumn.Beside });
 
     const idx  = doc.getText().toLowerCase().indexOf(text.toLowerCase());           if (idx == -1) return;

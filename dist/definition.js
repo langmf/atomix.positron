@@ -6,7 +6,9 @@ const vscode   = require("vscode");
 const common   = require("./common");
 
 
-function provideHover(doc, position) {
+function provideDefinition(doc, position) {
+    const res = common.getWordInclude(doc, position, true);       if (res) return res;
+
     const wordRange = doc.getWordRangeAtPosition(position);
     const word = wordRange ? doc.getText(wordRange).toLowerCase() : "";
     
@@ -14,15 +16,11 @@ function provideHover(doc, position) {
 
     for (const [name, file] of Object.entries(files)) {
         for (const item of Object.values(file.items)) {
-            if (word in item) {
-                const scope = file.isLocal ? "Local" : file.scope;
-                return new vscode.Hover({ language: "pos", value: item[word].text + `\t' [${scope}]`});
-            }
+            if (word in item) return new vscode.Location(vscode.Uri.file(name), item[word].range);
         }
     }
 
     return null;
 }
 
-
-exports.default = () => vscode.languages.registerHoverProvider({ scheme: "file", language: "pos" }, { provideHover });
+exports.default = () => vscode.languages.registerDefinitionProvider({ scheme: "file", language: "pos" }, { provideDefinition });

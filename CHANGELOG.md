@@ -40,3 +40,7 @@
 
 ## Version 1.1.5 (06/01/2022)
 - Added hovers show information about the symbol/object that's below the mouse cursor.
+
+## Version 1.1.7 (07/01/2022)
+- Various minor fixes
+- Added go to definition.

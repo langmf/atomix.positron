@@ -32,7 +32,7 @@ exports.Types  = Types;
 
 exports.config = (v) => cfg.get(v);
 
-exports.activate = function() {
+exports.activate = () => {
     onDidChangeConfiguration();
     vscode.workspace.onDidChangeConfiguration(onDidChangeConfiguration);    
     vscode.window.onDidChangeTextEditorSelection(onDidChangeTextEditorSelection);
@@ -67,13 +67,22 @@ function onDidChangeTextEditorSelection(sel) {
     }
     else if (sel.kind == vscode.TextEditorSelectionChangeKind.Command)
     {
-        const editor = sel.textEditor,  doc = editor.document,  rxp = /include +"([^"]+)"/i;
-        const range  = doc.getWordRangeAtPosition(sel.selections[0].active, rxp);        if (!range) return;
-        const word   = doc.getText(range),  name = rxp.exec(word)[1],  file  = findInclude(name);
-        editor.selections = editor.selections.map( s => new vscode.Selection(s.start.translate(0,1), s.end.translate(0,1)));
-        if (file) vscode.workspace.openTextDocument(vscode.Uri.file(file)).then(doc => vscode.window.showTextDocument(doc));
+        const editor = sel.textEditor,  i = getWordInclude(editor.document, sel.selections[0].active);      if (!i) return;
+        const file   = findInclude(i.name);
+        editor.selections = editor.selections.map(s => new vscode.Selection(s.start.translate(0,1), s.end.translate(0,1)));
+        try { if (file) vscode.workspace.openTextDocument(vscode.Uri.file(file)).then(doc => vscode.window.showTextDocument(doc)); }catch(e){}
     }
 }
+
+
+function getWordInclude(doc, position, retLoc = false) {
+        const rxp = /include +"([^"]+)"/i,  range  = doc.getWordRangeAtPosition(position, rxp);             if (!range) return;
+        
+        const name = rxp.exec(doc.getText(range))[1],  INC = cache.get(doc).includes,  i = { name,  file: INC.$[name]?.fsPath };
+        
+        return !retLoc ? i : i.file ? new vscode.Location(vscode.Uri.file(i.file), new vscode.Position(0,0)) : null;
+}
+exports.getWordInclude = getWordInclude;
 
 
 function checkFile(file) {
@@ -81,12 +90,12 @@ function checkFile(file) {
 }
 
 
-function findInclude(name, cur) {
-    let result;
-    
-    cur = cur || path.dirname(vscode.window.activeTextEditor.document.fileName);        cur = cur.endsWith("\\") ? cur : cur + "\\";
-    
-    for (const x of [cur, ...Object.values(pos.path.include)]) {
+function findInclude(name, cur = path.dirname(vscode.window.activeTextEditor.document.fileName)) {
+    if (path.isAbsolute(name)) return checkFile(name);
+
+    let result,  curPath = cur.endsWith("\\") ? cur : cur + "\\";
+
+    for (const x of [curPath, ...Object.values(pos.path.include)]) {
         if (Array.isArray(x)) { for (const v of x) if (result = checkFile(v + name)) return result; }
         else                  {                    if (result = checkFile(x + name)) return result; }
     }
@@ -95,15 +104,19 @@ function findInclude(name, cur) {
 
 function listSymbols() {
     const result = {},  r = new vscode.Range(0,0,0,0);
+    
     for (const [k,v] of Object.entries(Enums)) {
-        if (v.title) { const s = new vscode.DocumentSymbol(v.title, "", v.kind, r, r);     s._items = {};     s._type = k;     result[k] = s; }
+        if (!v.title) continue; 
+        const s = new vscode.DocumentSymbol(v.title, "", v.kind, r, r);     s._items = {};     s._type = k;     result[k] = s;
     }
+
     return result;
 }
 
 
 function filterSymbols(list) {
     const showInRoot = cfg.get("outline.showInRoot").split(",").map(v => v.trim().toLowerCase());
+    
     return Object.values(list).reduce((res, v) => {
         if (v.children.length) {
             if (showInRoot.includes(v.name.toLowerCase())) return res.concat(v.children);  else  res.push(v);
@@ -141,19 +154,19 @@ function getSymbols(input) {
 }
 
 
-function parseDoc(docPath, mask = [], skip = {}, result = {}) {
-    let file;
+function parseDoc(doc, mask = [], skip = {}, result = {}) {
+    let isLocal = false;
     
-    if (typeof docPath === 'object') { docPath = docPath.uri.fsPath;   file = "Local"; } else { file = path.basename(docPath); }
-    if (skip[docPath]) return;  else  skip[docPath] = true;
+    if (typeof doc === 'object') { doc = doc.uri.fsPath;   isLocal = true; }
+    if (skip[doc]) return;  else  skip[doc] = true;
 
-    const INC = cache.get(docPath).includes,  SYM = cache.get(docPath).symbols;
+    const INC = cache.get(doc).includes,  SYM = cache.get(doc).symbols,  list = SYM.list.$;
 
-    const obj = result[file] = {},  list = SYM.list.$;
+    const obj = result[doc] = { isLocal, scope: path.basename(doc), items:{} };
 
-    for (const item of Object.values(list).filter(v => mask.includes(v._type))) obj[item._type] = item._items;
+    for (const item of Object.values(list).filter(v => mask.includes(v._type))) obj.items[item._type] = item._items;
 
-    for (const item of Object.values(INC.$)) if (item?.docPath) parseDoc(item.docPath, mask, skip, result);
+    for (const item of Object.values(INC.$)) if (item?.fsPath) parseDoc(item.fsPath, mask, skip, result);
 
     return result;
 }
@@ -178,7 +191,7 @@ async function parseIncludes(doc, timeout = 5000) {
                 vscode.window.showWarningMessage(`May be circular includes in "${iDoc.uri.fsPath}"`);
                 resolve();
             }, timeout);
-            iSym.then(() => { clearTimeout(tmo);    i.docPath = iDoc.uri.fsPath;    resolve(); });
+            iSym.then(() => { clearTimeout(tmo);    i.fsPath = iDoc.uri.fsPath;    resolve(); });
         });
     }
 
@@ -195,7 +208,7 @@ function parseSymbols(doc) {
     const newSymbol = function(item) {
         const obj = list[item.type],  name = item.name.toLowerCase();
         if (name in obj._items) return;  else  obj._items[name] = item;
-        const r = new vscode.Range(doc.positionAt(item.start), doc.positionAt(item.end));
+        const r = item.range = new vscode.Range(doc.positionAt(item.start), doc.positionAt(item.end));
         const sym = new vscode.DocumentSymbol(item.name, "", obj.kind, r, r);
         if (Blocks.length === 0)  obj.children.push(sym);  else  Blocks[Blocks.length - 1].children.push(sym);
         if (obj.kind === vscode.SymbolKind.Function) Blocks.push(sym);

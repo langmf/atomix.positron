@@ -24,7 +24,9 @@ function parseSemantic(doc, tokens, data = {}) {
 
         if (value.mask) {
             const files = common.parseDoc(doc, value.mask);
-            for (const [name, file] of Object.entries(files)) { for (const item of Object.values(file)) words.push(...Object.keys(item)); } 
+            for (const file of Object.values(files)) {
+                for (const item of Object.values(file.items)) words.push(...Object.keys(item));
+            } 
         }
 
         for (const m of PAT.WORDS(text, words, value.prefix || "")) {
@@ -60,4 +62,4 @@ function provideDocumentSemanticTokens(doc) {
     });
 }
 
-exports.default = vscode.languages.registerDocumentSemanticTokensProvider({ scheme: "file", language: "pos" }, { provideDocumentSemanticTokens }, legend);
+exports.default = () => vscode.languages.registerDocumentSemanticTokensProvider({ scheme: "file", language: "pos" }, { provideDocumentSemanticTokens }, legend);
