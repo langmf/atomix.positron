@@ -44,3 +44,8 @@
 ## Version 1.1.7 (07/01/2022)
 - Various minor fixes
 - Added go to definition.
+
+## Version 1.2.0 (09/01/2022)
+- Added searching for the first definition of the device and its highlight for other files.
+- Added smart mode highlight for the included files from the parent file.
+- Added auto completion.

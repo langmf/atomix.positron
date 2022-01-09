@@ -19,10 +19,11 @@ provide not only syntax highlighting, but also basic snippets integration and au
 ## Features
 - Complete syntax highlighting for Positron
 - Run Compiler and Programmer
+- Goto Definition
+- Completion
+- Semantic
 - Outline
 - Hover
-- Semantic
-- Goto Definition
 
 ## Snippets
 - Auto Indentation Rules

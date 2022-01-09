@@ -118,7 +118,7 @@
                 {"name": "entity.name.function.pos",    "match": "(?i)\\b(SHin|SHout|Xin|Xout|Oread|Owrite|I2C(in|out)|USB(init|in|out|poll)|Delay(MS|US|CS))\\b" },
                 {"name": "entity.name.function.pos",    "match": "(?i)\\b(HB(Start|Stop|Restart|usAck|usNack|usin|usout)|Bstart|Bstop|Brestart|Bus(Ack|Nack|in|out))\\b" },
                 {"name": "entity.name.function.pos",    "match": "(?i)\\b(Ser(in|out)|Rs(in|out|outLn)|HRs(in[2-4]?|out[2-4]?|out[2-4]?Ln)|HSer(in[2-4]?|out[2-4]?|out[2-4]?Ln))\\b" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Snooze|Sleep|swap|Dig|Tern|Bound|SizeOf|AddressOf|Seed|Random|Pop|Push|Rol|Ror)\\b" },
+                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Snooze|Sleep|swap|Dig|Tern|Bound|SizeOf|AddressOf|VarPtr|Seed|Random|Pop|Push|Rol|Ror)\\b" },
                 {"name": "entity.name.function.pos",    "match": "(?i)\\b(BranchL?|Look(DownL?|UpL?)|(Get|Set|Load|Clear)Bit|(Left|Mid|Right|Str)\\$)(?![\\w\\d])" },
                 {"name": "entity.name.function.pos",    "match": "(?i)\\b(Ptr(8|16|24|32)|cPtr(8|16|24|32)|CErase|(C|L|E)read|(C|E)write|(C|L)Read(8|16|24|32))\\b" },
                 {"name": "entity.name.function.pos",    "match": "(?i)\\b(Len|Val|ToLower|ToUpper|Cls|Box|Circle|Cursor|LCDread|LCDwrite|Pixel|Print|Line(To)?|(Un)?Plot)\\b" },

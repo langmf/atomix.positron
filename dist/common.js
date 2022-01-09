@@ -12,23 +12,28 @@ const PAT    = require("./patterns");
 
 let cfg, pos;
 
-const Types = ["variable", "procedure", "constant", "declare", "include", "label", "define", "end"].reduce((a,v)=>(a[v]=v)&&a,{});
+
+const Types = newTypes({
+    main  : [ "variable", "procedure", "constant", "define", "label" ],
+    lang  : [ "declare", "include" ],
+    dev   : [ "$regs", "$bits" ]
+});
 
 const Enums = {
-    [Types.variable]  :  { id: ["dim"],                  title: "Variables",     kind: vscode.SymbolKind.Variable  },
-    [Types.procedure] :  { id: ["proc","sub"],           title: "Procedures",    kind: vscode.SymbolKind.Function  },
-    [Types.constant]  :  { id: ["symbol"],               title: "Constants",     kind: vscode.SymbolKind.Constant  },
-    [Types.declare]   :  { id: ["declare"],              title: "Declares",      kind: vscode.SymbolKind.String    },
-    [Types.include]   :  { id: ["include"],              title: "Includes",      kind: vscode.SymbolKind.File      },
-    [Types.label]     :  { id: ["label"],                title: "Labels",        kind: vscode.SymbolKind.Field     },
-    [Types.define]    :  { id: ["$define","$defeval"],   title: "Defines",       kind: vscode.SymbolKind.Enum      },
-    [Types.end]       :  { id: ["endproc","endsub"]      }
+    [Types.variable]  :  { id: ["dim"],                  title: "Variables",     sym: vscode.SymbolKind.Variable,     com: vscode.CompletionItemKind.Variable   },
+    [Types.procedure] :  { id: ["proc","sub"],           title: "Procedures",    sym: vscode.SymbolKind.Function,     com: vscode.CompletionItemKind.Function   },
+    [Types.constant]  :  { id: ["symbol"],               title: "Constants",     sym: vscode.SymbolKind.Constant,     com: vscode.CompletionItemKind.Constant   },
+    [Types.declare]   :  { id: ["declare"],              title: "Declares",      sym: vscode.SymbolKind.String,       com: vscode.CompletionItemKind.Text       },
+    [Types.include]   :  { id: ["include"],              title: "Includes",      sym: vscode.SymbolKind.File,         com: vscode.CompletionItemKind.File       },
+    [Types.label]     :  { id: ["label"],                title: "Labels",        sym: vscode.SymbolKind.Field,        com: vscode.CompletionItemKind.Field      },
+    [Types.define]    :  { id: ["$define","$defeval"],   title: "Defines",       sym: vscode.SymbolKind.Enum,         com: vscode.CompletionItemKind.Enum       },
+    [Types.$regs]     :  { id: [],                       title: "Registers",     sym: vscode.SymbolKind.EnumMember,   com: vscode.CompletionItemKind.EnumMember },
+    [Types.$bits]     :  { id: [],                       title: "Bits",          sym: vscode.SymbolKind.EnumMember,   com: vscode.CompletionItemKind.EnumMember }
 }
-
-const TypeID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
 
 
 exports.Types  = Types;
+exports.Enums  = Enums;
 
 exports.config = (v) => cfg.get(v);
 
@@ -42,7 +47,7 @@ exports.activate = () => {
 function onDidChangeConfiguration() {
     cfg = vscode.workspace.getConfiguration("pos");
     
-    const loader = path.dirname(cfg.get("main.compiler")) + "\\";
+    const loader = path.dirname(cfg.main.compiler) + "\\";
     
     exports.pos = pos = {
         path: {
@@ -51,7 +56,7 @@ function onDidChangeConfiguration() {
                 main:   loader + "Includes\\",
                 src:    loader + "Includes\\Sources\\",
                 user:   os.homedir() + "\\PDS\\Includes\\",
-                dirs:   cfg.get("main.includeDirs").map(v => v.endsWith("\\") ? v : v + "\\")
+                dirs:   cfg.main.includeDirs.map(v => v.endsWith("\\") ? v : v + "\\")
             }
         }  
     }
@@ -63,7 +68,7 @@ function onDidChangeTextEditorSelection(sel) {
     
     if (sel.kind == vscode.TextEditorSelectionChangeKind.Mouse)
     {
-        if (cfg.get("output.ClickHide")) vscode.commands.executeCommand("workbench.action.closePanel");
+        if (cfg.output.ClickHide) vscode.commands.executeCommand("workbench.action.closePanel");
     }
     else if (sel.kind == vscode.TextEditorSelectionChangeKind.Command)
     {
@@ -83,6 +88,25 @@ function getWordInclude(doc, position, retLoc = false) {
         return !retLoc ? i : i.file ? new vscode.Location(vscode.Uri.file(i.file), new vscode.Position(0,0)) : null;
 }
 exports.getWordInclude = getWordInclude;
+
+
+function failRange(doc, position) {
+    const line = doc.lineAt(position),  txt = line.text.substring(0, position.character);
+    let char = line.text.charAt(line.firstNonWhitespaceCharacterIndex);
+    if (char === "'" || char === ";") return true;
+    let q = 0;          for (const char of txt) if (char === '"') q++;         return (q % 2 === 1);
+}
+exports.failRange = failRange;
+
+
+function newTypes(value) {
+    const res = {
+        _ : value,
+        $(v) { return (v || "").split(",").reduce((a,i) => { const x = this._[i.trim()]; (x && a.push(...x));   return a; }, []) }
+    }
+    Object.values(res._).map(v=>v.map(i=>res[i]=i));
+    return Object.freeze(res);
+}
 
 
 function checkFile(file) {
@@ -107,7 +131,7 @@ function listSymbols() {
     
     for (const [k,v] of Object.entries(Enums)) {
         if (!v.title) continue; 
-        const s = new vscode.DocumentSymbol(v.title, "", v.kind, r, r);     s._items = {};     s._type = k;     result[k] = s;
+        const s = new vscode.DocumentSymbol(v.title, "", v.sym, r, r);     s.$items = {};     s.$type = k;     result[k] = s;
     }
 
     return result;
@@ -115,7 +139,7 @@ function listSymbols() {
 
 
 function filterSymbols(list) {
-    const showInRoot = cfg.get("outline.showInRoot").split(",").map(v => v.trim().toLowerCase());
+    const showInRoot = cfg.outline.showInRoot.split(",").map(v => v.trim().toLowerCase());
     
     return Object.values(list).reduce((res, v) => {
         if (v.children.length) {
@@ -128,15 +152,17 @@ exports.filterSymbols = filterSymbols;
 
 
 function getSymbols(input) {
-    const r = /(?:"[^"]*")|[';].*$|\(\*[^\*]*\*\)|((?:^|:)[\t ]*)((\w+):(?:[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+).*?('[\t ]*$[\s\S]*?(?:\r\n\r\n|\n\n|\r\r)|(?=$)))/igm;
+    const r = /(?:"[^"]*")|[';].*$|\(\*[^\*]*\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+).*?('[\t ]*$[\s\S]*?(?:\r\n\r\n|\n\n|\r\r)|(?=$)))/igm;
+
+    const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
     
     let d, m, v = [];
-    
+
     while ((m = r.exec(input)) !== null) {
         if (m[1] == null) continue;
         
         if      (m[3]) d = { name: m[3],   id: "label"   }
-        else if (m[4]) d = { name: m[4],   id: "endproc" }
+        else if (m[4]) d = { name: m[4],   id: "end"     }
         else if (m[5]) d = { name: m[5],   id: "include" }            
         else if (m[6]) d = { name: m[7],   id: m[6].toLowerCase().replace(/static[\t ]+/g,'') }
         else if (m[8]) d = { name: m[9],   id: m[8].toLowerCase() }
@@ -144,7 +170,7 @@ function getSymbols(input) {
         
         d.start = m.index + m[1].length;
         d.end   = m.index + m[0].length;
-        d.type  = TypeID[d.id];
+        d.type  = getTypeFromID[d.id];
         d.text  = m[2];
         
         v.push(d);
@@ -154,7 +180,7 @@ function getSymbols(input) {
 }
 
 
-function parseDoc(doc, mask = [], skip = {}, result = {}) {
+function parseDoc(doc, mask = Types._.main, skip = {$:{}}, result = {}) {
     let isLocal = false;
     
     if (typeof doc === 'object') { doc = doc.uri.fsPath;   isLocal = true; }
@@ -162,11 +188,18 @@ function parseDoc(doc, mask = [], skip = {}, result = {}) {
 
     const INC = cache.get(doc).includes,  SYM = cache.get(doc).symbols,  list = SYM.list.$;
 
-    const obj = result[doc] = { isLocal, scope: path.basename(doc), items:{} };
+    const obj = result[doc] = { isLocal, scope: path.basename(doc), types:{} };
 
-    for (const item of Object.values(list).filter(v => mask.includes(v._type))) obj.items[item._type] = item._items;
+    for (const item of Object.values(list).filter(v => (mask.includes(v.$type)))) {
+        if (Types._.dev.includes(item.$type)) { if (item.$type in skip.$) continue;  else  skip.$[item.$type] = true; }
+        obj.types[item.$type] = item;
+    }
 
     for (const item of Object.values(INC.$)) if (item?.fsPath) parseDoc(item.fsPath, mask, skip, result);
+
+    if (isLocal && cfg.smartParentIncludes) {
+        const prt = cache.get(doc).$.parent;      if (prt) parseDoc(prt, mask, skip, result);
+    }
 
     return result;
 }
@@ -180,18 +213,20 @@ async function parseIncludes(doc, timeout = 5000) {
 
     for (const v of arr) {
         const i = INC[v.name].$;          i.del = false;                if (i.open) continue;  else  i.open = true;
-        
+
         const f = findInclude(v.name, path.dirname(doc.fileName));      if (!f) continue;
         
         const iDoc = await vscode.workspace.openTextDocument(vscode.Uri.file(f));
         const iSym = vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', iDoc.uri);
         
+        if (cfg.smartParentIncludes) cache.get(iDoc).parent = doc.uri.fsPath;
+
         await new Promise(resolve => {
             const tmo = setTimeout(() => {
                 vscode.window.showWarningMessage(`May be circular includes in "${iDoc.uri.fsPath}"`);
                 resolve();
             }, timeout);
-            iSym.then(() => { clearTimeout(tmo);    i.fsPath = iDoc.uri.fsPath;    resolve(); });
+            iSym.then(() => { clearTimeout(tmo);     i.fsPath = iDoc.uri.fsPath;     resolve(); });
         });
     }
 
@@ -207,47 +242,67 @@ function parseSymbols(doc) {
 
     const newSymbol = function(item) {
         const obj = list[item.type],  name = item.name.toLowerCase();
-        if (name in obj._items) return;  else  obj._items[name] = item;
+        
+        if (name in obj.$items) return;  else  obj.$items[name] = item;
+        
         const r = item.range = new vscode.Range(doc.positionAt(item.start), doc.positionAt(item.end));
         const sym = new vscode.DocumentSymbol(item.name, "", obj.kind, r, r);
+        
         if (Blocks.length === 0)  obj.children.push(sym);  else  Blocks[Blocks.length - 1].children.push(sym);
         if (obj.kind === vscode.SymbolKind.Function) Blocks.push(sym);
     }
     
-    for (const x of getSymbols(doc.getText())) if (x.type === Types.end) Blocks.pop();  else  newSymbol(x);
+    for (const x of getSymbols(doc.getText())) if (x.id === "end") Blocks.pop();  else  newSymbol(x);
     
-    if ((match = PAT.DEVICE.exec(doc.getText())) !== null) {
-        const name = "Ρ" + match[2],  kind = vscode.SymbolKind.EnumMember,  rd = doc.lineAt(doc.positionAt(match.index)).range;
-        
-        if (SYM.list.DEVICE.$.name === name) {
-            list.DEVICE = SYM.list.DEVICE.$;      list.DEVICE.range = list.DEVICE.selectionRange = rd;        SYM.device.match = match;
-        } else {
-            list.DEVICE = new vscode.DocumentSymbol(name, "", kind, rd, rd);
-
-            const devFile = (name) => { try { return fs.readFileSync(pos.path.include.main + name, 'utf-8'); }catch{} };
-
-            const r = doc.lineAt(0).range,  dev = {ok:true, regs:{}, defs:{}, match},  showReg = cfg.get("outline.showRegisters");
-            
-            const PPI = PAT.REG.exec(devFile("PPI\\P" + name.substring(1) + ".ppi"))[1];        if (!PPI) dev.ok = false;
-            
-            for (match of PAT.EQU.matchAll(PPI)) {
-                if (showReg) list.DEVICE.children.push(new vscode.DocumentSymbol(match[1] + " ", " " + match[2], kind, r, r));
-                dev.regs[match[1]] = match[2];
-            }
-
-            const DEF = devFile("Defs\\" + name.substring(1) + ".def");                         if (!DEF) dev.ok = false;
-            for (match of PAT.DEFS.matchAll(DEF)) dev.defs[match[1]] = match[2];
-            
-            dev.sems = [...Object.keys(dev.regs), ...Object.keys(dev.defs)].join("|");
-
-            SYM.device = dev;
-        }
-    } else {
-        SYM.device = {};
-    }
+    parseDevice(doc, list, SYM);
     
+    for (const [k,v] of Object.entries(list)) if (v.$items && !Object.keys(v.$items).length) delete list[k];
+
     SYM.list = list;
     
     return list;
 }
 exports.parseSymbols = parseSymbols;
+
+
+function parseDevice(doc, list, SYM) {
+    let match;  
+
+    if ((match = PAT.DEVICE.exec(doc.getText())) === null) { SYM.device = {};   return; }
+
+    const name = "Ρ" + match[2],  kind = vscode.SymbolKind.EnumMember,  rd = doc.lineAt(doc.positionAt(match.index)).range;
+    
+    if (SYM.list.DEVICE.$.name === name) {
+        list.DEVICE       = SYM.list.DEVICE.$;
+        list[Types.$regs] = SYM.list[Types.$regs].$;
+        list[Types.$bits] = SYM.list[Types.$bits].$;
+        list.DEVICE.range = list.DEVICE.selectionRange = rd;
+        SYM.device.match  = match;
+    } else {
+        list.DEVICE = new vscode.DocumentSymbol(name,   "", kind, rd, rd);
+        
+        const devFile = (name, rxp) => {
+            try   { const txt = fs.readFileSync(pos.path.include.main + name, 'utf-8');   return rxp ? rxp.exec(txt)[1] : txt; }
+            catch {}
+        };
+
+        let txt;    const r = doc.lineAt(0).range,  dev = {ok:true, match},  showReg = cfg.outline.showRegisters;
+
+        if (txt = devFile("PPI\\P" + name.substring(1) + ".ppi", PAT.REG)) {
+            const obj = list[Types.$regs];
+            for (const m of PAT.EQU.matchAll(txt)) {
+                if (showReg) list.DEVICE.children.push(new vscode.DocumentSymbol(m[1] + " ", " " + m[2], kind, r, r));
+                obj.$items[m[1].toLowerCase()] = { name: m[1],  text: m[2] };        
+            }
+        } else { dev.ok = false; } 
+
+        if (txt = devFile("Defs\\" + name.substring(1) + ".def")) {
+            const obj = list[Types.$bits];
+            for (const m of PAT.DEFS.matchAll(txt)) {
+                obj.$items[m[1].toLowerCase()] = { name: m[1],  text: m[2] };    
+            }
+        } else { dev.ok = false; } 
+        
+        SYM.device = dev;
+    }
+}

@@ -12,11 +12,11 @@ function provideDefinition(doc, position) {
     const wordRange = doc.getWordRangeAtPosition(position);
     const word = wordRange ? doc.getText(wordRange).toLowerCase() : "";
     
-    const T = common.Types,  files = common.parseDoc(doc, [T.procedure, T.variable, T.constant, T.define]);
+    const files = common.parseDoc(doc);
 
     for (const [name, file] of Object.entries(files)) {
-        for (const item of Object.values(file.items)) {
-            if (word in item) return new vscode.Location(vscode.Uri.file(name), item[word].range);
+        for (const type of Object.values(file.types)) {
+            if (word in type.$items) return new vscode.Location(vscode.Uri.file(name), type.$items[word].range);
         }
     }
 

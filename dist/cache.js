@@ -24,3 +24,4 @@ const proxy = (input) => {
 
 
 exports.get = get;
+exports.$ = cache;

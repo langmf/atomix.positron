@@ -7,16 +7,18 @@ const common   = require("./common");
 
 
 function provideHover(doc, position) {
+    if (common.failRange(doc, position)) return null;
+
     const wordRange = doc.getWordRangeAtPosition(position);
     const word = wordRange ? doc.getText(wordRange).toLowerCase() : "";
     
-    const T = common.Types,  files = common.parseDoc(doc, [T.procedure, T.variable, T.constant, T.define]);
+    const files = common.parseDoc(doc, common.Types.$("main,dev"));
 
-    for (const [name, file] of Object.entries(files)) {
-        for (const item of Object.values(file.items)) {
-            if (word in item) {
-                const scope = file.isLocal ? "Local" : file.scope;
-                return new vscode.Hover({ language: "pos", value: item[word].text + `\t' [${scope}]`});
+    for (const file of Object.values(files)) {
+        for (const type of Object.values(file.types)) {
+            if (word in type.$items) {
+                const descr = type.$type[0] === '$' ? '' : "\t' [" + (file.isLocal ? "Local" : file.scope) + "]";
+                return new vscode.Hover({ language: "pos", value: type.$items[word].text + descr});
             }
         }
     }
