@@ -1,11 +1,10 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-
 const vscode  = require("vscode");
 const child   = require("child_process");
 const path    = require("path");
 const fs      = require("fs");
+
 const output  = vscode.window.createOutputChannel("Positron");
 
 let _process, _statbar, _isRunning = false;
@@ -114,6 +113,12 @@ function stopCompile() {
 }
 
 
+async function runWait(fnc) {
+    await fnc();         const cfg = vscode.workspace.getConfiguration("pos").output;
+    setTimeout(function(){ if (cfg.DelayHide) vscode.commands.executeCommand("workbench.action.closePanel"); }, cfg.DelayHide);
+}
+
+
 async function viewFile(ext = "") {
     if (!vscode.window.activeTextEditor) return;
     
@@ -131,12 +136,6 @@ async function viewFile(ext = "") {
     
     editor.selections = [new vscode.Selection(pos1,pos2)];
     editor.revealRange(range);    
-}
-
-
-async function runWait(fnc) {
-    await fnc();         const cfg = vscode.workspace.getConfiguration("pos").output;
-    setTimeout(function(){ if (cfg.DelayHide) vscode.commands.executeCommand("workbench.action.closePanel"); }, cfg.DelayHide);
 }
 
 

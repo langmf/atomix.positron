@@ -1,23 +1,19 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-
 const vscode  = require("vscode");
+const root    = require("./root");
 const common  = require("./common");
 
 
 async function provideDocumentSymbols(doc) {
-    const tid = "Symbols_" + doc.uri.fsPath.split("\\").pop();
-    console.time(tid);
+    const tid = "sym_" + doc.uri.fsPath.split("\\").pop();
+    if (root.debug) console.time(tid);
 
-    const list   = common.parseSymbols(doc);
-    const incs   = await common.parseIncludes(doc);
-    const result = common.filterSymbols(list);
+    const result = await common.parseSymbols(doc);
 
-    console.timeEnd(tid);
+    if (root.debug) console.timeEnd(tid);
+
     return result;
 }
 
 exports.default = () => vscode.languages.registerDocumentSymbolProvider({ scheme: "file", language: "pos" }, { provideDocumentSymbols });
-
-//exports.default = vscode.languages.registerDocumentSymbolProvider({ scheme: "file", language: "pos" }, { provideDocumentSymbols });

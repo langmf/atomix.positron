@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<link  href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+	<script src="js/bootstrap.bundle.min.js"></script>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/atv.js"></script>
+
+	<link  href="css/base.css" type="text/css" rel="stylesheet" />
+	<script src="js/base.js"></script>
+</head>
+
+<body class="p-3">
+
+
+<div class="alert bg-hdr d-flex flex-row justify-content-center mb-4" role="alert">
+	<h4 id="extver">Positron extension v</h4>
+</div>
+
+<div class="row justify-content-between">
+	<div class="col-sm-4 my-3 px-3">
+		<div class="card">
+			<div class="card-header bg-hdr text-center">Versions</div>
+			<div class="card-body"><ol id="card_version" class="list-group"></ol></div>
+		</div>
+	</div>
+
+	<div class="col-sm-4 my-3 px-3">
+		<div class="card">
+			<div class="card-header bg-hdr text-center">Documents</div>
+			<div class="card-body"><ul id="card_doc"></ul></div>
+		</div>
+	</div>
+
+	<div class="col-sm-3 my-3 px-3">
+		<div class="card">
+			<div class="card-header bg-hdr text-center">Links</div>
+			<div class="card-body">
+				<ul>
+					<li><a href="https://rosettamicro.com">Positron Site</a></li>
+					<li><a href="http://www.protoncompilers.com">Positron Forum</a></li>
+					<li><a href="https://sites.google.com/view/rosetta-tech/home">Positron Old</a></li>
+					<li><a href="http://archive.protonbasic.co.uk/Files/">Proton Archive</a></li>
+					<li><a href="http://protoncompilers.com/index.php?action=profile;u=4">Les Johnson</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	$(async () => {
+		await URI.ready;
+
+		const extver = await vscode_Eval('vscode.extensions.getExtension("atomix.positron").packageJSON.version');
+		$('#extver').append(extver);
+
+		const dir = URI.path.pds + "PDS\\Docs\\",   files = await vscode_Eval().fs.readdirSync(dir, { withFileTypes:true });
+
+		card_doc.innerHTML = ATV_TPL(
+			`<% files.forEach(i => { %>
+				<li><a class="openurl" href="<%= dir + i.name %>"><%= i.name %></a></li>
+			<% }); %>`,
+			{ dir, files }
+		);
+
+		$('#card_version').html('Update ... Please wait a few moments.');
+
+		const comps = ['Loader.exe', 'Includes\\PreProcessor_custom.exe', 'Includes\\PreProcessor.exe', 'Pos8.exe', 'Pos16.exe'];
+		const list  = await vscode_Eval().root.exeInfo(comps.map(v => URI.path.loader + v));
+
+		$('#card_version').html('');
+
+		for (const file of list.filter(v => v.stat)) {
+			const i = file.info,   ver = i.FileVersion.replace(/(?<=\.)((0)0+(?=\.|$)|0{2,}(?=[^0]|$))/g, '$2');
+			const icon = file.icon ? `<img src="${URI.parse(file.icon)}" class="icon-32 mx-1 my-auto">` : '';
+			
+			$('#card_version').append(
+				`<li class="list-group-item d-flex flex-sm-wrap justify-content-between align-items-start">${icon}
+					<div class="ms-2 me-auto">
+						<div class="fw-bold fg-lnk">${i.FileDescription || i.ProductName}</div>
+						<div style="font-size: 0.8rem;">${i.CompanyName}</div>
+					</div>
+					<span class="badge bg-lnk rounded-pill fs-6 my-auto" data-bs-toggle="tooltip"
+					data-bs-placement="right" title="${file.date}">${ver}</span>
+				</li>`
+			);
+		}
+
+		parse_ALL();
+	});
+</script>
+
+
+</body>
+</html>

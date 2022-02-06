@@ -1,169 +1,59 @@
 {
-    "name": "Positron",
-    "scopeName": "source.pos",
-    "comment": "",
-    
-    "patterns":
-    [ 
-        {   "include": "#comments"      },
-        {   "include": "#brackets"      },
-        {   "include": "#custom"        },
-        {   "include": "#strings"       },
-        {   "include": "#procs"         },
-        {   "include": "#labels"        },
-        {   "include": "#types"         },
-        {   "include": "#operators"     },
-        {   "include": "#numbers"       },
-        {   "include": "#keywords"      },
-        {   "include": "#preprocessor"  },
-        {   "include": "#declare"       },
-        {   "include": "#positron"      },
-        {   "include": "#assembler"     },
-        {   "include": "#registers"     },
-        {   "include": "#asm18"         }
-    ],
-    
-    "repository":
-    {
-        "custom":  {
-                "patterns": [
-                    {
-                        "begin": "(?i)\\u00A7([\\w\\d\\-_]*)\\(",               "beginCaptures": {  "0": {"name": "keyword.other.unit.pos"}},
-                        "end":   "\\)",                                         "endCaptures"  : {  "0": {"name": "keyword.other.unit.pos"}},
-                        "patterns": [{    "include": "source.mf"    }]
-                    }, {
-                        "begin": "(?i)\\u00A7([\\w\\d\\-_]*)\\{",               "beginCaptures": {  "0": {"name": "keyword.other.unit.pos"}},
-                        "end":   "\\}",                                         "endCaptures"  : {  "0": {"name": "keyword.other.unit.pos"}},
-                        "patterns": [{    "include": "source.mf"    }]
-                    }, {
-                        "begin": "(?i)\\u00A7([\\w\\d\\\\-_]*)\\[",             "beginCaptures": {  "0": {"name": "keyword.other.unit.pos"}},
-                        "end":   "\\]",                                         "endCaptures"  : {  "0": {"name": "keyword.other.unit.pos"}},
-                        "patterns": [{    "include": "source.mf"    }]
-                    }, {
-                        "begin": "(?i)\\u00A7custom\\b",                        "beginCaptures": {  "0": {"name": "keyword.other.unit.pos"}},
-                        "end":   "\\n",
-                        "patterns": [{    "match": "(?<=-{1,2}|/)\\w+",         "name": "support.class.pos" },    { "include": "#numbers" }]
-                    }, {
-                        "match": "(?i)\\u00A7(major|minor|release|build)",      "name": "keyword.other.unit.pos"
-                    }, {
-                        "match": "->",                                          "name": "keyword.other.unit.pos"     
-                    }, {
-                        "begin": "(?i)^\\s*(type)\\s+([a-zA-Z\\u0400-\\u04FF]\\w*)\\s*\\{",     "beginCaptures": {  "1": {"name": "storage.type.class.mf"},     "2": {"name": "entity.name.class.pos"}},
-                        "end":   "\\}",
-                        "patterns": [{    "include": "$self"    }]
-                    }
-                ]
-        },
-        "comments": {
-                "patterns": [
-                    {   "begin": "'|;",         "end": "\\n",           "name": "comment.line.pos"     },
-                    {   "begin": "\\(\\*",      "end": "\\*\\)",        "name": "comment.block.pos"    }
-                ]
-        },
-        "brackets": {
-                "begin": "\\(",                 "beginCaptures": {"0": {"name": "punctuation.section.brackets.begin.pos"}   },
-                "end"  : "\\)",                 "endCaptures"  : {"0": {"name": "punctuation.section.brackets.end.pos"}     },
-                "name": "meta.brackets",        "patterns":      [{  "include": "$self"  }]
-        },
-        "strings":  {
-                "begin": "\"",                  "beginCaptures": {"0": {"name": "punctuation.definition.string.begin.pos"}  },
-                "end":   "\"",                  "endCaptures"  : {"0": {"name": "punctuation.definition.string.end.pos"}    },
-                "name":  "string.quoted.double.pos",
-                "patterns": [
-                    {   "match": "\"\"",                                "name": "constant.character.escape.apostrophe.pos"}
-                ]
-        },
-        "procs": {
-                "begin": "(?i)\\s*(proc|sub)\\s+([a-z\\u0400-\\u04FF]\\w*)\\s*(\\()",       "beginCaptures": {"1": {"name": "storage.type.function.pos"},                   "2": {"name": "entity.name.function.pos"},      "3": {"name": "punctuation.definition.parameters.begin.pos"} },
-                "end":   "(?i)(\\))(\\s*,\\s*([a-z\\u0400-\\u04FF]\\w*))?",                 "endCaptures"  : {"1": {"name": "punctuation.definition.parameters.end.pos"},   "3": {"name": "support.type.pos"} },
-                "patterns": [
-                    {   "include": "$self"                                                                            },
-                    {   "match": "(?i)\\b[a-z\\u0400-\\u04FF]\\w*\\b",   "name": "variable.parameter.function.pos"    },
-                    {   "match": ",",                                    "name": "meta.separator.comma.pos"           }
-                ]
-        },
-        "labels": {
-                 "name": "entity.name.function.pos",    "match": "(?i)(?<=^|:)\\s*([a-z\\u0400-\\u04FF]\\w*):(?=[\\s;']|$)"
-        },    
-        "numbers": {
-                "name": "constant.numeric.pos",         "match": "(?i)(?<![\\w\\d#])((%\\d+)|((0|0x|\\$)[0-9a-f]+)|(-?(\\d+\\.?\\d*)|-?(\\.\\d+))(e(-|\\+)?\\d+)?)\\b"
-        },
-        "types":   {
-                "patterns": [
-                {"name": "support.type.pos",            "match": "(?i)\\b(Bit|Pin|Byte|SByte|Word|SWord|Long|Dword|SDword|Float|Double|String)\\b"  },
-                {"name": "support.type.pos",            "match": "(?i)\\b((Code|Flash)(F|8|16|24|32))\\b"                   },
-                {"name": "support.type.pos",            "match": "(?i)(?<=\\s+as\\s+)(\\b[a-z\\u0400-\\u04FF]\\w*\\b)"                              }
-                ]
-        },
-        "operators": {
-                "patterns": [
-                {"name": "keyword.operator.pos",         "match": "(?i)\\b(Mod|And|Not|Or|Xor)\\b"      },
-                {"name": "variable.other.pos",           "match": "(?i)\\b(System|Access|Heap|At)\\b"   },
-                {"name": "keyword.other.unit.pos",       "match": "(?i)\\b(Declare|Device|Include)\\b"  }
-                ]
-        },
-        "keywords":  {
-                "patterns": [
-                {"name": "keyword.control.pos",         "match": "(?i)\\b(If|Then|Else|ElseIf|End ?If|For|Step|(Up|Down)?To|Next|While|Wend|Repeat|Until|Do|Loop|Case|Select|End ?Select)\\b" },
-                {"name": "keyword.control.pos",         "match": "(?i)\\b(Global|Static|Symbol|Org|Call|Break|Continue|Return|Result|Resume|Stop|(On )?GoSub|(On )?GoToL?|(C|L|E|HE)data)\\b" },
-                {"name": "keyword.control.pos",         "match": "(?i)\\b(Dim|As|ByVal|Byc?Ref|(Exit|End)?Proc|(Exit|End)?Sub|On_(Low_|Hardware_)?Interrupt|Context( Save| Restore)?)\\b" },
-                {"name": "keyword.control.pos",         "match": "(?i)\\b(Inc|Rep|Str|Strn|(C|E)Str|I?S?Bin(\\d{0,2})?|I?S?Hex[1-8]?|I?S?Dec([0-9]|10)?)\\b" },
-                {"name": "keyword.control.pos",         "match": "(?i)\\b((Low|High)S?(Byte|Word)|Bit\\d{0,2}|Byte[0-7]|Word[0-3]|SByte[0-3]|SWord[0-1])\\b" }
-                ]
-        },
-        "positron":  {
-                "patterns": [
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(ADin|Counter|DTMFout|Freqout|Button|Inkey|Pot|Servo|SonyIn|Pulse(In|Out)|RC5?in|H?PWM|Sound2?)\\b" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Clear|Let|Set|High|Low|Input|Output|Toggle|Pin(Clear|Get|Mode|Pullup|Set|Input|Output|High|Low))\\b" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(SHin|SHout|Xin|Xout|Oread|Owrite|I2C(in|out)|USB(init|in|out|poll)|Delay(MS|US|CS))\\b" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(HB(Start|Stop|Restart|usAck|usNack|usin|usout)|Bstart|Bstop|Brestart|Bus(Ack|Nack|in|out))\\b" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Ser(in|out)|Rs(in|out|outLn)|HRs(in[2-4]?|out[2-4]?|out[2-4]?Ln)|HSer(in[2-4]?|out[2-4]?|out[2-4]?Ln))\\b" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Snooze|Sleep|swap|Dig|Tern|Bound|SizeOf|AddressOf|VarPtr|Seed|Random|Pop|Push|Rol|Ror)\\b" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(BranchL?|Look(DownL?|UpL?)|(Get|Set|Load|Clear)Bit|(Left|Mid|Right|Str)\\$)(?![\\w\\d])" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Ptr(8|16|24|32)|cPtr(8|16|24|32)|CErase|(C|L|E)read|(C|E)write|(C|L)Read(8|16|24|32))\\b" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Len|Val|ToLower|ToUpper|Cls|Box|Circle|Cursor|LCDread|LCDwrite|Pixel|Print|Line(To)?|(Un)?Plot)\\b" },
-                {"name": "entity.name.function.pos",    "match": "(?i)\\b(Abs|Dcd|Exp|Pow|Ncd|Log|Log10|Ceil|I?Sqr|(A|I)?(Cos|Sin)|A?Tan)\\b" }
-                ]
-        },
-        "preprocessor": {
-                "patterns": [
-                {"name": "variable.interpolation.pos",  "match": "(?i)(?<![\\w\\d])\\$(define|defeval|undef|ifn?def|ifn?eq|if|else|elseif|elif|endif)\\b" },
-                {"name": "variable.interpolation.pos",  "match": "(?i)(?<![\\w\\d])\\$(eval|error|send(error|hint|warning|message))\\b" },
-                {"name": "variable.interpolation.pos",  "match": "(?i)\\b_(xtal|device|e?core|type|ram|code|ports|adc|adcres|block|eeprom|uart|pps|usb|usart|flash|mssp|defined)\\b" },
-                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(db|on|off)\\b" }
-                ]
-        },
-        "assembler":  {
-                "patterns": [
-                {"name": "entity.name.tag.pos",         "match": "(?i)\\b(Macro-?|(M|L)sb(First|Post|Pre)(_H|_L)?|Config([1-7]?H?L?|_Start|_End)|(End)?Asm-?)(?![\\w\\d])" },
-                {"name": "entity.name.tag.pos",         "match": "(?i)\\b(Endm|Exitm|Prm_Count|Prm_\\d+|Return_(Var|Type|WREG|Bit|Float|S?D?Word|S?Byte))\\b" },
-                {"name": "entity.name.tag.pos",         "match": "(?i)(?<![\\w\\d])#(define|undefine|ifn?def|if|else|endif|while|endw|sym|error|enable|disable)\\b" },
-                {"name": "entity.name.tag.pos",         "match": "(?i)(?<![\\w\\d])#((end)?ifMacro-?|(end)?ifn?Sym-?|Sym)(?![\\w\\d])" }
-                ]
-        },
-        "declare":    {
-                "patterns": [
-                {"name": "variable.interpolation.pos",  "match": "(?i)\\b((High_|Low_)?Int_Sub_(Start|End)|RAM_Banks?|Bank(A|[0-9]|1[0-5])_(End|Start)|Reset_Bank|Bank_Select_Switch|Set_Bank|Actual_Banks|Available_RAM|Reserve_RAM|Auto_Heap_(Arrays|Strings)|Auto_Variable_(Arrange|Bank_Cross))\\b" },
-                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(CCP([1-9]|10)_Pin|HPWM([1-9]|10)_Pin|HRSOut[1-4]?_Pin|HRSIn[1-4]?_Pin|HSCL[1-2]?_Pin|HSDA[1-2]?_Pin|HRSOut[2-4]?_Pace|Hserial[2-4]?_(Baud|Clear|Parity|RCSTA|SPBRG|TXSTA)|Serial_Terminator|HSerial[1-4]?_Terminator|Hbus(1|2)?_Bitrate|Serial_(Baud|Parity)|RSIn_(Mode|Pin|Timeout)|RSOut_(Mode|Pace|Pin|Baud))\\b" },
-                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(LCD_(CommandUs|DataUs|DTPin|DTPort|(Data([0-9]|1[0-5])_|CS1|CS2|EN|CD|CE|RS|RD|RW|WR|RST)Pin|Font_Width|Font_Height|X_Res|Y_Res|Text_Pages|Graphic_Pages|RAM_Size|Text_Home_Address|Interface|Lines|Type)|GLCD_(CS_Invert|Fast_Strobe)|Touch_(DIN|DOUT|CLK|CS)Pin)\\b" },
-                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(Xtal|Core|Optimiser_Level|Dead_Code_Remove|Reminders|Warnings|Hints|Watchdog|UnHandled|Bootloader|Variable|Auto_Context_Save|All_Digital|Stack_(Size|Start_Address)|MSSP_Type|Button_Delay|Byte_Math|Count_Errors|DMA|Create_Coff|EEPROM_Size|Flash_Capable|Float_(Display_Type|Rounding)|ICD_Req|Internal_(Bus|Font)|Keypad_Port|Font_Addr|HEF_(Address|Size))\\b" },
-                {"name": "variable.interpolation.pos",  "match": "(?i)\\b(Onboard_(ADC|UART|USB)|Adin_(Res|Tad|Stime)|(RC5In|Sonyin|SCL|SDA)_Pin|USB_(Class_File|Descriptor|Show_Enum|Sense_Pin|Self_Power_Pin)|(USBIn|USBOut)_Auto_Poll|PLL_Req|PORTB_Pullups|TRIS_Offset|Pulse?in_Maximum|Shift_DelayUs|Slow_Bus|Bus_SCL|Small_Micro_Model|Single_Page_Micro|Page|PICmicro_Pages|Show_All_BitNames|MemWrite_Int_Control|Label_Bank_Resets)\\b" }
-                ]
-        },
-        "registers":  {
-                "patterns": [
-                {"name": "string.pos",                  "match": "(?i)\\b((ANSEL|TRIS|PORT|LAT|DDR)[A-E]|(PLUSW|PREINC|POSTINC|POSTDEC|INDF)[0-2]|WREG|STATUS|BSR|TABLAT)\\b" },
-                {"name": "string.pos",                  "match": "(?i)\\b(PCL?|PCLAT(H|U)|TOS(L|LH|H|U)|TBLPTR(L|LH|H|LHH|LHHH|U)|(PROD|FSR0|FSR1|FSR2)(L|LH|H))\\b" }
-                ]
-        },
-        "asm18":  {
-                "patterns": [
-                {"name": "support.class.pos",           "match": "(?i)\\b(Add(fsr|lw|wf|wfc)|Andlw|Andwf|Bc|Bcf|Bdc|Bk|Bn|Bnc|Bnn|Bnov|Bnz|Bov|Bra|Brw|Bsf|Btfsc|Btfss|Bz)\\b" },
-                {"name": "support.class.pos",           "match": "(?i)\\b(Clr(c|dc|f|w|wdt|z)|Comf|Cpfs(eq|gt|lt)|Daw|Dcfsnz|Decf|Decfsz|Djc|Djnc|Djnz|Djz|Fast|Swapf)\\b" },
-                {"name": "support.class.pos",           "match": "(?i)\\b(Ij(c|nc|nz|z)|Incf|Incfsz|Infsnz|Input_PullUp|Iorlw|Iorwf|Jump|LCall|LGoto|Lfsr|Lslf|Lsrf)\\b" },
-                {"name": "support.class.pos",           "match": "(?i)\\b(Mov(f|ff|ffl|lb|lp|lw|wf|wi|iw)|Mullw|Mulwf|Negf|Negw|Nop|Rcall|Reset|Ret|Retfie|Retlw|Tstfsz|Xorlw|Xorwf)\\b" },
-                {"name": "support.class.pos",           "match": "(?i)\\b(Rlcf|Rlf|Rlncf|Rrcf|Rrf|Rrncf|Set(c|dc|f|z)|Skp(c|dc|nc|ndc|nz|z)|Sub(fwb|fsr|lw|wf|wfb)|Tblrd|Tblwt)\\b" }
-                ]
-        }
-    }
+	"name": "Positron",
+	"scopeName": "source.pos",
+	"comment": "",
+	
+	"patterns":
+	[ 
+		{	"include": "#comments"		},
+		{	"include": "#custom"		},
+		{	"include": "#strings"		},
+		{	"include": "#brackets"		},
+		{	"include": "#numbers"		},
+		{	"include": "#operators"		}
+	],
+	
+	"repository":
+	{
+		"custom":  {
+				"patterns": [
+					{ "name": "keyword.other.unit.pos",		"match": "(?i)\\u00A7([\\w\\d\\-_]*)|->" },
+					{
+					   "begin":			"(?i)^\\s*(type)\\s+([a-zA-Z\\u0400-\\u04FF]\\w*)\\s*\\{",			"end":   "\\}",	 
+					   "beginCaptures":	{  "1": {"name": "storage.type.class.mf"},		"2": {"name": "entity.name.class.pos"}},
+					   "patterns":		[{ "include": "$self" }]
+					}
+				]
+		},
+		"comments": {
+				"patterns": [
+					{ "name": "comment_line.pos",			"begin": "'|;",			"end": "\\n"	},
+					{ "name": "comment_block.pos",			"begin": "\\(\\*",		"end": "\\*\\)"	}
+				]
+		},
+		"strings":  { 
+					  "name": "string_quoted.pos",			"begin": "\"",			"end": "\""
+		},
+		"brackets": {
+				"patterns": [
+					{ "name": "bracket_round.pos",			"match": "[()]"				},
+					{ "name": "bracket_square.pos",			"match": "[\\[\\]]"			},
+					{ "name": "bracket_curly.pos",			"match": "[{}]"				}
+				]
+		},
+		"numbers": {
+				"patterns": [
+					{ "name": "numeric_base.pos",			"match": "(?i)(?<![#\\w\\d])-?(\\d+\\.?\\d*|\\.\\d+)(e(-|\\+)?\\d+)?\\b"	},
+					{ "name": "numeric_bin.pos",			"match": "(?i)(?<![#\\w\\d])%\\d+\\b"										},
+					{ "name": "numeric_hex.pos",			"match": "(?i)(?<![#\\w\\d])(0|0x|\\$)[0-9a-f]+\\b"							}
+				]
+		},
+		"operators": {
+				"patterns": [
+					{ "name": "operator_logic.pos",			"match": "[&^|~@]|<<|>>"	},
+					{ "name": "operator_math.pos",			"match": "[-+*/]"			},
+					{ "name": "operator_base.pos",			"match": "[=<>?]"			}
+				]
+		}
+	}
 }

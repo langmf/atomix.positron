@@ -24,6 +24,9 @@ provide not only syntax highlighting, but also basic snippets integration and au
 - Semantic
 - Outline
 - Hover
+- Auto Format
+- User highlight editor
+- Web pages (About, Programs)
 
 ## Snippets
 - Auto Indentation Rules

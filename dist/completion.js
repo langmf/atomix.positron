@@ -1,34 +1,31 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-
-const vscode   = require("vscode");
-const common   = require("./common");
+const vscode  = require("vscode");
+const root    = require("./root");
+const common  = require("./common");
 
 
 function provideCompletionItems(doc, position) {
     if (common.failRange(doc, position)) return [];
 
-    const tid = "Completion_" + doc.uri.fsPath.split("\\").pop();
-    console.time(tid);
-    
-    const result = [];
+    const tid = "com_" + doc.uri.fsPath.split("\\").pop();
+    if (root.debug) console.time(tid);
 
-    const files = common.parseDoc(doc, common.Types.$("main,dev"));
+    const result = common.getCompletions(doc);
+    const files  = common.parseDoc(doc);
     
     for (const file of Object.values(files)) {
-
         for (const type of Object.values(file.types)) {
-            const kind  = common.Enums[type.$type]?.com || 0;
-            const descr = type.$type[0] === '$' ? null : `[${file.scope}]`;
+            const kind  = common.Enums[type.$type].com || 0,    description = `[${file.scope}]`;
             
             for (const v of Object.values(type.$items)) {
-                result.push(new vscode.CompletionItem({label: v.name,  description: descr || v.text}, kind));
+                result.push(new vscode.CompletionItem({ label: v.name,  description }, kind));
             }
         }
     }
 
-    console.timeEnd(tid);
+    if (root.debug) console.timeEnd(tid);
+    
     return result;
 }
 

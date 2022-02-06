@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<link  href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+	<script src="js/bootstrap.bundle.min.js"></script>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/atv.js"></script>
+
+	<link  href="css/base.css" type="text/css" rel="stylesheet" />
+	<script src="js/base.js"></script>
+</head>
+
+<body class="p-3">
+
+
+<div class="row justify-content-between">
+	<div class="col-sm-5 my-3 px-2" style="min-width: fit-content;">
+		<div class="card">
+			<div class="card-header bg-hdr text-center">Programs</div>
+			<div class="card-body"><ol id="card_plugin" class="list-group"></ol></div>
+		</div>
+	</div>
+</div>
+
+
+<script>
+	$(async () => {
+		await URI.ready;
+
+		$('#card_plugin').html('Update ... Please wait a few moments.');
+
+		const list = await vscode_Eval().root.exeList(URI.path.pds + 'Plugin', '\.(mf|cmd|exe)$');
+
+		$('#card_plugin').html('');
+
+		const files = list.filter(v => {
+			const i = v.info || {};
+			if (i.CompanyName === 'Mecanique' && !["Serial Communicator", "ASCII Table"].includes(i.FileDescription)) return;
+			if (i.FileDescription === 'PDS Fuse Configurator Plugin.') return;
+			if (/\\pk3cmd\.exe$/i.test(v.name)) return;
+			return true;
+		})
+
+		for (const file of files) {
+			const i = file.info,   ver = i.FileVersion.replace(/(?<=\.)((0)0+(?=\.|$)|0{2,}(?=[^0]|$))/g, '$2');
+			const icon = file.icon ? `<img src="${URI.parse(file.icon)}" class="icon-32 mx-1 my-auto">` : '';
+
+			$('#card_plugin').append(
+				`<li class="list-group-item d-flex justify-content-between align-items-start" onclick="vscode_Eval().openURL('${URI.file(file.name)}')">
+					${icon}
+					<div class="ms-2 me-auto">
+						<div class="fw-bold"><a href="#">${i.FileDescription || i.ProductName}</a></div>
+						<div style="font-size: 0.8rem;">${i.CompanyName}</div>
+					</div>
+					<span class="badge bg-lnk rounded-pill my-auto" style="filter: brightness(90%)" data-bs-toggle="tooltip"
+					data-bs-placement="right" title="${file.date}">${ver}</span>	
+				</li>`
+			);
+		}
+
+		parse_ALL();
+	});
+</script>
+
+
+</body>
+</html>

@@ -1,4 +1,36 @@
 {
+	"Dim Statement": {
+		"prefix": "Dim",
+		"body": [
+			"Dim ${1:Name} As ${2:Byte}\n$0"
+		],
+        "description": "dim...",
+	},
+
+	"Symbol Statement": {
+		"prefix": "Symbol",
+		"body": [
+			"Symbol ${1:Name} = ${2:true}\n$0"
+		],
+        "description": "symbol...",
+	},
+
+	"$define Statement": {
+		"prefix": "$define",
+		"body": [
+			"\\$define ${1:Name}() ${2:true}\n$0"
+		],
+        "description": "$define...",
+	},
+
+	"CData Statement": {
+		"prefix": "CData",
+		"body": [
+			"${1:Label}:	CData ${0:1,2,3}"
+		],
+        "description": "CData...",
+	},
+	
 	"New Proc": {
 		"prefix": "Proc",
 		"body": [

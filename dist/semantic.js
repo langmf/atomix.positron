@@ -1,37 +1,80 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-
 const vscode  = require("vscode");
-const common  = require("./common");
+const root    = require("./root");
 const cache   = require("./cache");
+const common  = require("./common");
 const PAT     = require("./patterns");
+const DTB     = require("./database");
 
 
-const tokenT  = [ 'namespace', 'class', 'enum', 'interface', 'struct', 'typeParameter', 'type', 'parameter', 'variable',
-                  'property', 'enumMember', 'decorator', 'event', 'function', 'method', 'macro', 'label', 'comment',
-                  'string', 'keyword', 'number', 'regexp', 'operator' ];
-const tokenM  = [ 'declaration', 'definition', 'readonly', 'static', 'deprecated', 'abstract', 'async', 'modification', 
-                  'documentation', 'defaultLibrary' ];
-const legend  = new vscode.SemanticTokensLegend(tokenT, tokenM);
+let legend, tmr = {};
 
 
-function parseSemantic(doc, tokens, data) {
-    const text = doc.getText();
+function initFormat(doc) {
+    if (root.IsAsmLst(doc)) return;
+    if (root.config.timeout.AutoFormat <= 0) return;
+    if (!vscode.window.activeTextEditor || doc.fileName !== vscode.window.activeTextEditor.document.fileName) return;
+    return [];
+}
+
+
+function autoFormat(doc, formats) {
+    if (!formats) return;  else  clearTimeout(tmr[doc.fileName]);
     
-    for (const value of data) {
-        const words = value.words || [];
+    tmr[doc.fileName] = setTimeout(() => {
+            const edits = [],   fmtEdit = new vscode.WorkspaceEdit();
+            
+            for (const v of formats) if (v.word !== v.name) edits.push(new vscode.TextEdit(v.range, v.name));
+            
+            fmtEdit.set(doc.uri, edits);        vscode.workspace.applyEdit(fmtEdit);
+        },
+        root.config.timeout.AutoFormat
+    );
+}
 
-        if (value.mask) {
-            const files = common.parseDoc(doc, value.mask);
-            for (const file of Object.values(files)) {
-                for (const type of Object.values(file.types)) words.push(...Object.keys(type.$items));
-            } 
-        }
 
-        for (const m of PAT.WORDS(text, words, value.prefix || "")) {
-            tokens.push(new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length)), value.token);
+function parse_DOC(doc, tokens, formats) {
+    const items = {},  text = doc.getText(),  files = common.parseDoc(doc);
+    
+    for (const file of Object.values(files)) {
+        for (const type of Object.values(file.types)) Object.assign(items, type.$items)
+    } 
+
+    for (const m of PAT.WORDS(text, Object.keys(items))) {
+        const n = m[1].toLowerCase(),  token = items[n].token;
+        
+        const range = new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length));
+        
+        tokens.push(range, token);          if (formats) formats.push({ range,  word: m[1],  name: items[n].name });
+    }
+}
+
+
+function parse_DEV(doc, tokens, formats) {
+    const text = doc.getText(),  dev = cache.get(doc).symbols.$.device;
+
+    for (const sfr of common.Types._.dev) {
+        const token = dev[sfr].token,  items = dev[sfr].items;
+
+        for (const m of PAT.WORDS(text, dev[sfr].words)) {
+            const range = new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length));
+            
+            tokens.push(range, token);      if (formats) formats.push({ range,  word: m[1],  name: items[m[1].toLowerCase()].name });
         }
+    }
+}
+
+
+function parse_DTB(doc, tokens, formats) {
+    const text = doc.getText(),  core = common.getCore(doc);
+
+    for (const m of PAT.WORDS(text, DTB.words(core))) {
+        const i = DTB.find(m[1]);        if (!i) continue;
+
+        const range = new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length));
+        
+        tokens.push(range, i.token);        if (formats) formats.push({ range,  word: m[1],  name: i.name });
     }
 }
 
@@ -39,32 +82,34 @@ function parseSemantic(doc, tokens, data) {
 async function provideDocumentSemanticTokens(doc) {
     await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', doc.uri);
     
-    if (common.config("smartParentIncludes")) {
+    if (root.config.smartParentIncludes) {
         const prt = cache.get(doc).$.parent;
         if (prt) await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', vscode.Uri.file(prt));
     }
 
-    const tid = "Semantic_" + doc.uri.fsPath.split("\\").pop();
-    console.time(tid);
-    
-    const tokens = new vscode.SemanticTokensBuilder(legend);
+    const tid = "sem_" + doc.uri.fsPath.split("\\").pop();
+    if (root.debug) console.time(tid);
 
-    const T = common.Types,  SYM = cache.get(doc).symbols,  dev = SYM.$.device;
+    const formats = initFormat(doc),   tokens = new vscode.SemanticTokensBuilder(legend),   SYM = cache.get(doc).symbols;
 
-    parseSemantic(doc, tokens, [
-        { token: 'function',  mask:  [T.procedure, T.label]              },
-        { token: 'enum',      mask:  [T.define],     prefix: PAT.PRF_DEF },
-        { token: 'string',    mask:  [T.$regs, T.$bits]                  }
-    ]);
+    parse_DOC(doc, tokens, formats);
+    parse_DEV(doc, tokens, formats);
+    parse_DTB(doc, tokens, formats);
 
-    if (dev.ok) {
-        const m = dev.match,  ofs = m.index + m[0].length - m[2].length;
-        tokens.push(new vscode.Range(doc.positionAt(ofs), doc.positionAt(ofs + m[2].length)), 'function');
+    autoFormat(doc, formats);
+
+    if (SYM.$.local) {
+        const dev = SYM.$.local,  e = dev.range.end;     tokens.push(new vscode.Range(e.translate(0,-dev.name.length), e), dev.token);
     }
 
     const result = tokens.build();
-    console.timeEnd(tid);
+    
+    if (root.debug) console.timeEnd(tid);
+
     return result;
 }
 
-exports.default = () => vscode.languages.registerDocumentSemanticTokensProvider({ scheme: "file", language: "pos" }, { provideDocumentSemanticTokens }, legend);
+exports.default = () => {
+    legend = common.legend();
+    return vscode.languages.registerDocumentSemanticTokensProvider({ scheme: "file", language: "pos" }, { provideDocumentSemanticTokens }, legend);
+}

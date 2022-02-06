@@ -1,18 +1,13 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-
 const vscode   = require("vscode");
 const common   = require("./common");
 
 
 function provideDefinition(doc, position) {
-    const res = common.getWordInclude(doc, position, true);       if (res) return res;
+    const res   = common.getWordInclude(doc, position, true);       if (res) return res;
 
-    const wordRange = doc.getWordRangeAtPosition(position);
-    const word = wordRange ? doc.getText(wordRange).toLowerCase() : "";
-    
-    const files = common.parseDoc(doc);
+    const word  = common.getWordRange(doc, position),   files = common.parseDoc(doc);
 
     for (const [name, file] of Object.entries(files)) {
         for (const type of Object.values(file.types)) {

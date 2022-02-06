@@ -1,0 +1,3975 @@
+{
+	/*
+		These types are used by the built-in extension types, do not use them to define new words!
+		Reseved types:
+			Comment_Line, Comment_Block, String, Number, Number_Binary, Number_Hex, Operator, Operator_Math, Operator_Logic,
+			Bracket_Round, Bracket_Square, Bracket_Curly, Device, Define, Symbol, Label, Procedure, Variable, SFR, SFR_Bitname
+	*/
+	
+	"default": {
+		"device": 	"18F25K20",
+		
+		"titles": {
+			"Keyword":              	"",
+			"KeywordImportant":     	"",
+			"KeywordMacro":         	"",
+			"KeywordDeclare":       	"",
+			"KeywordASM":           	"",
+			"KeywordUser":          	"",
+			"KeywordPreprocessor":		""
+		},
+		
+		"themes": {
+			"light":
+			{
+				"Keyword":              {  "foreground": "#000000",   "fontStyle": "bold"  },
+				"KeywordImportant":     {  "foreground": "#FF0000",   "fontStyle": "bold"  },
+				"KeywordMacro":         {  "foreground": "#000000"                         },
+				"KeywordDeclare":       {  "foreground": "#800000",   "fontStyle": "bold"  },
+				"KeywordASM":           {  "foreground": "#000080",   "fontStyle": "bold"  },
+				"KeywordUser":          {  "foreground": "#000000",   "fontStyle": "bold"  },
+				"KeywordPreprocessor":  {  "foreground": "#800000",   "fontStyle": "bold"  }
+			},
+			"dark":
+			{
+				"Keyword":              {  "foreground": "#D4D4D4",   "fontStyle": "bold"  },
+				"KeywordImportant":     {  "foreground": "#FF0000",   "fontStyle": "bold"  },
+				"KeywordMacro":         {  "foreground": "#D4D4D4"                         },
+				"KeywordDeclare":       {  "foreground": "#BC4F4F",   "fontStyle": "bold"  },
+				"KeywordASM":           {  "foreground": "#E5C07B",   "fontStyle": "bold"  },
+				"KeywordUser":          {  "foreground": "#D4D4D4",   "fontStyle": "bold"  },
+				"KeywordPreprocessor":  {  "foreground": "#BC4F4F",   "fontStyle": "bold"  }
+			}
+		}
+	},
+
+	"types": {
+		"Keyword": [
+			{
+				"name": "Include",
+				"hint": "<b>Include</b> <i>&quot;Filename&quot;</i>",
+				"comp": "Test"
+			},
+			{
+				"name": "Isr-,Isr",
+				"core": [14,16,24,33],
+				"hint": "<b>Isr</b> <i>Interrupt Name {, UnHandled}</i>"
+			},
+			{
+				"name": "EndIsr-,EndIsr",
+				"core": [14,16,24,33],
+				"hint": "<b>EndIsr</b>"
+			},
+			{
+				"name": "Alphanumeric",
+				"hint": "<i>Choose an alphanumeric LCD based upon the Hitachi HD44780 chipset </i>"
+			},
+			{
+				"name": "Auto",
+				"core": [16]
+			},
+			{
+				"name": "AddressOf",
+				"hint": "<i>Variable = </i><b>AddressOf</b><i> (Variable or Label)</i>"
+			},
+			{
+				"name": "And"
+			},
+			{
+				"name": "Or"
+			},
+			{
+				"name": "Abs",
+				"hint": "<i>Variable = </i><b>Abs</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "ACos",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ACos</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "ADIn",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ADIn</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "As",
+				"hint": "<b>As</b><i> Bit or Byte or SByte or Word or SWord or Dword or SDword or Float or String or Code</i><br><b>As</b> <i>Constant Expression</i><br><b>As</b><i> Alias Name</i>"
+			},
+			{
+				"name": "ASin",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ASin(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "ATan",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ATan(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "ATan2",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ATan2(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i> , <i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "At",
+				"core": [14,16,24,33],
+				"hint": "<b>At</b> <i>Ypos, Xpos</i><br><b>At</b> <i>Variable Name or Address</i>"
+			},
+			{
+				"name": "Bin...32",
+				"core": [14,16,24,33],
+				"hint": "<b>Bin..Bin31</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "Bit,Byte,Word"
+			},
+			{
+				"name": "Bit0...31",
+				"hint": "Variable = Variable.<b>Bit0</b><i> to </i><b>Bit31</b><br>Variable = Constant.<b>Bit0</b><i> to </i><b>Bit31</b><br>Variable.<b>Bit0</b><i> to </i><b>Bit31</b> = Constant or Variable or Expression"
+			},
+			{
+				"name": "Byte0"
+			},
+			{
+				"name": "Byte1"
+			},
+			{
+				"name": "Byte2",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Byte3",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Byte4",
+				"core": [24,33]
+			},
+			{
+				"name": "Byte5",
+				"core": [24,33]
+			},
+			{
+				"name": "Byte6",
+				"core": [24,33]
+			},
+			{
+				"name": "Byte7",
+				"core": [24,33]
+			},
+			{
+				"name": "ByRef",
+				"core": [14,16,24,33],
+				"hint": "Parameter holds the address of RAM"
+			},
+			{
+				"name": "BycRef,ByVal",
+				"core": [14,16,24,33],
+				"hint": "Parameter holds the address of flash memory"
+			},
+			{
+				"name": "ByVal",
+				"core": [14,16,24,33],
+				"hint": "Parameter holds the contents in RAM"
+			},
+			{
+				"name": "Long",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Word0",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Word1",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Word2",
+				"core": [24,33]
+			},
+			{
+				"name": "Word3",
+				"core": [24,33]
+			},
+			{
+				"name": "Dword",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Double",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Do"
+			},
+			{
+				"name": "Float",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "String",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Bound",
+				"hint": "<b>Bound</b><i>(Variable)</i>"
+			},
+			{
+				"name": "Box",
+				"core": [14,16,24,33],
+				"hint": "<b>Box</b> <i>Set_Clear, Xpos Centre, Ypos Centre, Size</i>"
+			},
+			{
+				"name": "Branch",
+				"hint": "<b>Branch</b> <i>Constant Value or Variable or Expression, [Label {,Label}]</i>"
+			},
+			{
+				"name": "BranchL",
+				"hint": "<b>BranchL</b> <i>Constant Value or Variable or Expression, [Label {,Label}]</i>"
+			},
+			{
+				"name": "Break",
+				"hint": "<b>Break</b><br><br><i><span style='color:#008000;'>Exit a <b>For, While</b> or <b>Repeat</b> loop</span></i>"
+			},
+			{
+				"name": "BReStart",
+				"hint": "<b>BReStart</b><br><br><i><span style='color:#008000;'>Send a <b>Restart</b> command to I2C</span></i>"
+			},
+			{
+				"name": "BStart",
+				"hint": "<b>BStart</b><br><br><i><span style='color:#008000;'>Send a <b>Start</b> command to I2C</span></i>"
+			},
+			{
+				"name": "BStop",
+				"hint": "<b>BStop</b><br><br><i><span style='color:#008000;'>Send a <b>Stop</b> command to I2C</span></i>"
+			},
+			{
+				"name": "BusAck",
+				"hint": "<b>BusAck</b><br><br><i><span style='color:#008000;'>Send an <b>Acknowledge</b> command to I2C</span></i>"
+			},
+			{
+				"name": "BusNack",
+				"core": [14,16,24,33],
+				"hint": "<b>BusNack</b><br><br><i><span style='color:#008000;'>Send a <b>Not Acknowledge</b> command to I2C</span></i>"
+			},
+			{
+				"name": "BusIn",
+				"hint": "<i>Variable = </i><b>BusIn</b><br><b>BUSIN</b> <i>Variable</i><br><i>Variable = </i><b>BusIn</b> <i>Control, {Address}</i><br><b>BusIn</b><i> Control, {Address}, [Variable {, Variable}]</i>"
+			},
+			{
+				"name": "BusOut",
+				"hint": "<b>BusOut</b> <i>Variable</i><br><b>BusOut</b> <i>Control, {Address,} [Data {, Data}]</i>"
+			},
+			{
+				"name": "Button",
+				"hint": "<b>Button</b> = <i>Port, DownState, Delay, Rate, WorkspaceVariable, TargetState, BranchLabel</i>"
+			},
+			{
+				"name": "Call",
+				"hint": "<b>Call</b> <i>Label</i><br><b>Call</b> <i>Procedure Name</i>"
+			},
+			{
+				"name": "Case",
+				"hint": "<b>Case</b> <i>Constant or Variable or Expression</i>"
+			},
+			{
+				"name": "CData",
+				"core": [14,16,24,33],
+				"hint": "<b>CData</b> <i>Constant Value or Constant Expression</i>"
+			},
+			{
+				"name": "CErase",
+				"core": [14,16,24,33],
+				"hint": "<b>CErase</b> <i>Variable or Constant Address</i>"
+			},
+			{
+				"name": "Ceil",
+				"core": [24,33],
+				"hint": "<i>Variable = </i><b>Ceil(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "CF_Init",
+				"core": [14,16,24,33],
+				"hint": "<b>CF_Init</b>"
+			},
+			{
+				"name": "CF_Sector",
+				"core": [14,16,24,33],
+				"hint": "<b>CF_Sector</b> <i>Sector Number, Read or Write, Amount of Sectors</i>"
+			},
+			{
+				"name": "CF_Read",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>CF_Read</b>"
+			},
+			{
+				"name": "CF_Write",
+				"core": [14,16,24,33],
+				"hint": "<b>CF_Write</b> <i>Address Data</i>,[<i>Variable, {Variable,Variable,etc}</i>]<br><b>CF_Write</b> [<i>Variable, {Variable,Variable,etc}</i>]<br><b>CF_Write</b> <i>Address Data</i>,[ ]"
+			},
+			{
+				"name": "Circle",
+				"core": [14,16,24,33],
+				"hint": "<b>Circle</b> <i>Set_Clear, Xpos, Ypos, Radius</i>"
+			},
+			{
+				"name": "Clear",
+				"hint": "<b>Clear<b><br><b>Clear</b> <i>Variable or Port.Bit</i>"
+			},
+			{
+				"name": "ClearBit",
+				"hint": "<b>ClearBit</b> <i>Variable, Index</i>"
+			},
+			{
+				"name": "ClearPin",
+				"core": [14,16,24,33],
+				"hint": "<b>ClearPin</b> <i>Variable</i>"
+			},
+			{
+				"name": "Cls",
+				"hint": "<b>Cls</b><br><br><i><span style='color:#008000;'>Clears the alphanumeric or graphic LCD</span></i>"
+			},
+			{
+				"name": "Code8",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code8</b> = <i>Comma Delimited 8-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Code16",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code16</b> = <i>Comma Delimited 16-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Code24",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code24</b> = <i>Comma Delimited 24-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Code32",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code32</b> = <i>Comma Delimited 32-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "CodeF",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As CodeF</b> = <i>Comma Delimited 32-bit Floating Point Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "CodeD",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As CodeD</b> = <i>Comma Delimited 64-bit Floating Point Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Config",
+				"core": [12,14,24,33],
+				"hint": "<b>Config</b> <i>FuseSetting {, FuseSetting}</i>"
+			},
+			{
+				"name": "Config1",
+				"core": [12,14,24,33],
+				"hint": "<b>Config1</b> <i>FuseSetting {, FuseSetting}</i>"
+			},
+			{
+				"name": "Config2",
+				"core": [12,14,24,33],
+				"hint": "<b>Config2</b> <i>FuseSetting {, FuseSetting}</i>"
+			},
+			{
+				"name": "Config3",
+				"core": [12,14,24,33],
+				"hint": "<b>Config3</b> <i>FuseSetting {, FuseSetting}</i>"
+			},
+			{
+				"name": "Config4",
+				"core": [12,14,24,33],
+				"hint": "<b>Config4</b> <i>FuseSetting {, FuseSetting}</i>"
+			},
+			{
+				"name": "Config5",
+				"core": [12,14,24,33],
+				"hint": "<b>Config5</b> <i>FuseSetting {, FuseSetting}</i>"
+			},
+			{
+				"name": "Context",
+				"core": [14,16,24,33],
+				"hint": "<b>Context <span style='color:#808080;'>Save</span></b><br><b>Context <span style='color:#808080;'>Restore</span></b>"
+			},
+			{
+				"name": "Continue"
+			},
+			{
+				"name": "Cos",
+				"hint": "<i>Variable = </i><b>Cos(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Counter",
+				"hint": "<i>Variable = </i><b>Counter</b> = <i>Port.Pin, Period</i>"
+			},
+			{
+				"name": "CR,CRLF,LFCR"
+			},
+			{
+				"name": "cPtr8",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>cPtr8</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br>Read from code memory and increment address by 8-bits"
+			},
+			{
+				"name": "cPtr16",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>cPtr16</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br>Read from code memory and increment address by 16-bits"
+			},
+			{
+				"name": "cPtr24",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>cPtr24</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br>Read from code memory and increment address by 24-bits"
+			},
+			{
+				"name": "cPtr32",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>cPtr32</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br>Read from code memory and increment address by 32-bits"
+			},
+			{
+				"name": "cPtr64",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>cPtr64</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br>Read from code memory and increment address by 64-bits"
+			},
+			{
+				"name": "CRead",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>CRead</b> <i>Address</i>"
+			},
+			{
+				"name": "CRead8",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>CRead8</b> <i>Label</i> [<i>Offset Constant Value or Variable or Expression</i>]"
+			},
+			{
+				"name": "CRead16",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>CRead16</b> <i>Label</i> [<i>Offset Constant Value or Variable or Expression</i>]"
+			},
+			{
+				"name": "CRead24",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>CRead24</b> <i>Label</i> [<i>Offset Constant Value or Variable or Expression</i>]"
+			},
+			{
+				"name": "CRead32",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>CRead32</b> <i>Label</i> [<i>Offset Constant Value or Variable or Expression</i>]"
+			},
+			{
+				"name": "CRead64",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>CRead64</b> <i>Label</i> [<i>Offset Constant Value or Variable or Expression</i>]"
+			},
+			{
+				"name": "CStr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Cursor",
+				"core": [14,16,24,33],
+				"hint": "<b>Cursor</b> <i>Line, Position</i>"
+			},
+			{
+				"name": "CWrite",
+				"core": [14,16,24,33],
+				"hint": "<b>CWrite</b> <i>Address, [Variable {, Variable}]</i>"
+			},
+			{
+				"name": "Debug",
+				"core": [14,16,24,33],
+				"hint": "<b><span style='color:#808080;'>On</span> Debug <span style='color:#808080;'>Goto</span></b> <i>Software Debug Label</i>"
+			},
+			{
+				"name": "Dec,Dec0...10"
+			},
+			{
+				"name": "Declare"
+			},
+			{
+				"name": "DelayMS",
+				"hint": "<b>DelayMS</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "DelayUS",
+				"hint": "<b>DelayUS</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "DelayCS",
+				"core": [14,16,24,33],
+				"hint": "<b>DelayCs</b> <i>Constant Value from 0 to 1000</i>"
+			},
+			{
+				"name": "Device",
+				"hint": "<b>Device</b> <i>= PIC Microcontroller Name</i>"
+			},
+			{
+				"name": "Dig",
+				"hint": "<i>Variable = </i><b>Dig</b> <i>Value, Digit Number</i><br><i>Variable = </i><b>Dig</b> <i>Digit Number <span style='color:#808080;'>(Stamp Version)</span></i>"
+			},
+			{
+				"name": "Dcd",
+				"hint": "<i>Variable = </i><b>Dcd</b> <i>Value</i>"
+			},
+			{
+				"name": "Dim",
+				"hint": "<b>Dim</b> <i>VariableName</i>"
+			},
+			{
+				"name": "Disable",
+				"core": [14,16,24,33],
+				"hint": "<b>Disable <span style='color:#808080;'>Interrupt</span></b><br><b>Disable <span style='color:#808080;'>Debug</span></b>"
+			},
+			{
+				"name": "Div32",
+				"core": [12,14,16],
+				"hint": "<b>Div32</b> <i>Constant Value or Variable or Expression<br><br><i><span style='color:#808080;'>This operand provides compatibility with the microEngineering Labs<br>PICBasic compiler. PROTON provides 32-bit integer and floating point<br>capability, making the DIV32 instruction obsolete for all new code</span></i>"
+			},
+			{
+				"name": "DTMFOut",
+				"core": [14,16,24,33],
+				"hint": "<b>DTMFOut</b> = <i>Port.Pin, {OnTime}, {OffTime,} [Tone{, Tone}]</i>"
+			},
+			{
+				"name": "dAbs",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>dAbs(</b><i>64-bit Floating Point Constant Value or Variable or Expression</i><b>)</b>"
+			},
+			{
+				"name": "dRound",
+				"hint": "<i>Variable = </i><b>dRound(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dAsin",
+				"hint": "<i>Variable = </i><b>dAsin(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dAcos",
+				"hint": "<i>Variable = </i><b>dAcos(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dSin",
+				"hint": "<i>Variable = </i><b>dSin(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dCos",
+				"hint": "<i>Variable = </i><b>dCos(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dTan",
+				"hint": "<i>Variable = </i><b>dTan(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dAtan",
+				"hint": "<i>Variable = </i><b>dAtan(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dATan2",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>dATan2(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i> , <i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dSqr",
+				"hint": "<i>Variable = </i><b>dSqr(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dLog",
+				"hint": "<i>Variable = </i><b>dLog(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dLog10",
+				"hint": "<i>Variable = </i><b>dLog10(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dExp",
+				"hint": "<i>Variable = </i><b>dExp(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dCeil",
+				"hint": "<i>Variable = </i><b>dCeil(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dFloor",
+				"hint": "<i>Variable = </i><b>dFloor(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "DigitalRead",
+				"hint": "<i>Variable = </i><b>DigitalRead</b> <i>Pin Value</i>"
+			},
+			{
+				"name": "DigitalWrite",
+				"hint": "<b>DigitalWrite</b> <i>Pin Value</i>, <i>High or Low</i>"
+			},
+			{
+				"name": "dPow",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>dPow(</b><i>64-bit Floating Point Value, PowValue</i><b>)</b>"
+			},
+			{
+				"name": "EData",
+				"core": [14,16,24,33],
+				"hint": "<b>EData</b> <i>Comma delimited Constant Values or Constant Expressions that are stored in on-board EEPROM</i>"
+			},
+			{
+				"name": "Else",
+				"hint": "<b>Else</b> <i> {Instructions}</i>"
+			},
+			{
+				"name": "ElseIf",
+				"hint": "<b>ElseIf</b> <i>Expression</i>"
+			},
+			{
+				"name": "Enable",
+				"core": [14,16,24,33],
+				"hint": "<b>Enable <span style='color:#808080;'>Interrupt</span></b><br><b>Enable <span style='color:#808080;'>Debug</span></b>"
+			},
+			{
+				"name": "End"
+			},
+			{
+				"name": "EndSelect"
+			},
+			{
+				"name": "EndIf"
+			},
+			{
+				"name": "EndProc",
+				"hint": "End a Procedure"
+			},
+			{
+				"name": "ExitProc",
+				"hint": "Exit a Procedure"
+			},
+			{
+				"name": "EndSub",
+				"hint": "End a Sub"
+			},
+			{
+				"name": "ExitSub",
+				"hint": "Exit a Sub"
+			},
+			{
+				"name": "ERead",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ERead</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "EStr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "EWrite",
+				"core": [14,16,24,33],
+				"hint": "<b>EWrite</b> <i>Address, [Variable {, Variable}]</i>"
+			},
+			{
+				"name": "Exp",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Exp(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Flash8",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash8</b> = <i>Comma Delimited 8-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Flash16",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash16</b> = <i>Comma Delimited 16-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Flash24",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash24</b> = <i>Comma Delimited 24-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Flash32",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash32</b> = <i>Comma Delimited 32-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "FlashF",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As FlashF</b> = <i>Comma Delimited 32-bit Floating Point Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "FlashD",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As FlashD</b> = <i>Comma Delimited 64-bit Floating Point Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Floor",
+				"core": [24,33],
+				"hint": "<i>Variable = </i><b>Floor(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Font",
+				"core": [14,16,24,33],
+				"hint": "<b>Font</b> <i>Constant Value or Variable <span style='color:#808080;'>(Used only in Print)</span></i>"
+			},
+			{
+				"name": "For",
+				"hint": "<b>For</b> <i>Variable = Startcount</i> <b><span style='color:#808080;'>TO</span></b> <i>Endcount [</i><b><span style='color:#808080;'>STEP</span></b> <i>{StepValue}]</i>"
+			},
+			{
+				"name": "FreqOut",
+				"core": [14,16,24,33],
+				"hint": "<b>FreqOut</b> = <i>Port.Pin, Period, Freq1 {,Freq2}</i>"
+			},
+			{
+				"name": "fRound",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>fRound(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "fAbs",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>fAbs(</b><i>Floating Point Constant Value or Variable or Expression</i><b>)</b>"
+			},
+			{
+				"name": "GetBit",
+				"hint": "<i>Variable = </i><b>GetBit</b> <i>Variable, Index</i>"
+			},
+			{
+				"name": "GetPin",
+				"hint": "<i>Variable = </i><b>GetPin</b> <i>Pin Value</i>"
+			},
+			{
+				"name": "Global",
+				"hint": "<b>Global <i>Dim</b></i> or <b>Global <i>Symbol</b></i>"
+			},
+			{
+				"name": "GoSub",
+				"hint": "<b>GoSub</b> <i>Label</i>"
+			},
+			{
+				"name": "GoTo",
+				"hint": "<b>GoTo</b><i> Label</i><br><b><span style='color:#808080;'>On</b><i> Index Variable </i></span><b>Goto</b><i> Label {, Label}</i>"
+			},
+			{
+				"name": "GoToL",
+				"hint": "<b>GoToL</b><i> Label</i><br><b><span style='color:#808080;'>On</b><i> Index Variable </i></span><b>GoToL</b><i> Label {, Label}</i>"
+			},
+			{
+				"name": "HBReStart",
+				"core": [14,16,24,33],
+				"hint": "<b>HBReStart</b><br><br><i><span style='color:#008000;'>Send a <b>Restart</b> command to I2C using MSSP1</span></i>"
+			},
+			{
+				"name": "HBReStart2",
+				"core": [24,33],
+				"hint": "<b>HBReStart2</b><br><br><i><span style='color:#008000;'>Send a <b>Restart</b> command to I2C using MSSP2</span></i>"
+			},
+			{
+				"name": "HBStart",
+				"core": [14,16,24,33],
+				"hint": "<b>HBStart</b><br><br><i><span style='color:#008000;'>Send a <b>Start</b> command to I2C using MSSP1</span></i>"
+			},
+			{
+				"name": "HBStart2",
+				"core": [24,33],
+				"hint": "<b>HBStart2</b><br><br><i><span style='color:#008000;'>Send a <b>Start</b> command to I2C using MSSP2</span></i>"
+			},
+			{
+				"name": "HBStop",
+				"core": [14,16,24,33],
+				"hint": "<b>HBStop</b><br><br><i><span style='color:#008000;'>Send a <b>Stop</b> command to I2C using MSSP1</span></i>"
+			},
+			{
+				"name": "HBStop2",
+				"core": [24,33],
+				"hint": "<b>HBStop2</b><br><br><i><span style='color:#008000;'>Send a <b>Stop</b> command to I2C using MSSP2</span></i>"
+			},
+			{
+				"name": "HBusAck",
+				"core": [14,16,24,33],
+				"hint": "<b>HBusAck</b><br><br><i><span style='color:#008000;'>Send an <b>Acknowledge</b> command to I2C using MSSP1</span></i>"
+			},
+			{
+				"name": "HBusAck2",
+				"core": [24,33],
+				"hint": "<b>HBusAck2</b><br><br><i><span style='color:#008000;'>Send an <b>Acknowledge</b> command to I2C using MSSP2</span></i>"
+			},
+			{
+				"name": "HBusNack",
+				"core": [14,16,24,33],
+				"hint": "<b>HBusNack</b><br><br><i><span style='color:#008000;'>Send a <b>Not Acknowledge</b> command to I2C using MSSP1</span></i>"
+			},
+			{
+				"name": "HBusNack2",
+				"core": [24,33],
+				"hint": "<b>HBusNack2</b><br><br><i><span style='color:#008000;'>Send a <b>Not Acknowledge</b> command to I2C using MSSP2</span></i>"
+			},
+			{
+				"name": "HBusIn",
+				"core": [14,16,24,33],
+				"hint": "<b>HBusIn</b> <i>Variable</i><br><b>HBusIn</b> <i>Control, {Address}, [Variable {, Variable}]</i><br><i>Variable = </i><b>HBusIn</b><br><i>Variable = </i><b>HBusIn</b> <i>Control , {Address}</i>"
+			},
+			{
+				"name": "HBusIn1",
+				"core": [14,16,24,33],
+				"hint": "<b>HBusIn1</b> <i>Variable</i><br><b>HBusIn1</b> <i>Control, {Address}, [Variable {, Variable}]</i><br><i>Variable = </i><b>HBusIn1</b><br><i>Variable = </i><b>HBusIn1</b> <i>Control , {Address}</i>"
+			},
+			{
+				"name": "HBusIn2",
+				"core": [24,33],
+				"hint": "<b>HBusIn2</b> <i>Variable</i><br><b>HBusIn2</b> <i>Control, {Address}, [Variable {, Variable}]</i><br><i>Variable = </i><b>HBusIn2</b><br><i>Variable = </i><b>HBusIn2</b> <i>Control , {Address}</i>"
+			},
+			{
+				"name": "HBusOut",
+				"core": [14,16,24,33],
+				"hint": "<b>HBusOut</b> <i>Variable</i><br><b>HBusOut</b> <i>Control, {Address}, [Output Data]</i>"
+			},
+			{
+				"name": "HBusOut1",
+				"core": [14,16,24,33],
+				"hint": "<b>HBusOut1</b> <i>Variable</i><br><b>HBusOut1</b> <i>Control, {Address}, [Output Data]</i>"
+			},
+			{
+				"name": "HBusOut2",
+				"core": [24,33],
+				"hint": "<b>HBusOut2</b> <i>Variable</i><br><b>HBusOut2</b> <i>Control, {Address}, [Output Data]</i>"
+			},
+			{
+				"name": "HEData",
+				"core": [14,16],
+				"hint": "<b>HEData</b> <i>Comma delimited Constant Values or Constant Expressions that are stored in High Endurance Flash memory</i>"
+			},
+			{
+				"name": "Hex...8",
+				"core": [14,16,24,33],
+				"hint": "<b>Hex..Hex8</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "High",
+				"hint": "<b>High</b> = <i>Port</i><br><b>High</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HighByte"
+			},
+			{
+				"name": "HighWord",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "HPWM",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM</b> <i>Channel, Dutycycle, Frequency</i>"
+			},
+			{
+				"name": "HRSIn",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>HRSIn</b>, <i>{Timeout Value (in mS), Timeout Label}</i><br><b>HRSIn</b>, <i>{Timeout Value (in mS), Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
+			},
+			{
+				"name": "HRSIn1",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>HRSIn1</b>, <i>{Timeout Value (in mS), Timeout Label}</i><br><b>HRSIn1</b>, <i>{Timeout Value (in mS), Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
+			},
+			{
+				"name": "HRSOut",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSOut1",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut1</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSOutLn",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOutLn</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSOut1Ln",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut1Ln</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSIn2",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>HRSIn2</b>, <i>{,Timeout Value (in mS), Timeout Label}</i><br><b>HRSIn2</b>, <i>{Timeout Value (in mS), Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
+			},
+			{
+				"name": "HRSOut2",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut2</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSOut2Ln",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut2Ln</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSOut3",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut3</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSOut3Ln",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut3Ln</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSIn3",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>HRSIn3</b>, <i>{,Timeout Value (in mS), Timeout Label}</i><br><b>HRSIn2</b>, <i>{Timeout Value (in mS), Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
+			},
+			{
+				"name": "HRSOut4",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut4</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSOut4Ln",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut4Ln</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSIn4",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>HRSIn4</b>, <i>{,Timeout, Timeout Label}</i><br><b>HRSIn2</b>, <i>{Timeout, Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
+			},
+			{
+				"name": "HSerial_ChangeBaud,HSerial1_ChangeBaud",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerial1__ChangeBaud</b> <i>Baud Value Constant for USART1 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
+			},
+			{
+				"name": "HSerial2_ChangeBaud",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerial2__ChangeBaud</b> <i>Baud Value Constant for USART2 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
+			},
+			{
+				"name": "HSerial3_ChangeBaud",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerial3__ChangeBaud</b> <i>Baud Value Constant for USART3 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
+			},
+			{
+				"name": "HSerial4_ChangeBaud",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerial4__ChangeBaud</b> <i>Baud Value Constant for USART4 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
+			},
+			{
+				"name": "HSerIn,HSerIn1",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerIn</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
+			},
+			{
+				"name": "HSerOut,HSerOut1",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerOut</b> <i>[Item {,Item}]</i>"
+			},
+			{
+				"name": "HSerIn2",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerIn2</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
+			},
+			{
+				"name": "HSerOut2",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerOut2</b> <i>[Item {,Item}]</i>"
+			},
+			{
+				"name": "HSerIn3",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerIn3</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
+			},
+			{
+				"name": "HSerOut3",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerOut3</b> <i>[Item {,Item}]</i>"
+			},
+			{
+				"name": "HSerIn4",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerIn4</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
+			},
+			{
+				"name": "HSerOut4",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerOut4</b> <i>[Item {,Item}]</i>"
+			},
+			{
+				"name": "I2CIn",
+				"hint": "<b>I2CIn</b><i> SDA_pin, SCL_pin, Control, { Address }, [ Variable {, Variable�} ]</i>"
+			},
+			{
+				"name": "I2COut",
+				"hint": "<b>I2COut</b> <i> SDA_pin, SCL_pin, Control, {Address,} [Data {, Data}]</i>"
+			},
+			{
+				"name": "IBin...31",
+				"core": [14,16,24,33],
+				"hint": "<b>IBin..IBin31</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "ICos",
+				"hint": "<i>Variable</i> = <b>ICos</b> <i>Variable</i>"
+			},
+			{
+				"name": "ISin",
+				"hint": "<i>Variable</i> = <b>ISin</b> <i>Variable</i>"
+			},
+			{
+				"name": "ISqr",
+				"hint": "<i>Variable</i> = <b>ISqr</b> <i>Variable</i>"
+			},
+			{
+				"name": "ISR_Start",
+				"hint": "<b>ISR_Start</b> <i>Interrupt Name</i>"
+			},
+			{
+				"name": "ISR_End"
+			},
+			{
+				"name": "If",
+				"hint": "<b>If</b> <i>Expression</i>"
+			},
+			{
+				"name": "Tern",
+				"hint": "<i>Variable</i> = <b>Tern</b> <i> Constant Value or Variable</i> <b> Comparison Characters </b> <i> Constant Value or Variable</i> , <i> Constant Value or Variable</i> , <i> Constant Value or Variable</i>"
+			},
+			{
+				"name": "IHex...8",
+				"core": [14,16,24,33],
+				"hint": "<b>IHex..IHex8</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "Inc",
+				"hint": "<b>Inc</b> <i>Variable</i>"
+			},
+			{
+				"name": "Ink",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "InKey",
+				"hint": "<i>Variable = </i><b>Inkey</b>"
+			},
+			{
+				"name": "Input",
+				"hint": "<b>Input</b> = <i>Port</i><br><b>Input</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "Interrupt",
+				"core": [14,16,24,33],
+				"hint": "<b><span style='color:#808080;'>On</span> Interrupt <span style='color:#808080;'>Goto</span></b> <i>Software Interrupt Label</i>"
+			},
+			{
+				"name": "Inverse",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "ISBin...31",
+				"core": [14,16,24,33],
+				"hint": "<b>ISBin..ISBin31</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "ISDec...10",
+				"core": [14,16,24,33],
+				"hint": "<b>ISDec..ISDec10</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "ISHex...8",
+				"core": [14,16,24,33],
+				"hint": "<b>ISHex..ISHex8</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "KS0108",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "LCDRead",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>LCDRead</b> <i>Line Number, Xpos</i>"
+			},
+			{
+				"name": "LCDWrite",
+				"core": [14,16,24,33],
+				"hint": "<b>LCDWrite</b> <i>Line Number, Xpos, [Value {, Value}]</i>"
+			},
+			{
+				"name": "LData",
+				"core": [14,16],
+				"hint": "<b>LData</b> <i>Constant Value or Constant Expression</i>"
+			},
+			{
+				"name": "Left$",
+				"core": [14,16,24,33],
+				"hint": "<i>Destination String = </i><b>Left$</b> <i>(Source String, Number Of Characters)</i>"
+			},
+			{
+				"name": "Len",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Len</b> <i>(Source String)</i>"
+			},
+			{
+				"name": "Let",
+				"hint": "<b>Let</b> <i>Variable = Constant Value or Variable or Expression or Procedure</i>"
+			},
+			{
+				"name": "Line",
+				"core": [14,16,24,33],
+				"hint": "<b>Line</b> <i>Set_Clear, Xpos Start, Ypos Start, Xpos End, Ypos End</i>"
+			},
+			{
+				"name": "LineTo",
+				"core": [14,16,24,33],
+				"hint": "<b>LineTo</b> <i>Set_Clear, Xpos End, Ypos End</i>"
+			},
+			{
+				"name": "LoadBit",
+				"hint": "<b>LoadBit</b> <i>Variable, Index, Value</i>"
+			},
+			{
+				"name": "Log",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Log(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Log10",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Log10(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "LookDown",
+				"hint": "<i>Variable = </i><b>LookDown</b> <i>Index, [Constant {, Constant}]</i>"
+			},
+			{
+				"name": "LookDownL",
+				"hint": "<i>Variable = </i><b>LookDownL</b> <i>Index, {Operator} [Value {, Value}]</i>"
+			},
+			{
+				"name": "LookUp",
+				"hint": "<i>Variable = </i><b>LookUp</b> <i>Index, [Constant {,Constant}]</i>"
+			},
+			{
+				"name": "LookUpL",
+				"hint": "<i>Variable = </i><b>LookUpL</b> <i>Index, [Value {, Value}]</i>"
+			},
+			{
+				"name": "Loop",
+				"hint": "<b>Loop</b> <i>No Expression for Infinite Loop</i><br><b>Loop Until</b> <i>Expression</i><br><b>Loop While</b> <i>Expression</i>"
+			},
+			{
+				"name": "Low",
+				"hint": "<b>Low</b> = <i>Port</i><br><b>Low</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LowByte"
+			},
+			{
+				"name": "LowWord",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "LRead",
+				"core": [14,16],
+				"hint": "<i>Variable = </i><b>LRead</b> <i>Label or Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "LRead8",
+				"core": [14,16],
+				"hint": "<i>Variable = </i><b>LRead8</b> <i>Label</i> [<i>Offset Constant Value or Variable or Expression</i>]"
+			},
+			{
+				"name": "LRead16",
+				"core": [14,16],
+				"hint": "<i>Variable = </i><b>LRead16</b> <i>Label</i> [<i>Offset Constant Value or Variable or Expression</i>]"
+			},
+			{
+				"name": "LRead32",
+				"core": [14,16],
+				"hint": "<i>Variable = </i><b>LRead32</b> <i>Label</i> [<i>Offset Constant Value or Variable or Expression</i>]"
+			},
+			{
+				"name": "Mid$",
+				"core": [14,16,24,33],
+				"hint": "<i>Destination String = </i><b>Mid$</b><i> (Source String, Position In String, Number Of Characters)</i>"
+			},
+			{
+				"name": "Modf",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Modf</b>(<i>32-bit Floating Point Variable, Whole 32-bit Floating Point Variable</i><b>)</b><br>Split a 32-bit floating point variable into its fractional part and its whole part"
+			},
+			{
+				"name": "Modd",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Modd</b>(<i>64-bit Double Variable, Whole 64-bit Double Variable</i><b>)</b><br>Split a 64-bit Double variable into its fractional part and its whole part"
+			},
+			{
+				"name": "Ncd"
+			},
+			{
+				"name": "Next"
+			},
+			{
+				"name": "Num8,Num16,Num32,SNum8,SNum16,SNum32"
+			},
+			{
+				"name": "Label,Char,Code,Byte_Array_Ptr,Word_Array_Ptr,Dword_Array_Ptr,Flash,SByte_Array_Ptr,SWord_Array_Ptr,SDword_Array_Ptr"
+			},
+			{
+				"name": "On",
+				"core": [14,16,24,33],
+				"hint": "<b>On <span style='color:#808080;'>Interrupt Goto</span></b> <i>Software Interrupt Label</i><br><b>On <span style='color:#808080;'>Debug Goto</span></b> <i>Software Debug Label</i>"
+			},
+			{
+				"name": "ORead",
+				"core": [14,16,24,33],
+				"hint": "<b>ORead</b> = <i>Port.Pin, Mode, [Input Data]</i>"
+			},
+			{
+				"name": "Org",
+				"hint": "<b>Org</b> <i>Constant Program Address</i>"
+			},
+			{
+				"name": "OtherWise",
+				"hint": "<b>OtherWise</b> <i> {Instructions}</i>"
+			},
+			{
+				"name": "OtherWiseIf",
+				"hint": "<b>OtherWiseIf</b> <i>Expression</i>"
+			},
+			{
+				"name": "Output",
+				"hint": "<b>Output</b> = <i>Port</i><br><b>Output</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "OWrite",
+				"core": [14,16,24,33],
+				"hint": "<b>OWrite</b> = <i>Port.Pin, Mode, [Output Data]</i>"
+			},
+			{
+				"name": "Paper",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin",
+				"hint": "When used as Parameter's type directive, it holds the Pin value. The same method as used for Pin_A0, Pin_A1, Pin_B0 etc..."
+			},
+			{
+				"name": "Pin_A0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_B0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_C0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_D0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_E0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_F0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_G0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_H0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_J0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_K0...7",
+				"core": [14,16]
+			},
+			{
+				"name": "Pin_L0...7",
+				"core": [14,16]
+			},
+			{
+				"name": "PinHigh",
+				"hint": "<b>PinHigh</b> = <i>Port.Pin</i> or <i>Pin Name</i><br><b>PinHigh</b> <i>Pin Number Constant Value or Variable or Expression</i><br>Set an I\\O pin output high"
+			},
+			{
+				"name": "PinLow",
+				"hint": "<b>PinLow</b> = <i>Port.Pin</i> or <i>Pin Name</i><br><b>PinLow</b> <i>Pin Number Constant Value or Variable or Expression</i><br>Pull an I\\O pin output low"
+			},
+			{
+				"name": "PinInput",
+				"hint": "<b>PinInput</b> = <i>Port.Pin</i> or <i>Pin Name</i><br><b>PinInput</b> <i>Pin Number Constant Value or Variable or Expression</i><br>Make an I\\O pin an input"
+			},
+			{
+				"name": "PinOutput",
+				"hint": "<b>PinOutput</b> = <i>Port.Pin</i> or <i>Pin Name</i><br><b>PinOutput</b> <i>Pin Number Constant Value or Variable or Expression</i><br>Make an I\\O pin an output"
+			},
+			{
+				"name": "PinClear",
+				"hint": "<b>PinClear</b> <i>Pin Number Constant Value or Variable or Expression</i><br>Pull an I\\O pin to 0"
+			},
+			{
+				"name": "PinSet",
+				"hint": "<b>PinSet</b> <i>Pin Number Constant Value or Variable or Expression</i><br>Set an I\\O pin to 1"
+			},
+			{
+				"name": "PinMode",
+				"hint": "<b>PinMode</b> = <i>Port.Pin</i> or <i>Pin Name</i>, <b>High</b> or <b>Low</b> or <b>Output</b> or <b>Input</b> or <b>PullUp</b> or <b>Input_PullUp</b><br><b>PinMode</b> <i>Pin Number Constant Value or Variable or Expression</i>, <b>High</b> or <b>Low</b> or <b>Output</b> or <b>Input</b> or <b>PullUp</b> or <b>Input_PullUp</b><br>Make an I\\O pin an output or input or high or low or enable a pullup resistor on an existing input, or make a pin an input and enable the pullup resistor on it"
+			},
+			{
+				"name": "PinPullup",
+				"hint": "<b>PinPullup</b> = <i>Port.Pin</i> or <i>Pin Name</i><br><b>PinPullup</b> <i>Pin Number Constant Value or Variable or Expression</i><br>Enable a pullup resistor on an I\\O pin that has previously been made an input (if the PIC device supports it)"
+			},
+			{
+				"name": "Pixel",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Pixel</b> <i>Ypos, Xpos</i>"
+			},
+			{
+				"name": "Plot",
+				"core": [14,16,24,33],
+				"hint": "<b>Plot</b> <i>Ypos, Xpos</i>"
+			},
+			{
+				"name": "Pot",
+				"hint": "<i>Variable = </i><b>Pot</b> = <i>Port.Pin, Scale</i>"
+			},
+			{
+				"name": "Proc",
+				"hint": "<i>Proc </i><b>Name</b> <i>(pParam as Variable Type {,pParam as Variable Type})</i>"
+			},
+			{
+				"name": "Sub",
+				"hint": "<i>Sub </i><b>Name</b>"
+			},
+			{
+				"name": "PSV_AddressOf",
+				"hint": "<i>Variable = </i><b>PSV_AddressOf</b><i>(Label)</i>"
+			},
+			{
+				"name": "PSV",
+				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSV8",
+				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 8-bit Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSV16",
+				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 16-bit Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSV24",
+				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 24-bit Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSV32",
+				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 32-bit Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSVF",
+				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 32-bit Floating Point Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSVD",
+				"hint": "<b>PSVD</b><br><i><span style='color:#008000;'>Give the 64-bit Double Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "Ptr8",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Ptr8</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br><b>Ptr8</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i> = <i>Variable, Constant or Expression</i><br>Increments the address by 8-bits"
+			},
+			{
+				"name": "Ptr16",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Ptr16</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br><b>Ptr16</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i> = <i>Variable, Constant or Expression</i><br>Increments the address by 16-bits"
+			},
+			{
+				"name": "Ptr24",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Ptr24</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br><b>Ptr24</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i> = <i>Variable, Constant or Expression</i><br>Increments the address by 24-bits"
+			},
+			{
+				"name": "Ptr32",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Ptr32</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br><b>Ptr32</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i> = <i>Variable, Constant or Expression</i><br>Increments the address by 32-bits"
+			},
+			{
+				"name": "Ptr64",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Ptr64</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br><b>Ptr64</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i> = <i>Variable, Constant or Expression</i><br>Increments the address by 64-bits"
+			},
+			{
+				"name": "Push",
+				"core": [14,16,24,33],
+				"hint": "<b>Push</b> <i>Variable {, Variable}</i>"
+			},
+			{
+				"name": "Pop",
+				"core": [14,16,24,33],
+				"hint": "<b>Pop</b> <i>Variable {, Variable}</i>"
+			},
+			{
+				"name": "Pow",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Pow(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Print",
+				"hint": "<b>Print</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "PulsIn,PulseIn",
+				"hint": "<i>Variable = </i><b>PulseIn</b> = <i>Port.Pin, State</i>"
+			},
+			{
+				"name": "PulsOut,PulseOut",
+				"hint": "<b>PulseOut</b> = <i>Port.Pin, Period {, InitialState}</i>"
+			},
+			{
+				"name": "PWM",
+				"hint": "<b>PWM</b> = <i>Port.Pin, Duty, Cycles</i>"
+			},
+			{
+				"name": "Random",
+				"hint": "<i>Variable = </i><b>Random</b>"
+			},
+			{
+				"name": "RC5In",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>RC5In</b>"
+			},
+			{
+				"name": "RCIn",
+				"hint": "<i>Variable = </i><b>RCIn</b> = <i>Port.Pin, State</i>"
+			},
+			{
+				"name": "Rep"
+			},
+			{
+				"name": "Repeat"
+			},
+			{
+				"name": "Restore",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Result",
+				"core": [14,16,24,33],
+				"hint": "<i>Return a result from a Procedure"
+			},
+			{
+				"name": "Resume",
+				"core": [14,16,24,33],
+				"hint": "<b>Resume</b><br><br><i><span style='color:#008000;'>Re-enables and returns from a software interrupt</span></i>"
+			},
+			{
+				"name": "Return",
+				"hint": "Returns from a Subroutine"
+			},
+			{
+				"name": "Right$",
+				"core": [14,16,24,33],
+				"hint": "<i>Destination String = </i><b>Right$</b><i> (Source String, Number Of Characters)</i>"
+			},
+			{
+				"name": "Rol",
+				"hint": "<b>Rol</b><i> Variable :Does not Clear the Carry flag before the Rotate Left</i><br><b>Rol</b><i> Variable, 0 :Clears the Carry flag before the Rotate Left</i><br><b>Rol</b><i> Variable, 1 :Sets the Carry flag before the Rotate Left</i>"
+			},
+			{
+				"name": "Ror",
+				"hint": "<b>Ror</b><i> Variable :Does not Clear the Carry flag before the Rotate Right</i><br><b>Ror</b><i> Variable, 0 :Clears the Carry flag before the Rotate Right</i><br><b>Ror</b><i> Variable, 1 :Sets the Carry flag before the Rotate Right</i>"
+			},
+			{
+				"name": "RsIn",
+				"hint": "<i>Variable = </i><b>RsIn</b><i> {, Timeout Label}</i><br><b>RsIn</b><i> {Timeout Label,} {Modifier} Variable {, {Modifier} Variable}</i>"
+			},
+			{
+				"name": "RsOut",
+				"hint": "<b>RsOut</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "RsOutLn",
+				"hint": "<b>RsOutLn</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "Samsung",
+				"hint": "<i>Choose a graphic LCD based upon the Samsung KS0108 chipset</i>"
+			},
+			{
+				"name": "Save-,Save",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "SBin...32",
+				"core": [14,16,24,33],
+				"hint": "<b>SBin..SBin31</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "SDec,SDec0...10",
+				"core": [14,16,24,33],
+				"hint": "<b>SDec..SDec10</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "Seed",
+				"hint": "<b>Seed</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "Select",
+				"hint": "<b>Select</b> <i>Constant Value or Variable or Constant Expression</i>"
+			},
+			{
+				"name": "SerIn",
+				"core": [14,16,24,33],
+				"hint": "<b>SerIn</b> <i>Receive Pin {\\Flow Pin}, Baudmode, {Parity Label,} {Timeout, Timeout Label,} [Input Data {, Input Data}]</i>"
+			},
+			{
+				"name": "SerOut",
+				"core": [14,16,24,33],
+				"hint": "<b>SerOut</b> <i>Transmit Pin {\\Flow Pin}, Baudmode, {Pace,} {Timeout, Timout Label, } [Output Data {, Output Data}]</i>"
+			},
+			{
+				"name": "Servo",
+				"hint": "<b>Servo</b> = <i>Port.Pin, Rotation Value</i>"
+			},
+			{
+				"name": "Set",
+				"hint": "<b>Set</b> <i>Variable or Port or Port.Pin</i>"
+			},
+			{
+				"name": "SetBit",
+				"hint": "<b>SetBit</b> <i>Variable, Index</i>"
+			},
+			{
+				"name": "Set_OSCCAL",
+				"core": [12,14],
+				"hint": "<b>Set_OSCCAL</b><br><br><i><span style='color:#008000;'>Calibrate on-chip RC oscillator, found on some PIC microcontroller devices</span></i>"
+			},
+			{
+				"name": "SetPin",
+				"core": [14,16,24,33],
+				"hint": "<b>SetPin</b> <i>Variable</i>"
+			},
+			{
+				"name": "Shared",
+				"hint": "<b>Shared</b><br><br><i><span style='color:#008000;'>Enable sharing of a variable name</span></i>"
+			},
+			{
+				"name": "SHex...8",
+				"core": [14,16,24,33],
+				"hint": "<b>SHex..SHex8</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "SHIn",
+				"hint": "<b>SHIn</b> <i>DataPort.Pin, ClockPort.Pin, Mode, [Result {\\Bits} {,Result{\\Bits}}]</i>"
+			},
+			{
+				"name": "SHOut",
+				"hint": "<b>SHOut</b> <i>DataPort.Pin, ClockPort.Pin, Mode, [Output Data {\\Bits} {,Output Data {\\Bits}}]</i>"
+			},
+			{
+				"name": "Sin",
+				"hint": "<i>Variable = </i><b>Sin(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "SizeOf",
+				"hint": "<b>SizeOf</b><i>(Variable)</i>"
+			},
+			{
+				"name": "SizeOf_Table",
+				"hint": "<b>SizeOf_Table</b> Enters the size of the flash memory table it is sitting in as a table item value"
+			},
+			{
+				"name": "Sleep",
+				"hint": "<b>Sleep</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "Snooze",
+				"hint": "<b>Snooze</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "SonyIn",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>SonyIn</b>"
+			},
+			{
+				"name": "Sound",
+				"hint": "<b>Sound</b> = <i>Port.Pin, [Note, Duration {, Note, Duration}]</i>"
+			},
+			{
+				"name": "Sound2",
+				"core": [14,16,24,33],
+				"hint": "<b>Sound2</b> = <i>Port.Pin1, Port.Pin2, [Note1\\Note2\\Duration {,Note1\\Note2\\Duration}]</i>"
+			},
+			{
+				"name": "Sqr",
+				"hint": "<i>Variable = </i><b>Sqr(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "LowSByte,LowSWord,HighSByte,HighSWord",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "SByte,SWord,SDword,SByte0,SByte1,SByte2,SByte3,SWord0,SWord1",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Step"
+			},
+			{
+				"name": "Stop",
+				"hint": "<b>Stop</b><br><br><i><span style='color:#008000;'>Halts program execution by sending the<br>PIC microcontroller into an infinite loop</span></i>"
+			},
+			{
+				"name": "Str",
+				"core": [14,16,24,33],
+				"hint": "<b>Str</b> <i>ByteArray</i>"
+			},
+			{
+				"name": "StrN",
+				"core": [14,16,24,33],
+				"hint": "<b>StrN</b> <i>ByteArray = Item</i>"
+			},
+			{
+				"name": "Str$",
+				"core": [14,16,24,33],
+				"hint": "<i>String or Byte Array = </i><b>Str$</b> <i>(Modifier, Variable)</i>"
+			},
+			{
+				"name": "Swap",
+				"hint": "<b>Swap</b> <i>Variable, Variable</i>"
+			},
+			{
+				"name": "Symbol",
+				"hint": "<b>Symbol</b> <i>Name {=} Value</i>"
+			},
+			{
+				"name": "Tan",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Tan(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Then",
+				"hint": "<b><span style='color:#808080;'>IF</b> <i>Expression </i></span><b>Then</b><i> {Instructions} </i>"
+			},
+			{
+				"name": "To",
+				"hint": "<b>To</b> <i>Endcount</i>"
+			},
+			{
+				"name": "DownTo",
+				"hint": "<b>DownTo</b> <i>Endcount</i>"
+			},
+			{
+				"name": "UpTo",
+				"hint": "<b>UpTo</b> <i>Endcount</i>"
+			},
+			{
+				"name": "Toshiba",
+				"core": [14,16,24,33],
+				"hint": "<i>Choose a graphic LCD based upon the Toshiba T6963 chipset </i>"
+			},
+			{
+				"name": "Toshiba_Command",
+				"core": [14,16,24,33],
+				"hint": "<b>Toshiba_Command</b> , <i>Command</i> , <i>Parameter</i>"
+			},
+			{
+				"name": "Toshiba_Udg",
+				"core": [14,16,24,33],
+				"hint": "<b>Toshiba_Udg</b> , <i>Character</i> , [<i>UDG data {,UDG data}</i>]"
+			},
+			{
+				"name": "Toggle",
+				"hint": "<b>Toggle</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "ToLower",
+				"core": [14,16,24,33],
+				"hint": "<i>Destination String = </i><b>ToLower</b><i> (Source String)</i>"
+			},
+			{
+				"name": "ToUpper",
+				"core": [14,16,24,33],
+				"hint": "<i>Destination String = </i><b>ToUpper</b><i> (Source String)</i>"
+			},
+			{
+				"name": "Touch_Active",
+				"core": [24,33],
+				"hint": "<i>Var = </i><b>Touch_Active</b><br>Var = 1 if the stylus is touching the screen"
+			},
+			{
+				"name": "Touch_Read",
+				"core": [24,33],
+				"hint": "<i>Var = </i><b>Touch_Read</b><br>Var = 1 if the stylus is within the screen boundary<br>Loads variable Touch_wXlocation with the stylus X position<br>Loads variable Touch_wYlocation with the stylus Y location"
+			},
+			{
+				"name": "Touch_HotSpot",
+				"core": [24,33],
+				"hint": "<i>Var = </i><b>Touch_HotSpot</b> <i>pXpos Start, pYpos Start, pXpos End, pYpos End</i><br>Var = 1 if the stylus is within the hotspot boundary"
+			},
+			{
+				"name": "Touch_HotSpotTable",
+				"core": [24,33],
+				"hint": "<i>Var = </i><b>Touch_HotSpotTable</b> <i>Code Memory Table Name</i><br>Var = 1 if the stylus is within the hotspot boundary"
+			},
+			{
+				"name": "UnPlot",
+				"core": [14,16,24,33],
+				"hint": "<b>UnPlot</b> <i>Ypos, Xpos</i>"
+			},
+			{
+				"name": "Until",
+				"hint": "<b>Until</b> <i>No Expression for Infinite Loop</i><br><b>Until</b> <i>Expression</i>"
+			},
+			{
+				"name": "USBInit",
+				"core": [14,16,24,33],
+				"hint": "<b>USBInit</b><br> <i><span style='color:#4090FF;'>Initialise the USB hardware of the PIC microcontroller<br>and wait until the USB bus is configured and enabled</span></i><br><b>Not required for 16-bit core devices</b>"
+			},
+			{
+				"name": "USBPoll",
+				"core": [16],
+				"hint": "<b>USBPoll</b><br> <i><span style='color:#4090FF;'>Poll the USB hardware of the PIC microcontroller</span></i>"
+			},
+			{
+				"name": "USBIn",
+				"core": [14,16,24,33],
+				"hint": "<b>USBIn</b> <i>Endpoint, Buffer, CountVariable (or AUTO if using a 16-bit core device), Label (Label is optional with a 16-bit core device)</i>"
+			},
+			{
+				"name": "USBOut",
+				"core": [14,16,24,33],
+				"hint": "<b>USBOut</b> <i>Endpoint, Buffer, CountVariable (or AUTO if using a 16-bit core device), Label (Label is optional with a 16-bit core device)</i>"
+			},
+			{
+				"name": "Val",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Val</b><i> (String or Byte Array, Modifier)</i>"
+			},
+			{
+				"name": "VarPtr",
+				"hint": "<i>Variable = </i><b>VarPtr</b><i> (Variable or Label)</i>"
+			},
+			{
+				"name": "Wait"
+			},
+			{
+				"name": "Wend"
+			},
+			{
+				"name": "While",
+				"hint": "<b>While</b> <i>No Expression for infinite loop</i><br><b>While</b> <i>Expression</i>"
+			},
+			{
+				"name": "XIn",
+				"core": [14,16],
+				"hint": "<b>XIn</b> <i>DataPort.Pin, ZeroPort.Pin, {Timeout, Timeout Label}, [Variable {, ...}]</i>"
+			},
+			{
+				"name": "XOut",
+				"core": [14,16],
+				"hint": "<b>XOut</b> <i>DataPort.Pin, ZeroPort.Pin, [HouseCode\\KeyCode {\\Repeat} {, ...}]</i>"
+			},
+			{
+				"name": "Trim",
+				"core": [24,33],
+				"hint": "<b>Trim(</b> <i>String Variable</i><b>)</b>"
+			},
+			{
+				"name": "TrimLeft",
+				"core": [24,33],
+				"hint": "<b>TrimLeft(</b> <i>String Variable</i><b>)</b>"
+			},
+			{
+				"name": "TrimRight",
+				"core": [24,33],
+				"hint": "<b>TrimLeft(</b> <i>String Variable</i><b>)</b>"
+			}
+		],
+		"KeywordImportant": [
+			{
+				"name": "On_Hardware_Interrupt",
+				"core": [14,16,24,33],
+				"hint": "<b>On_Hardware_Interrupt <span style='color:#808080;'>Goto</span></b> <i>Hardware Interrupt Label</i>"
+			},
+			{
+				"name": "On_Interrupt",
+				"core": [14,16,24,33],
+				"hint": "<b>On_Interrupt <span style='color:#808080;'>Goto</span></b> <i>Hardware Interrupt Label</i>"
+			},
+			{
+				"name": "On_Low_Interrupt",
+				"core": [16],
+				"hint": "<b>On_Low_Interrupt <span style='color:#808080;'>Goto</span></b> <i>Hardware Interrupt Label</i>"
+			}
+		],
+		"KeywordMacro": [
+			{
+				"name": "PLL_Setup",
+				"hint": "<b>PLL_Setup</b>(<i>pM, pN1, pN2, pOSCCON</i>)<br>Alter the oscillator on PIC24E or PIC24H devices"
+			},
+			{
+				"name": "OSC_PLLDIV",
+				"hint": "<b>OSC_PLLDIV</b>(<i>pM</i>)<br>Alter the oscillator on PIC24E or PIC24H devices"
+			},
+			{
+				"name": "PPS_Input",
+				"hint": "<b>PPS_Input</b>(<i>RPINRx pin, Input Peripheral Function</i>)<br>Configure a peripheral input PPS pin for 24-bit devices"
+			},
+			{
+				"name": "PPS_Output",
+				"hint": "<b>PPS_Output</b>(<i>RPORx pin, Output Peripheral Function</i>)<br>Configure a peripheral output PPS pin for 24-bit devices"
+			},
+			{
+				"name": "PPS_Lock",
+				"hint": "<b>PPS_Lock</b>()<br>Lock PPS operation for 24-bit devices"
+			},
+			{
+				"name": "PPS_Unlock",
+				"hint": "<b>PPS_Unlock</b>()<br>Unlock PPS operation for 24-bit devices"
+			},
+			{
+				"name": "Write_OSCCONL",
+				"hint": "<b>Write_OSCCONL</b>(<i>Value</i>)<br>Unlock and write to the low byte of the OSCCON SFR for PIC24 devices"
+			},
+			{
+				"name": "Write_OSCCONH",
+				"hint": "<b>Write_OSCCON</b>(<i>Value</i>)<br>Unlock and write to the high byte of the OSCCON SFR for PIC24 devices"
+			},
+			{
+				"name": "Write_OSCCON",
+				"hint": "<b>Write_OSCCON</b>(<i>Value</i>)<br>Unlock and write to the OSCCON SFR for PIC24 devices"
+			}
+		],
+		"KeywordDeclare": [
+			{
+				"name": "Asm-",
+				"hint": "<b>Asm-</b> <i>{Asm Instructions} </i><b><span style='color:#808080;'> EndAsm</span></b>"
+			},
+			{
+				"name": "Asm",
+				"hint": "<b>Asm</b> <i>{Asm Instructions} </i><b><span style='color:#808080;'> EndAsm</span></b>"
+			},
+			{
+				"name": "Auto_Heap_Arrays",
+				"hint": "Automatically make all Array variables in upper RAM to help conserve lower RAM for standard variables. <i>On or Off</i>"
+			},
+			{
+				"name": "Auto_Heap_Strings",
+				"hint": "Automatically make all String variables in upper RAM to help conserve lower RAM for standard variables. <i>On or Off</i>"
+			},
+			{
+				"name": "Auto_Variable_Arrange",
+				"core": [14,16,24,33],
+				"hint": "Allow the compiler to automatically arrange user variables. <i>On or Off</i>"
+			},
+			{
+				"name": "Config_Start",
+				"core": [16,24,33],
+				"hint": "<i>Start of Configuration Fuse Block</i>"
+			},
+			{
+				"name": "Config_End",
+				"core": [16,24,33],
+				"hint": "<i>End of Configuration Fuse Block</i>"
+			},
+			{
+				"name": "EndAsm-,EndAsm"
+			},
+			{
+				"name": "Macro-",
+				"hint": "<i>MacroName</i> <b>Macro-</b> <i>Parameters {,Parameters}</i>"
+			},
+			{
+				"name": "Macro",
+				"hint": "<i>MacroName</i> <b>Macro</b> <i>Parameters {,Parameters}</i>"
+			},
+			{
+				"name": "Endm",
+				"hint": "<b>Endm</b><br><br><i><span style='color:#008000;'>End a <b>Macro</b> declaration</span></i>"
+			},
+			{
+				"name": "Exitm",
+				"hint": "<b>Exitm</b><br><br><i><span style='color:#008000;'>Exit a <b>Macro</b> prematurely</span></i>"
+			},
+			{
+				"name": "Actual_Banks",
+				"hint": "<b>Actual_Banks</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Adin_Res",
+				"core": [14,16,24,33],
+				"hint": "<b>Adin_Res</b> = <i>0 or 8 or 10</i>"
+			},
+			{
+				"name": "Adin_Tad",
+				"core": [14,16,24,33],
+				"hint": "<b>Adin_Tad</b> <i>FRC or FRC_8 or FRC_16 or FRC_32 or FRC_64"
+			},
+			{
+				"name": "Adin_Stime",
+				"core": [14,16,24,33],
+				"hint": "<b>Adin_Stime</b> = <i>0 to 65535</i>"
+			},
+			{
+				"name": "All_Digital",
+				"hint": "<b>All_Digital</b> = <i>True or False</i><br><b>All_Digital</b> = <i>Yes or No</i><br><b>All_Digital</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Available_RAM",
+				"hint": "<b>Available_RAM</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank0_End",
+				"hint": "<b>Bank0_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank0_Start",
+				"hint": "<b>Bank0_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank10_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank10_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank10_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank10_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank11_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank11_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank11_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank11_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank12_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank12_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank12_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank12_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank13_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank13_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank13_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank13_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank14_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank14_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank14_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank14_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank15_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank15_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank15_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank15_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank1_End",
+				"hint": "<b>Bank1_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank1_Start",
+				"hint": "<b>Bank1_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank2_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank2_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank2_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank2_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank3_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank3_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank3_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank3_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank4_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank4_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank4_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank4_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank5_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank5_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank5_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank5_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank6_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank6_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank6_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank6_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank7_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank7_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank7_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank7_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank8_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank8_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank8_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank8_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank9_End",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank9_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank9_Start",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank9_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bank_Select_Switch",
+				"core": [14,16,24,33],
+				"hint": "<b>Bank_Select_Switch</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "BankA_End",
+				"core": [16],
+				"hint": "<b>Banka_End</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "BankA_Start",
+				"core": [16],
+				"hint": "<b>Banka_Start</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "Bootloader",
+				"core": [14,16,24,33],
+				"hint": "<b>Bootloader</b> = <i>True or False</i><br><b>Bootloader</b> = <i>Yes or No</i><br><b>Bootloader</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Button_Delay",
+				"hint": "<b>Button_Delay</b> = <i>0 to 65535 milliseconds</i>"
+			},
+			{
+				"name": "Byte_Math",
+				"core": [14,16,24,33],
+				"hint": "<b>Byte_Math</b> = <i>True or False</i><br><b>Byte_Math</b> = <i>Yes or No</i><br><b>Byte_Math</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "CCP1_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP1_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CCP2_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CCP3_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP3_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CCP4_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP4_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CCP5_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP5_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CCP6_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP6_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CCP7_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP7_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CCP8_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP8_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CCP9_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP9_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CCP10_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>CCP10_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "Core",
+				"hint": "<b>Core</b> = <i>12 or 14 or 16</i>"
+			},
+			{
+				"name": "Count_Errors",
+				"core": [14,16,24,33],
+				"hint": "<b>Count_Errors</b> = <i>True or False</i><br><b>Count_Errors</b> = <i>Yes or No</i><br><b>Count_Errors</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Dead_Code_Remove",
+				"hint": "<b>Dead_Code_Remove</b> = <i>True or False</i><br><b>Dead_Code_Remove</b> = <i>Yes or No</i><br><b>Dead_Code_Remove</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "DMA",
+				"hint": "<b>DMA</b><br><i><span style='color:#008000;'>Place the variable in DMA RAM (if available)</span></i>"
+			},
+			{
+				"name": "Create_Coff",
+				"hint": "<b>Create_Coff</b> = <i>True or False</i><br><b>Create_Coff</b> = <i>Yes or No</i><br><b>Create_Coff</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "EEPROM_Size",
+				"core": [14,16,24,33],
+				"hint": "<b>EEPROM_Size</b> = <i>The size of teh on-board EEPROM on the device (0 to 1024)</i>"
+			},
+			{
+				"name": "Flash_Capable",
+				"core": [14,16,24,33],
+				"hint": "<b>Flash_Capable</b> = <i>True or False</i><br><b>Flash_Capable</b> = <i>Yes or No</i><br><b>Flash_Capable</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Float_Display_Type",
+				"core": [14,16],
+				"hint": "<b>Float_Display_Type</b> = <i>Standard or Large or Fast (Same as Large)</i>"
+			},
+			{
+				"name": "Float_Rounding",
+				"core": [14,16],
+				"hint": "<b>Float_Rounding</b> = <i>True or False</i><br><b>Float_Rounding</b> = <i>Yes or No</i><br><b>Float_Rounding</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Font_Addr",
+				"core": [14,16,24,33],
+				"hint": "<b>Font_Addr</b> = <i>0 to 65535</i>"
+			},
+			{
+				"name": "GLCD_CS_Invert",
+				"core": [14,16,24,33],
+				"hint": "<b>GLCD_CS_Invert</b> = <i>True or False</i><br><b>GLCD_CS_Invert</b> = <i>Yes or No</i><br><b>GLCD_CS_Invert</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "GLCD_Fast_Strobe",
+				"core": [14,16,24,33],
+				"hint": "<b>GLCD_Fast_Strobe</b> = <i>True or False</i><br><b>GLCD_Fast_Strobe</b> = <i>Yes or No</i><br><b>GLCD_Fast_Strobe</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hbus_Bitrate",
+				"core": [14,16,24,33],
+				"hint": "<b>Hbus_Bitrate</b> = <i>100 to 400</i>"
+			},
+			{
+				"name": "Hbus1_Bitrate",
+				"core": [14,16,24,33],
+				"hint": "<b>Hbus1_Bitrate</b> = <i>100 to 400</i>"
+			},
+			{
+				"name": "Hbus2_Bitrate",
+				"core": [14,16,24,33],
+				"hint": "<b>Hbus2_Bitrate</b> = <i>100 to 400</i>"
+			},
+			{
+				"name": "HEF_Address",
+				"core": [14,16],
+				"hint": "<b>HEF_Address</b> = <i>The address of the High Endurance Flash memory on the device</i>"
+			},
+			{
+				"name": "HEF_Size",
+				"core": [14,16],
+				"hint": "<b>HEF_Size</b> = <i>The size of the High Endurance Flash memory on the device (0 to 1024)</i>"
+			},
+			{
+				"name": "Heap",
+				"hint": "<b>Heap</b><br><i><span style='color:#008000;'>Place the variable at the end of RAM</span></i>"
+			},
+			{
+				"name": "High_Int_Sub_Start",
+				"core": [14,16],
+				"hint": "<i>Start of the Managed <b>High</b> Priority Hardware Interrupt Subroutine Block</i>"
+			},
+			{
+				"name": "High_Int_Sub_End",
+				"core": [14,16],
+				"hint": "<i>End of the Managed <b>High</b> Priority Hardware Interrupt Subroutine Block</i>"
+			},
+			{
+				"name": "HPWM1_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM1_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HPWM2_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HPWM3_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM3_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HPWM4_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM4_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HPWM5_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM5_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HPWM6_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM6_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HPWM7_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM7_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HPWM8_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM8_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HPWM9_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM9_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HPWM10_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HPWM10_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "HRSOut_Pin,HRSOut1_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut_Pin</b> = <i>Port.Pin or Pin Name for USART1 transmit</i>"
+			},
+			{
+				"name": "HRSOut2_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut2_Pin</b> = <i>Port.Pin or Pin Name for USART2 transmit</i>"
+			},
+			{
+				"name": "HRSOut3_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut3_Pin</b> = <i>Port.Pin or Pin Name for USART3 transmit</i>"
+			},
+			{
+				"name": "HRSOut4_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut4_Pin</b> = <i>Port.Pin or Pin Name for USART4 transmit</i>"
+			},
+			{
+				"name": "HRSIn_Pin,HRSIn1_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSIn_Pin</b> = <i>Port.Pin or Pin Name for USART1 receive</i>"
+			},
+			{
+				"name": "HRSIn2_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSIn2_Pin</b> = <i>Port.Pin or Pin Name for USART2 receive</i>"
+			},
+			{
+				"name": "HRSIn3_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSIn3_Pin</b> = <i>Port.Pin or Pin Name for USART3 receive</i>"
+			},
+			{
+				"name": "HRSIn4_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSIn4_Pin</b> = <i>Port.Pin or Pin Name for USART4 receive</i>"
+			},
+			{
+				"name": "Hserial_Baud,Hserial1_Baud",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial_Baud</b> = <i>BaudRate for USART1</i>"
+			},
+			{
+				"name": "Hserial_Clear,Hserial1_Clear",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial_Clear</b> = <i>True or False</i><br><b>Hserial_Clear</b> = <i>Yes or No</i><br><b>Hserial_Clear</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hserial_Parity,Hserial1_Parity",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial_Parity</b> = <i>Odd or Even</i>"
+			},
+			{
+				"name": "Hserial_RCSTA,Hserial1_RCSTA",
+				"core": [14,16],
+				"hint": "<b>Hserial_RCSTA</b> = <i>0 to 255</i>"
+			},
+			{
+				"name": "Hserial_SPBRG,Hserial1_SPBRG",
+				"core": [14,16],
+				"hint": "<b>Hserial_SPBRG</b> = <i>0 to 255</i>"
+			},
+			{
+				"name": "Hserial_TXSTA,Hserial1_TXSTA",
+				"core": [14,16],
+				"hint": "<b>Hserial_TXSTA</b> = <i>0 to 255</i>"
+			},
+			{
+				"name": "HRSOut_Pace,HRSOut1_Pace",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut_Pace</b> = <i>1 to 65535 (us)</i>"
+			},
+			{
+				"name": "Hserial2_Baud",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial2_Baud</b> = <i>BaudRate for USART2</i>"
+			},
+			{
+				"name": "Hserial2_Clear",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial2_Clear</b> = <i>True or False</i><br><b>Hserial2_Clear</b> = <i>Yes or No</i><br><b>Hserial2_Clear</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hserial2_Parity",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial2_Parity</b> = <i>Odd or Even</i>"
+			},
+			{
+				"name": "Hserial2_RCSTA",
+				"core": [14,16],
+				"hint": "<b>Hserial2_RCSTA</b> = <i>0 to 255</i>"
+			},
+			{
+				"name": "Hserial2_SPBRG",
+				"core": [14,16],
+				"hint": "<b>Hserial2_SPBRG</b> = <i>0 to 255</i>"
+			},
+			{
+				"name": "Hserial2_TXSTA",
+				"core": [14,16],
+				"hint": "<b>Hserial2_TXSTA</b> = <i>0 to 255</i>"
+			},
+			{
+				"name": "HRSOut2_Pace",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut2_Pace</b> = <i>1 to 65535 (us)</i>"
+			},
+			{
+				"name": "Hserial3_Baud",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial3_Baud</b> = <i>BaudRate for USART3</i>"
+			},
+			{
+				"name": "Hserial3_Clear",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial3_Clear</b> = <i>True or False</i><br><b>Hserial2_Clear</b> = <i>Yes or No</i><br><b>Hserial2_Clear</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hserial3_Parity",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial3_Parity</b> = <i>Odd or Even</i>"
+			},
+			{
+				"name": "HRSOut3_Pace",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut3_Pace</b> = <i>1 to 65535 (us)</i>"
+			},
+			{
+				"name": "Hserial4_Baud",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial4_Baud</b> = <i>BaudRate for USART4</i>"
+			},
+			{
+				"name": "Hserial4_Clear",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial4_Clear</b> = <i>True or False</i><br><b>Hserial2_Clear</b> = <i>Yes or No</i><br><b>Hserial2_Clear</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hserial4_Parity",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial4_Parity</b> = <i>Odd or Even</i>"
+			},
+			{
+				"name": "HRSOut4_Pace",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut4_Pace</b> = <i>1 to 65535 (us)</i>"
+			},
+			{
+				"name": "ICD_Req",
+				"core": [14,16,24,33],
+				"hint": "<b>Icd_Req</b> = <i>True or False</i><br><b>Icd_Req</b> = <i>Yes or No</i><br><b>Icd_Req</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Internal_Bus",
+				"core": [12,14],
+				"hint": "<b>Internal_Bus</b> = <i>True or False</i><br><b>Internal_Bus</b> = <i>Yes or No</i><br><b>Internal_Bus</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Internal_Font",
+				"core": [14,16,24,33],
+				"hint": "<b>Internal_Font</b> = <i>True or False</i><br><b>Internal_Font</b> = <i>Yes or No</i><br><b>Internal_Font</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Int_Sub_Start",
+				"core": [14,16],
+				"hint": "<i>Start of the Managed Hardware Interrupt Subroutine Block</i>"
+			},
+			{
+				"name": "Int_Sub_End",
+				"core": [14,16],
+				"hint": "<i>End of the Managed Hardware Interrupt Subroutine Block</i>"
+			},
+			{
+				"name": "Keypad_Port",
+				"hint": "<b>Keypad_Port</b> = <i>Port</i>"
+			},
+			{
+				"name": "Serial_Terminator",
+				"core": [14,16,24,33],
+				"hint": "<b>Serial_Terminator</b> = <i>CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for RSout serial coms"
+			},
+			{
+				"name": "Show_All_BitNames",
+				"core": [14,16,24,33],
+				"hint": "<b>Show_All_BitNames</b> = <i>On or Off</i><br>Show all SFR bit names in the Asm listing"
+			},
+			{
+				"name": "HSCL_Pin,HSCL1_Pin",
+				"hint": "<b>HSCL_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP1 SCL line"
+			},
+			{
+				"name": "HSCL2_Pin",
+				"core": [16,24,33],
+				"hint": "<b>HSCL2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP2 SCL line"
+			},
+			{
+				"name": "HSDA_Pin,HSDA1_Pin",
+				"hint": "<b>HSDA_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP1 SDA line"
+			},
+			{
+				"name": "HSDA2_Pin",
+				"core": [24,33],
+				"hint": "<b>HSDA2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP2 SDA line"
+			},
+			{
+				"name": "HSerial_Terminator,HSerial1_Terminator",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerial1_Terminator</b> = <i>CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USART1 serial coms"
+			},
+			{
+				"name": "HSerial2_Terminator",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerial2_Terminator</b> <i> CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USART2 serial coms"
+			},
+			{
+				"name": "HSerial3_Terminator",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerial3_Terminator</b> <i> CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USART3 serial coms"
+			},
+			{
+				"name": "HSerial4_Terminator",
+				"core": [14,16,24,33],
+				"hint": "<b>HSerial4_Terminator</b> <i> CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USART4 serial coms"
+			},
+			{
+				"name": "Touch_DINPin",
+				"core": [24,33],
+				"hint": "<b>Touch_DINPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "Touch_DOUTPin",
+				"core": [24,33],
+				"hint": "<b>Touch_DOUTPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "Touch_CLKPin",
+				"core": [24,33],
+				"hint": "<b>Touch_CLKPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "Touch_CSPin",
+				"core": [24,33],
+				"hint": "<b>Touch_CSPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_CS1Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_CS1Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_CS2Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_CS2Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_CommandUs",
+				"hint": "<b>LCD_CommandUs</b> = <i>1 to 65535 microseconds</i>"
+			},
+			{
+				"name": "LCD_DataUs",
+				"hint": "<b>LCD_DataUs</b> = <i>1 to 255 microseconds</i>"
+			},
+			{
+				"name": "LCD_DTPin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_DTPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_Data0...15_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_DataX_Pin</b> = <i>Port.Pin or Pin Name for the LCD's DX lines</i>"
+			},
+			{
+				"name": "LCD_DTPort",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_DTPort</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_ENPin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_ENPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_CDPin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_CDPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_CEPin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_CEPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_RDPin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_RDPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_WRPin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_WRPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_RSTPin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_RSTPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_Font_Width",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_Font_Width</b> = <i>6 or 8</i>"
+			},
+			{
+				"name": "LCD_Font_Height",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_Font_Height</b> = <i>1 to 255</i>"
+			},
+			{
+				"name": "LCD_X_Res",
+				"core": [14,16,24,33],
+				"hint": "<b>Lcd_X_Res</b> = <i>1 to 255</i>"
+			},
+			{
+				"name": "LCD_Y_Res",
+				"core": [14,16,24,33],
+				"hint": "<b>Lcd_Y_Res</b> = <i>1 to 255</i>"
+			},
+			{
+				"name": "LCD_Text_Pages",
+				"core": [14,16,24,33],
+				"hint": "<b>Lcd_Text_Pages</b> = <i>1 to 255</i>"
+			},
+			{
+				"name": "LCD_Graphic_Pages",
+				"core": [14,16,24,33],
+				"hint": "<b>Lcd_Graphic_Pages</b> = <i>1 to 255</i>"
+			},
+			{
+				"name": "LCD_RAM_Size",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_RAM_Size</b> = <i>1 to 65535</i>"
+			},
+			{
+				"name": "LCD_Text_Home_Address",
+				"core": [14,16,24,33],
+				"hint": "<b>Lcd_Text_Home_Address</b> = <i>0 to RAM size</i>"
+			},
+			{
+				"name": "LCD_Interface",
+				"core": [14,16,24,33],
+				"hint": "<b>Lcd_Interface</b> = <i>4 or 8</i>"
+			},
+			{
+				"name": "LCD_Lines",
+				"core": [14,16,24,33],
+				"hint": "<b>Lcd_Lines</b> = <i>1 or 2 or 4</i>"
+			},
+			{
+				"name": "LCD_RSPin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_RSPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_RWPin",
+				"core": [14,16,24,33],
+				"hint": "<b>LCD_RWPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "LCD_Type",
+				"core": [14,16,24,33],
+				"hint": "<b>Lcd_Type</b> = <i>Graphic or Alpha or Samsung or Toshiba</i>"
+			},
+			{
+				"name": "Low_Int_Sub_Start",
+				"core": [16],
+				"hint": "<i>Start of the Managed <b>Low</b> Priority Hardware Interrupt Subroutine Block</i>"
+			},
+			{
+				"name": "Low_Int_Sub_End",
+				"core": [16],
+				"hint": "<i>End of the Managed <b>Low</b> Priority Hardware Interrupt Subroutine Block</i>"
+			},
+			{
+				"name": "Lst_Prm_Type"
+			},
+			{
+				"name": "MSSP_Type",
+				"core": [14,16,24,33],
+				"hint": "<b>MSSP_Type</b> = <i>1 or 2 or 3</i>"
+			},
+			{
+				"name": "Onboard_ADC",
+				"core": [14,16,24,33],
+				"hint": "<b>Onboard_ADC</b> = <i>True or False</i><br><b>Onboard_ADC</b> = <i>Yes or No</i><br><b>Onboard_ADC</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Onboard_UART",
+				"core": [14,16,24,33],
+				"hint": "<b>Onboard_UART</b> = <i>True or False</i><br><b>Onboard_UART</b> = <i>Yes or No</i><br><b>Onboard_UART</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Onboard_USB",
+				"core": [14,16,24,33],
+				"hint": "<b>Onboard_USB</b> = <i>True or False</i><br><b>Onboard_USB</b> = <i>Yes or No</i><br><b>Onboard_USB</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Optimiser_Level",
+				"core": [14,16,24,33],
+				"hint": "<b>Optimiser_Level</b> = <i>0 to 3</i>"
+			},
+			{
+				"name": "Page",
+				"core": [14],
+				"hint": "<b>Page</b> = <i>1 to 4</i>"
+			},
+			{
+				"name": "PICmicro_Pages",
+				"core": [14],
+				"hint": "<b>Picmicro_Pages</b> = <i>1 to 4</i>"
+			},
+			{
+				"name": "PLL_Req",
+				"core": [14,16,24,33],
+				"hint": "<b>PLL_Req</b> = <i>True or False</i><br><b>PLL_Req</b> = <i>Yes or No</i><br><b>PLL_Req</b> = <i>1 or 0</i><br>Note.. Not recommended for new programs!"
+			},
+			{
+				"name": "PORTB_Pullups",
+				"core": [14,16,24,33],
+				"hint": "<b>PORTB_Pullups</b> = <i>True or False</i><br><b>PORTB_Pullups</b> = <i>Yes or No</i><br><b>PORTB_Pullups</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Pulsin_Maximum,PulseIn_Maximum",
+				"hint": "<b>PulseIn_Maximum</b> = <i>0 to 65535 microseconds</i>"
+			},
+			{
+				"name": "Prm_1...32"
+			},
+			{
+				"name": "Prm_1...32_Bit"
+			},
+			{
+				"name": "Prm_Count"
+			},
+			{
+				"name": "RAM_Bank",
+				"core": [12,14,16],
+				"hint": "<b>RAM_Bank</b> = <i>1 to 16</i>"
+			},
+			{
+				"name": "RAM_Banks",
+				"core": [12,14,16],
+				"hint": "<b>RAM_Banks</b> = <i>1 to 16</i>"
+			},
+			{
+				"name": "Reminders",
+				"hint": "<b>Reminders</b> = <i>True or False</i><br><b>Reminders</b> = <i>Yes or No</i><br><b>Reminders</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hints",
+				"hint": "<b>Hints</b> = <i>True or False</i><br><b>Hints</b> = <i>Yes or No</i><br><b>Hints</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Reset_Bank",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Reserve_RAM",
+				"core": [14,16],
+				"hint": "<b>Reserve_RAM</b> = <i>1 to n</i>"
+			},
+			{
+				"name": "RSIn_Mode",
+				"hint": "<b>RSIn_Mode</b> = <i>Inverted or True or 0 or 1</i>"
+			},
+			{
+				"name": "RSIn_Pin",
+				"hint": "<b>RSIn_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Pin to use for RSin"
+			},
+			{
+				"name": "RSIn_Timeout",
+				"hint": "<b>RSIn_Timeout</b> = <i>0 to 65535 milliseconds</i><br>Timeout to use for RSin"
+			},
+			{
+				"name": "RSOut_Mode",
+				"hint": "<b>RSOut_Mode</b> = <i>Inverted or True or 0 or 1</i>"
+			},
+			{
+				"name": "RSOut_Pace",
+				"hint": "<b>RSOut_Pace</b> = <i>0 to 65535 milliseconds</i>"
+			},
+			{
+				"name": "RSOut_Pin",
+				"hint": "<b>RSOut_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Pin to use for RSout"
+			},
+			{
+				"name": "RSOut_Baud",
+				"hint": "<b>RSOut_Baud</b> = <i>Baud Rate</i>"
+			},
+			{
+				"name": "RC5In_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>RC5In_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "Return_Var,Return_Type"
+			},
+			{
+				"name": "Sonyin_Pin",
+				"core": [14,16,24,33],
+				"hint": "<b>Sonyin_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "SCL_Pin",
+				"hint": "<b>SCL_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Pin to use for the SCL line for Busin and Busout"
+			},
+			{
+				"name": "SDA_Pin",
+				"hint": "<b>SDA_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Pin to use for the SDA line for Busin and Busout"
+			},
+			{
+				"name": "Serial_Baud",
+				"hint": "<b>Serial_Baud</b> = <i>BaudRate for RSout and RSin</i>"
+			},
+			{
+				"name": "Serial_Parity",
+				"hint": "<b>Serial_Parity</b> = <i>Odd or Even parity for RSout and RSin</i>"
+			},
+			{
+				"name": "Set_Bank",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Shift_DelayUs",
+				"hint": "<b>Shift_DelayUs</b> = <i>1 to 65535 milliseconds</i>"
+			},
+			{
+				"name": "Slow_Bus",
+				"hint": "<b>Slow_Bus</b> = <i>True or False</i><br><b>Slow_Bus</b> = <i>Yes or No</i><br><b>Slow_Bus</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Small_Micro_Model",
+				"core": [12,14,16],
+				"hint": "<b>Small_Micro_Model</b> = <i>True or False</i><br><b>Small_Micro_Model</b> = <i>Yes or No</i><br><b>Small_Micro_Model</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Single_Page_Micro",
+				"core": [12,14,16],
+				"hint": "<b>Single_Page_Micro</b> = <i>True or False</i><br><b>Single_Page_Micro</b> = <i>Yes or No</i><br><b>Single_Page_Micro</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Stamp_Sin",
+				"hint": "<b>Stamp_Sin</b> = <i>True or False</i><br><b>Stamp_Sin</b> = <i>Yes or No</i><br><b>Stamp_Sin</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Stamp_Cos",
+				"hint": "<b>Stamp_Cos</b> = <i>True or False</i><br><b>Stamp_Cos</b> = <i>Yes or No</i><br><b>Stamp_Cos</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Stamp_Sqr",
+				"hint": "<b>Stamp_Sqr</b> = <i>True or False</i><br><b>Stamp_Sqr</b> = <i>Yes or No</i><br><b>Stamp_Sqr</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Stack_Size",
+				"core": [14,16,24,33],
+				"hint": "<b>Stack_Size</b> = <i>20 to n</i>"
+			},
+			{
+				"name": "Stack_Start_Address",
+				"core": [14,16,24,33],
+				"hint": "<b>Stack_Start_Address</b> = <i>Starting address of the microcontroller's stack (must be located after variable placements, and on a 16-bit address)</i>"
+			},
+			{
+				"name": "System,Access",
+				"core": [12,14,16],
+				"hint": "<b>System</b><br><i><span style='color:#008000;'>Place the variable at the beginning of RAM, or in Access RAM on 18F devices</span></i>"
+			},
+			{
+				"name": "TRIS_Offset",
+				"hint": "<b>TRIS_Offset</b> = <i>The difference between a PORT's address and its TRIS address</i>"
+			},
+			{
+				"name": "USB_Class_File",
+				"core": [14,16],
+				"hint": "<b>USB_Class_File</b> = <i>USB Class FileName</i>"
+			},
+			{
+				"name": "USB_Descriptor",
+				"core": [14,16],
+				"hint": "<b>USB_Descriptor</b> = <i>USB Descriptor FileName</i>"
+			},
+			{
+				"name": "USB_Show_Enum",
+				"core": [14],
+				"hint": "<b>USB_Show_Enum</b> = <i>True or False</i><br><b>USB_Show_Enum</b> = <i>Yes or No</i><br><b>USB_Show_Enum</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "USB_Sense_Pin",
+				"core": [16],
+				"hint": "<b>USB_Sense_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "USB_Self_Power_Pin",
+				"core": [16],
+				"hint": "<b>USB_Self_Power_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "USBIn_Auto_Poll",
+				"core": [16],
+				"hint": "<b>USBIn_Auto_Poll</b> = <i>True or False</i><br><i><span style='color:#008000;'>Enable\\Disable Auto polling within the USBIn command</span></i>"
+			},
+			{
+				"name": "USBOut_Auto_Poll",
+				"core": [16],
+				"hint": "<b>USBOut_Auto_Poll</b> = <i>True or False</i><br><i><span style='color:#008000;'>Enable\\Disable Auto polling within the USBOut command</span></i>"
+			},
+			{
+				"name": "UnHandled",
+				"core": [24,33],
+				"hint": "<b>UnHandled</b><i><span style='color:#008000;'>Do not handle compiler system variables and SFRs while within the interrupt</span></i>"
+			},
+			{
+				"name": "Variable",
+				"hint": "<b>Variable</b><br><br><i><span style='color:#008000;'>Create an ASM variable, <u>not</u> a BASIC variable</span></i>"
+			},
+			{
+				"name": "Warnings",
+				"hint": "<b>Warnings</b> = <i>True or False</i><br><b>Warnings</b> = <i>Yes or No</i><br><b>Warnings</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Watchdog",
+				"hint": "<b>Watchdog</b> = <i>True or False</i><br><b>Watchdog</b> = <i>Yes or No</i><br><b>Watchdog</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "XIN_Translate",
+				"core": [14,16,24,33],
+				"hint": "<b>XIN_Translate</b> = <i>True or False</i><br><b>XIN_Translate</b> = <i>Yes or No</i><br><b>XIN_Translate</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "XOUT_Translate",
+				"core": [14,16,24,33],
+				"hint": "<b>XOUT_Translate</b> = <i>True or False</i><br><b>XOUT_Translate</b> = <i>Yes or No</i><br><b>XOUT_Translate</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Xtal",
+				"hint": "<b>Xtal</b> = <i>Crystal Frequency (in MHz)</i>"
+			},
+			{
+				"name": "YRAM",
+				"hint": "<b>YRAM</b><br><i><span style='color:#008000;'>Place the variable in YRAM (if available)</span></i>"
+			},
+			{
+				"name": "#ifMacro-",
+				"hint": "<b>#ifMacro-</b><br><br><i><span style='color:#008000;'><b>If Macro Defined and Used <i>(without a jump over the block)</i></b> statement</span></i>"
+			},
+			{
+				"name": "#ifMacro",
+				"hint": "<b>#ifMacro</b><br><br><i><span style='color:#008000;'><b>If Macro Defined and Used</b> statement</span></i>"
+			},
+			{
+				"name": "#endIfMacro-",
+				"core": [14,16,24,33],
+				"hint": "<b>#endIfMacro-</b><br><br><i><span style='color:#008000;'><b>End If Macro Defined and Used <i>(without a label for the jump block)</i></b> statement</span></i>"
+			},
+			{
+				"name": "#endIfMacro",
+				"hint": "<b>#endIfMacro</b><br><br><i><span style='color:#008000;'><b>End If Macro Defined and Used</b> statement</span></i>"
+			},
+			{
+				"name": "#ifSym-",
+				"core": [14,16,24,33],
+				"hint": "<b>#ifSym-</b><br><br><i><span style='color:#008000;'><b>If Symbol declared <i>(without a jump over the block)</i></b> statement</span></i>"
+			},
+			{
+				"name": "#ifSym",
+				"core": [14,16,24,33],
+				"hint": "<b>#ifSym</b><br><br><i><span style='color:#008000;'><b>If Symbol declared</b> statement</span></i>"
+			},
+			{
+				"name": "#ifnSym-",
+				"core": [14,16,24,33],
+				"hint": "<b>#ifnSym-</b><br><br><i><span style='color:#008000;'><b>If Symbol not declared <i>(without a jump over the block)</i></b> statement</span></i>"
+			},
+			{
+				"name": "#ifnSym",
+				"core": [14,16,24,33],
+				"hint": "<b>#ifnSym</b><br><br><i><span style='color:#008000;'><b>If Symbol not declared</b> statement</span></i>"
+			},
+			{
+				"name": "#endIfSym-",
+				"core": [14,16,24,33],
+				"hint": "<b>#endIfSym-</b><br><br><i><span style='color:#008000;'><b>End If Symbol declared <i>(without a label for the jump block)</i></b> statement</span></i>"
+			},
+			{
+				"name": "#endIfSym",
+				"core": [14,16,24,33],
+				"hint": "<b>#endIfSym</b><br><br><i><span style='color:#008000;'><b>End If Symbol declared</b> statement</span></i>"
+			},
+			{
+				"name": "#Sym",
+				"core": [14,16,24,33],
+				"hint": "<b>#Sym</b><br><br><i><span style='color:#008000;'><b>Declare a Sym</b> Sym Name</span></i>"
+			},
+			{
+				"name": "#ifndef",
+				"hint": "<b>#ifndef</b><br><br><i><span style='color:#008000;'>Assembler <b>If Not Define</b> statement</span></i>"
+			},
+			{
+				"name": "#ifdef",
+				"hint": "<b>#ifdef</b><br><br><i><span style='color:#008000;'>Assembler <b>If Define</b> statement</span></i>"
+			},
+			{
+				"name": "#define",
+				"hint": "<b>#define</b><br><br><i><span style='color:#008000;'>Assembler <b>Define</b> statement</span></i>"
+			},
+			{
+				"name": "#undefine",
+				"hint": "<b>#undefine</b><br><br><i><span style='color:#008000;'>Assembler <b>Undefine</b></span></i>"
+			},
+			{
+				"name": "#if",
+				"hint": "<b>#if</b><br><br><i><span style='color:#008000;'>Assembler <b>If</b> statement</span></i>"
+			},
+			{
+				"name": "#else",
+				"hint": "<b>#else</b><br><br><i><span style='color:#008000;'>Assembler <b>Else</b> statement</span></i>"
+			},
+			{
+				"name": "#endif",
+				"hint": "<b>#endif</b><br><br><i><span style='color:#008000;'>Assembler <b>End If</b> statement</font</i>>"
+			},
+			{
+				"name": "#while",
+				"hint": "<b>#while</b><br><br><i><span style='color:#008000;'>Assembler <b>While</b> statement</span></i>"
+			},
+			{
+				"name": "#endw",
+				"hint": "<b>#endw</b><br><br><i><span style='color:#008000;'>Assembler <b>Endw</b> statement</span></i>"
+			},
+			{
+				"name": "#error",
+				"hint": "<b>#error</b><br><br><i><span style='color:#008000;'>Assembler <b>Error</b> statement</span></i>"
+			},
+			{
+				"name": "#Enable",
+				"hint": "<b>#Enable</b> <i><span style='color:#008000;'> Command Library Routines to Enable</span></i>"
+			},
+			{
+				"name": "#Disable",
+				"hint": "<b>#Disable</b> <i><span style='color:#008000;'> Command Library Routines to Disable</span></i>"
+			},
+			{
+				"name": "Auto_Context_Save",
+				"core": [14,16],
+				"hint": "<b>Auto_Context_Save</b> <i> On or Off</i>"
+			}
+		],
+		"KeywordASM": [
+			{
+				"name": "Addfsr",
+				"core": [14,16]
+			},
+			{
+				"name": "Addlw",
+				"core": [14,16]
+			},
+			{
+				"name": "Addwf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Addwfc",
+				"core": [14,16]
+			},
+			{
+				"name": "Andlw",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Andwf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Bc",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Bcf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Bdc",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Bk",
+				"core": [14,16]
+			},
+			{
+				"name": "Bn",
+				"core": [14,16]
+			},
+			{
+				"name": "Bnc",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Bnn",
+				"core": [14,16]
+			},
+			{
+				"name": "Bnov",
+				"core": [14,16]
+			},
+			{
+				"name": "Bnz",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Bov",
+				"core": [14,16]
+			},
+			{
+				"name": "Bra",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Brw",
+				"core": [14,16]
+			},
+			{
+				"name": "Bsf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Btfsc",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Btfss",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Bz",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Clrc",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Clrdc",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Clrf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Clrw",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Clrwdt"
+			},
+			{
+				"name": "Clrz",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Comf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Config1H",
+				"core": [16]
+			},
+			{
+				"name": "Config1L",
+				"core": [16]
+			},
+			{
+				"name": "Config2H",
+				"core": [16]
+			},
+			{
+				"name": "Config2L",
+				"core": [16]
+			},
+			{
+				"name": "Config3H",
+				"core": [16]
+			},
+			{
+				"name": "Config3L",
+				"core": [16]
+			},
+			{
+				"name": "Config4H",
+				"core": [16]
+			},
+			{
+				"name": "Config4L",
+				"core": [16]
+			},
+			{
+				"name": "Config5H",
+				"core": [16]
+			},
+			{
+				"name": "Config5L",
+				"core": [16]
+			},
+			{
+				"name": "Config6H",
+				"core": [16]
+			},
+			{
+				"name": "Config6L",
+				"core": [16]
+			},
+			{
+				"name": "Config7H",
+				"core": [16]
+			},
+			{
+				"name": "Config7L",
+				"core": [16]
+			},
+			{
+				"name": "Cpfseq",
+				"core": [14,16]
+			},
+			{
+				"name": "Cpfsgt",
+				"core": [14,16]
+			},
+			{
+				"name": "Cpfslt",
+				"core": [14,16]
+			},
+			{
+				"name": "Daw",
+				"core": [14,16]
+			},
+			{
+				"name": "Dcfsnz",
+				"core": [14,16]
+			},
+			{
+				"name": "Decf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Decfsz",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Djc"
+			},
+			{
+				"name": "Djnc"
+			},
+			{
+				"name": "Djnz"
+			},
+			{
+				"name": "Djz"
+			},
+			{
+				"name": "Fast",
+				"core": [14,16]
+			},
+			{
+				"name": "Ijc"
+			},
+			{
+				"name": "Ijnc"
+			},
+			{
+				"name": "Ijnz"
+			},
+			{
+				"name": "Ijz"
+			},
+			{
+				"name": "Incf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Incfsz",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Infsnz",
+				"core": [14,16]
+			},
+			{
+				"name": "Input_PullUp",
+				"core": [14,16]
+			},
+			{
+				"name": "Iorlw",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Iorwf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Jump"
+			},
+			{
+				"name": "LCall",
+				"core": [12,14,16],
+				"hint": "<b>LCall</b> <i>Label Name</i>"
+			},
+			{
+				"name": "LGoto",
+				"core": [12,14,16],
+				"hint": "<b>LGoto</b> <i>Label Name</i>"
+			},
+			{
+				"name": "Lfsr",
+				"core": [14,16]
+			},
+			{
+				"name": "Lslf",
+				"core": [14]
+			},
+			{
+				"name": "Lsrf",
+				"core": [14]
+			},
+			{
+				"name": "LsbFirst, LsbFirst_H, LsbFirst_L, LsbPost, LsbPost_H, LsbPost_L, LsbPre, LsbPre_H, LsbPre_L"
+			},
+			{
+				"name": "Movf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Movff",
+				"core": [14,16]
+			},
+			{
+				"name": "Movffl",
+				"core": [16]
+			},
+			{
+				"name": "Movlb",
+				"core": [14,16]
+			},
+			{
+				"name": "Movlp",
+				"core": [14,16]
+			},
+			{
+				"name": "Movlw",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Movwf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Movwi",
+				"core": [14,16]
+			},
+			{
+				"name": "Moviw",
+				"core": [14,16]
+			},
+			{
+				"name": "MsbFirst, MsbFirst_H, MsbFirst_L, MsbPost, MsbPost_H, MsbPost_L, MsbPre, MsbPre_H, MsbPre_L"
+			},
+			{
+				"name": "Mullw",
+				"core": [14,16]
+			},
+			{
+				"name": "Mulwf",
+				"core": [14,16]
+			},
+			{
+				"name": "Negf",
+				"core": [14,16]
+			},
+			{
+				"name": "Nop"
+			},
+			{
+				"name": "Rcall",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Reset",
+				"core": [14,16]
+			},
+			{
+				"name": "Ret",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Return_Bit",
+				"core": [14,16,24,33],
+				"hint": "<b>Return_Bit</b> <i>Variable<b>, </b>Bit Number</i>"
+			},
+			{
+				"name": "Return_Float",
+				"core": [14,16,24,33],
+				"hint": "<b>Return_Float</b> <i>Float Variable or SFR</i>"
+			},
+			{
+				"name": "Return_DWord",
+				"core": [14,16,24,33],
+				"hint": "<b>Return_DWord</b> <i>DWord Variable or SFR</i>"
+			},
+			{
+				"name": "Return_Word",
+				"core": [14,16,24,33],
+				"hint": "<b>Return_Word</b> <i>Word Variable or SFR</i>"
+			},
+			{
+				"name": "Return_Byte",
+				"core": [14,16,24,33],
+				"hint": "<b>Return_Byte</b> <i>Byte Variable or SFR</i>"
+			},
+			{
+				"name": "Return_SDWord",
+				"core": [14,16,24,33],
+				"hint": "<b>Return_SDWord</b> <i>Signed DWord Variable or SFR</i>"
+			},
+			{
+				"name": "Return_SWord",
+				"core": [14,16,24,33],
+				"hint": "<b>Return_SWord</b> <i>Signed Word Variable or SFR</i>"
+			},
+			{
+				"name": "Return_SByte",
+				"core": [14,16,24,33],
+				"hint": "<b>Return_SByte</b> <i>Signed Byte Variable or SFR</i>"
+			},
+			{
+				"name": "Return_WREG",
+				"core": [14,16,24,33],
+				"hint": "<b>Return_WREG</b>"
+			},
+			{
+				"name": "Retfie",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Retlw"
+			},
+			{
+				"name": "Rlcf",
+				"core": [14,16]
+			},
+			{
+				"name": "Rlf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Rlncf",
+				"core": [14,16]
+			},
+			{
+				"name": "Rrcf",
+				"core": [14,16]
+			},
+			{
+				"name": "Rrf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Rrncf",
+				"core": [14,16]
+			},
+			{
+				"name": "Setc",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Setdc",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Setf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Setz",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Skpc"
+			},
+			{
+				"name": "Skpdc"
+			},
+			{
+				"name": "Skpnc"
+			},
+			{
+				"name": "Skpndc"
+			},
+			{
+				"name": "Skpnz"
+			},
+			{
+				"name": "Skpz"
+			},
+			{
+				"name": "Subfwb",
+				"core": [14,16]
+			},
+			{
+				"name": "Subfsr",
+				"core": [14,16]
+			},
+			{
+				"name": "Sublw",
+				"core": [14,16]
+			},
+			{
+				"name": "Subwf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Subwfb",
+				"core": [14,16]
+			},
+			{
+				"name": "Swapf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Tblrd+*, Tblrd*+, Tblrd*-, Tblrd*",
+				"core": [14,16]
+			},
+			{
+				"name": "Tblwt+*, Tblwt*+, Tblwt*-, Tblwt*",
+				"core": [14,16]
+			},
+			{
+				"name": "Tstfsz",
+				"core": [14,16]
+			},
+			{
+				"name": "Xorlw",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Xorwf",
+				"core": [12,14,16]
+			},
+			{
+				"name": "Add",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Addc",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Asr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Bclr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Bset",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Btg",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Btsc",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Btss",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Btst",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Clr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Com",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Cp",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Cp0",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Cpsne, Cpseq, Cpsgt, Cpslt",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Div",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Disi",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Ff1l",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Inc2",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Lac",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Lnk",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Lsr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Lsl",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Ior",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "mRepeat",
+				"core": [14,16,24,33],
+				"hint": "24-bit Assembler Mnemonic Repeat"
+			},
+			{
+				"name": "mDo",
+				"core": [14,16,24,33],
+				"hint": "24-bit Assembler Mnemonic Do"
+			},
+			{
+				"name": "Mac",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Mov",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "MovPag",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Mpy",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Msc",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Mul",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Neg",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Rlc",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Rrc",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Sac",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Se",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Sl",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Sftac",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Sr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Subb",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Subbr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Subr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "TblrdL,TblrdH",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "TblwtL,TblwtH",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Tstf",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Ulnk",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Xor",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Ze",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Num_Wreg, Num_Bit, Num_Byte, Num_Word, Num_Dword, Num_Float, Num_SFR, Num_FSR, Num_FSR0, Num_FSR1, Num_FSR2"
+			},
+			{
+				"name": "Wreg_Bit, Wreg_Byte, Wreg_Word, Wreg_Dword, Wreg_Float, Wreg_SWord, Wreg_SDword"
+			},
+			{
+				"name": "Bit_Wreg, Bit_Bit, Bit_Byte, Bit_Word, Bit_Dword, Bit_Float"
+			},
+			{
+				"name": "Byte_Wreg, Byte_Bit, Byte_Byte, Byte_Word, Byte_Dword, Byte_Float, Byte_SWord, Byte_SDword, Byte_Label"
+			},
+			{
+				"name": "Word_Wreg, Word_Bit, Word_Byte, Word_Word, Word_Dword, Word_Float, Word_SDword, Word_Label"
+			},
+			{
+				"name": "Dword_Wreg, Dword_Bit, Dword_Byte, Dword_Word, Dword_Dword, Dword_Float, Dword_Label"
+			},
+			{
+				"name": "Float_Wreg, Float_Bit, Float_Byte, Float_Word, Float_Dword, Float_Float"
+			}
+		],
+		"KeywordUser": [
+			{
+				"name": "__USBIn_Buffer",
+				"core": [16],
+				"hint": "<i>Internal USB receive buffer (128 bytes in length)</i>"
+			},
+			{
+				"name": "__USBOut_Buffer",
+				"core": [16],
+				"hint": "<i>Internal USB transmit buffer (128 bytes in length)</i>"
+			},
+			{
+				"name": "__USB_Device_State",
+				"core": [16],
+				"hint": "<i>State of the USB connection</i>"
+			},
+			{
+				"name": "__Xtal",
+				"hint": "<i>Crystal frequency used</i>"
+			},
+			{
+				"name": "_PIC24E, _PIC24F, _PIC24H, _dsPIC33E, _dsPIC33F",
+				"hint": "<i>Microcontroller type</i>"
+			},
+			{
+				"name": "cFRC, c1_FOSC, c2_FOSC, c4_FOSC, c8_FOSC, c16_FOSC, c32_FOSC, c64_FOSC, c128_FOSC, c256_FOSC",
+				"hint": "<i>ADC clock divisor</i>"
+			}
+		],
+		"KeywordPreprocessor": [
+			{
+				"name": "$SendMessage",
+				"hint": "<b>$SendMessage</b><br><br><i><span style='color:#008000;'>Preprocessor <b>Message</b> statement</span></i>"
+			},
+			{
+				"name": "$SendError",
+				"hint": "<b>$SendError</b><br><br><i><span style='color:#008000;'>Preprocessor <b>Error</b> statement</span></i>"
+			},
+			{
+				"name": "$error",
+				"hint": "<b>$error</b><br><br><i><span style='color:#008000;'>Preprocessor <b>Error</b> statement</span></i>"
+			},
+			{
+				"name": "$else",
+				"hint": "<b>$else</b><br><br><i><span style='color:#008000;'>Preprocessor <b>else</b> statement</span></i>"
+			},
+			{
+				"name": "$elif",
+				"hint": "<b>$elif</b><br><br><i><span style='color:#008000;'>Preprocessor <b>else if define</b> statement</span></i>"
+			},
+			{
+				"name": "$elseif",
+				"hint": "<b>$elseif</b><br><br><i><span style='color:#008000;'>Preprocessor <b>else if define</b> statement</span></i>"
+			},
+			{
+				"name": "$endif",
+				"hint": "<b>$endif</b><br><br><i><span style='color:#008000;'>Preprocessor <b>end if</b> statement</span></i>"
+			},
+			{
+				"name": "$eval",
+				"hint": "<b>$eval</b><br><br><i><span style='color:#008000;'>Preprocessor <b>evaluation</b> statement</span></i>"
+			},
+			{
+				"name": "$defeval",
+				"hint": "<b>$defval</b><br><br><i><span style='color:#008000;'>Preprocessor <b>define with evaluate</b> statement</span></i>"
+			},
+			{
+				"name": "$define",
+				"hint": "<b>$define</b><br><br><i><span style='color:#008000;'>Preprocessor <b>define</b> statement</span></i>"
+			},
+			{
+				"name": "$ifdef",
+				"hint": "<b>$ifdef</b><br><br><i><span style='color:#008000;'>Preprocessor <b>if define</b> statement</span></i>"
+			},
+			{
+				"name": "$ifndef",
+				"hint": "<b>$ifndef</b><br><br><i><span style='color:#008000;'>Preprocessor <b>if not define</b> statement</span></i>"
+			},
+			{
+				"name": "$if",
+				"hint": "<b>$if</b><br><br><i><span style='color:#008000;'>Preprocessor <b>if define</b> statement</span></i>"
+			},
+			{
+				"name": "$ifeq",
+				"hint": "<b>$ifeq</b><br><br><i><span style='color:#008000;'>Preprocessor <b>if define equals</b> statement</span></i>"
+			},
+			{
+				"name": "$ifneq",
+				"hint": "<b>$ifneq</b><br><br><i><span style='color:#008000;'>Preprocessor <b>if define not equals</b> statement</span></i>"
+			},
+			{
+				"name": "$undef",
+				"hint": "<b>$undef</b><br><br><i><span style='color:#008000;'>Preprocessor <b>undefine</b> statement</span></i>"
+			},
+			{
+				"name": "_defined"
+			},
+			{
+				"name": "_device",
+				"hint": "<i>Microcontroller Device name</i>"
+			},
+			{
+				"name": "_PIR3_TXRX",
+				"hint": "<i>PIR3 used instead of PIR1</i>"
+			},
+			{
+				"name": "_ecore",
+				"hint": "<i>Enhanced 14-bit core microcontroller</i>"
+			},
+			{
+				"name": "_type",
+				"hint": "<i>Microcontroller type _PIC24E or _PIC24F or _PIC24H</i>"
+			},
+			{
+				"name": "_xtal",
+				"hint": "<i>Crystal speed</i>"
+			},
+			{
+				"name": "_core",
+				"hint": "<i>Device core type (12 or 14 or 16 or 24 or 33)</i>"
+			},
+			{
+				"name": "_ram",
+				"hint": "<i>Amount of RAM</i>"
+			},
+			{
+				"name": "_code",
+				"hint": "<i>Amount of Flash memory</i>"
+			},
+			{
+				"name": "_ports",
+				"hint": "<i>Amount of Ports</i>"
+			},
+			{
+				"name": "_adc",
+				"hint": "<i>Amount of ADC channels</i>"
+			},
+			{
+				"name": "_adcres",
+				"hint": "<i>Resolution of ADC</i>"
+			},
+			{
+				"name": "_block",
+				"hint": "<i>Amount of bytes required for a flash memory write</i>"
+			},
+			{
+				"name": "_eeprom",
+				"hint": "<i>Amount of on-board EEPROM</i>"
+			},
+			{
+				"name": "_uart",
+				"hint": "<i>Amount of UARTs</i>"
+			},
+			{
+				"name": "_pps",
+				"hint": "<i>Present in the def file if the device has PPS support</i>"
+			},
+			{
+				"name": "_usb",
+				"hint": "<i>Whether the device supports USB (0 = no, 1 = yes)</i>"
+			},
+			{
+				"name": "_flash",
+				"hint": "<i>Whether the device is self programmable (0 = no, 1 = Read and Write, 2 = Read Only</i>"
+			},
+			{
+				"name": "_mssp",
+				"hint": "<i>MSSP type (0 = none, 1 = SSP, 2 = MSSP)</i>"
+			},
+			{
+				"name": "_movffl",
+				"hint": "<i>Present in the def file if the device requires the Movffl mnemonic</i>"
+			},
+			{
+				"name": "$SendHint",
+				"hint": "<i>Send a Hint message to the user</i>"
+			},
+			{
+				"name": "$SendWarning",
+				"hint": "<i>Send a Warning message to the user</i>"
+			},
+			{
+				"name": "$SendError",
+				"hint": "<i>Send an Error message to the user</i>"
+			}
+		]
+	}
+}

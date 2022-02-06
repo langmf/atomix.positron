@@ -1,8 +1,7 @@
 "use strict";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-
 const cache = {};
+exports.$ = cache;
 
 
 function get(name) {
@@ -10,6 +9,8 @@ function get(name) {
     const obj = (!(name in cache)) ? cache[name] = {} : cache[name];
     return proxy(obj);
 }
+exports.get = get;
+
 
 const proxy = (input) => {
     const handler = {
@@ -21,7 +22,3 @@ const proxy = (input) => {
     };
     return new Proxy(input, handler);
 };
-
-
-exports.get = get;
-exports.$ = cache;

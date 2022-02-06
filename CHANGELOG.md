@@ -49,3 +49,8 @@
 - Added searching for the first definition of the device and its highlight for other files.
 - Added smart mode highlight for the included files from the parent file.
 - Added auto completion.
+
+## Version 1.2.4 (06/02/2022)
+- Added highlight editor, general settings editor and editor header for a new file.
+- Added about page and page with programs.
+- Added auto format.
