@@ -213,6 +213,10 @@
 				"core": [14,16,24,33]
 			},
 			{
+				"name": "Static",
+				"hint": "<b>Static Dim</b> Variable Name <b>As</b> Variable Type <i>(with an optional assignment)</i>"
+			},
+			{
 				"name": "Bound",
 				"hint": "<b>Bound</b><i>(Variable)</i>"
 			},
@@ -765,6 +769,11 @@
 				"hint": "<b>HBReStart2</b><br><br><i><span style='color:#008000;'>Send a <b>Restart</b> command to I2C using MSSP2</span></i>"
 			},
 			{
+				"name": "HBReStart3",
+				"core": [24,33],
+				"hint": "<b>HBReStart3</b><br><br><i><span style='color:#008000;'>Send a <b>Restart</b> command to I2C using MSSP3</span></i>"
+			},
+			{
 				"name": "HBStart",
 				"core": [14,16,24,33],
 				"hint": "<b>HBStart</b><br><br><i><span style='color:#008000;'>Send a <b>Start</b> command to I2C using MSSP1</span></i>"
@@ -773,6 +782,11 @@
 				"name": "HBStart2",
 				"core": [24,33],
 				"hint": "<b>HBStart2</b><br><br><i><span style='color:#008000;'>Send a <b>Start</b> command to I2C using MSSP2</span></i>"
+			},
+			{
+				"name": "HBStart3",
+				"core": [24,33],
+				"hint": "<b>HBStart3</b><br><br><i><span style='color:#008000;'>Send a <b>Start</b> command to I2C using MSSP3</span></i>"
 			},
 			{
 				"name": "HBStop",
@@ -785,6 +799,11 @@
 				"hint": "<b>HBStop2</b><br><br><i><span style='color:#008000;'>Send a <b>Stop</b> command to I2C using MSSP2</span></i>"
 			},
 			{
+				"name": "HBStop3",
+				"core": [24,33],
+				"hint": "<b>HBStop3</b><br><br><i><span style='color:#008000;'>Send a <b>Stop</b> command to I2C using MSSP3</span></i>"
+			},
+			{
 				"name": "HBusAck",
 				"core": [14,16,24,33],
 				"hint": "<b>HBusAck</b><br><br><i><span style='color:#008000;'>Send an <b>Acknowledge</b> command to I2C using MSSP1</span></i>"
@@ -795,6 +814,11 @@
 				"hint": "<b>HBusAck2</b><br><br><i><span style='color:#008000;'>Send an <b>Acknowledge</b> command to I2C using MSSP2</span></i>"
 			},
 			{
+				"name": "HBusAck3",
+				"core": [24,33],
+				"hint": "<b>HBusAck3</b><br><br><i><span style='color:#008000;'>Send an <b>Acknowledge</b> command to I2C using MSSP3</span></i>"
+			},
+			{
 				"name": "HBusNack",
 				"core": [14,16,24,33],
 				"hint": "<b>HBusNack</b><br><br><i><span style='color:#008000;'>Send a <b>Not Acknowledge</b> command to I2C using MSSP1</span></i>"
@@ -803,6 +827,11 @@
 				"name": "HBusNack2",
 				"core": [24,33],
 				"hint": "<b>HBusNack2</b><br><br><i><span style='color:#008000;'>Send a <b>Not Acknowledge</b> command to I2C using MSSP2</span></i>"
+			},
+			{
+				"name": "HBusNack3",
+				"core": [24,33],
+				"hint": "<b>HBusNack3</b><br><br><i><span style='color:#008000;'>Send a <b>Not Acknowledge</b> command to I2C using MSSP3</span></i>"
 			},
 			{
 				"name": "HBusIn",
@@ -820,6 +849,11 @@
 				"hint": "<b>HBusIn2</b> <i>Variable</i><br><b>HBusIn2</b> <i>Control, {Address}, [Variable {, Variable}]</i><br><i>Variable = </i><b>HBusIn2</b><br><i>Variable = </i><b>HBusIn2</b> <i>Control , {Address}</i>"
 			},
 			{
+				"name": "HBusIn3",
+				"core": [24,33],
+				"hint": "<b>HBusIn3</b> <i>Variable</i><br><b>HBusIn3</b> <i>Control, {Address}, [Variable {, Variable}]</i><br><i>Variable = </i><b>HBusIn3</b><br><i>Variable = </i><b>HBusIn3</b> <i>Control , {Address}</i>"
+			},
+			{
 				"name": "HBusOut",
 				"core": [14,16,24,33],
 				"hint": "<b>HBusOut</b> <i>Variable</i><br><b>HBusOut</b> <i>Control, {Address}, [Output Data]</i>"
@@ -833,6 +867,11 @@
 				"name": "HBusOut2",
 				"core": [24,33],
 				"hint": "<b>HBusOut2</b> <i>Variable</i><br><b>HBusOut2</b> <i>Control, {Address}, [Output Data]</i>"
+			},
+			{
+				"name": "HBusOut3",
+				"core": [24,33],
+				"hint": "<b>HBusOut3</b> <i>Variable</i><br><b>HBusOut3</b> <i>Control, {Address}, [Output Data]</i>"
 			},
 			{
 				"name": "HEData",
@@ -936,6 +975,36 @@
 				"hint": "<i>Variable = </i><b>HRSIn4</b>, <i>{,Timeout, Timeout Label}</i><br><b>HRSIn2</b>, <i>{Timeout, Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
 			},
 			{
+				"name": "HRSOut5",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut5</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSOut5Ln",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut5Ln</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSIn5",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>HRSIn5</b>, <i>{,Timeout, Timeout Label}</i><br><b>HRSIn5</b>, <i>{Timeout, Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
+			},
+			{
+				"name": "HRSOut6",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut6</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSOut6Ln",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut6Ln</b> <i>Item {, Item}</i>"
+			},
+			{
+				"name": "HRSIn6",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>HRSIn6</b>, <i>{,Timeout, Timeout Label}</i><br><b>HRSIn6</b>, <i>{Timeout, Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
+			},
+			{
 				"name": "HSerial_ChangeBaud,HSerial1_ChangeBaud",
 				"core": [14,16,24,33],
 				"hint": "<b>HSerial1__ChangeBaud</b> <i>Baud Value Constant for USART1 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
@@ -994,6 +1063,16 @@
 				"name": "HSerOut4",
 				"core": [14,16,24,33],
 				"hint": "<b>HSerOut4</b> <i>[Item {,Item}]</i>"
+			},
+			{
+				"name": "HSerIn5",
+				"core": [24,33],
+				"hint": "<b>HSerIn5</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
+			},
+			{
+				"name": "HSerOut6",
+				"core": [24,33],
+				"hint": "<b>HSerOut6</b> <i>[Item {,Item}]</i>"
 			},
 			{
 				"name": "I2CIn",
@@ -1317,6 +1396,10 @@
 			{
 				"name": "PinClear",
 				"hint": "<b>PinClear</b> <i>Pin Number Constant Value or Variable or Expression</i><br>Pull an I\\O pin to 0"
+			},
+			{
+				"name": "PinGet",
+				"hint": "<i>Variable = </i><b>PinGet</b> <i>Pin Value</i>"
 			},
 			{
 				"name": "PinSet",
@@ -2334,6 +2417,16 @@
 				"hint": "<b>HRSOut4_Pin</b> = <i>Port.Pin or Pin Name for USART4 transmit</i>"
 			},
 			{
+				"name": "HRSOut5_Pin",
+				"core": [24,33],
+				"hint": "<b>HRSOut5_Pin</b> = <i>Port.Pin or Pin Name for USART5 transmit</i>"
+			},
+			{
+				"name": "HRSOut6_Pin",
+				"core": [24,33],
+				"hint": "<b>HRSOut6_Pin</b> = <i>Port.Pin or Pin Name for USART6 transmit</i>"
+			},
+			{
 				"name": "HRSIn_Pin,HRSIn1_Pin",
 				"core": [14,16,24,33],
 				"hint": "<b>HRSIn_Pin</b> = <i>Port.Pin or Pin Name for USART1 receive</i>"
@@ -2354,19 +2447,39 @@
 				"hint": "<b>HRSIn4_Pin</b> = <i>Port.Pin or Pin Name for USART4 receive</i>"
 			},
 			{
+				"name": "HRSIn5_Pin",
+				"core": [24,33],
+				"hint": "<b>HRSIn5_Pin</b> = <i>Port.Pin or Pin Name for USART5 receive</i>"
+			},
+			{
+				"name": "HRSIn6_Pin",
+				"core": [24,33],
+				"hint": "<b>HRSIn6_Pin</b> = <i>Port.Pin or Pin Name for USART6 receive</i>"
+			},
+			{
 				"name": "Hserial_Baud,Hserial1_Baud",
 				"core": [14,16,24,33],
 				"hint": "<b>Hserial_Baud</b> = <i>BaudRate for USART1</i>"
 			},
 			{
+				"name": "Hserial2_Baud",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial2_Baud</b> = <i>BaudRate for USART2</i>"
+			},
+			{
+				"name": "Hserial3_Baud",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial3_Baud</b> = <i>BaudRate for USART3</i>"
+			},
+			{
+				"name": "Hserial4_Baud",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial4_Baud</b> = <i>BaudRate for USART4</i>"
+			},
+			{
 				"name": "Hserial_Clear,Hserial1_Clear",
 				"core": [14,16,24,33],
 				"hint": "<b>Hserial_Clear</b> = <i>True or False</i><br><b>Hserial_Clear</b> = <i>Yes or No</i><br><b>Hserial_Clear</b> = <i>1 or 0</i>"
-			},
-			{
-				"name": "Hserial_Parity,Hserial1_Parity",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial_Parity</b> = <i>Odd or Even</i>"
 			},
 			{
 				"name": "Hserial_RCSTA,Hserial1_RCSTA",
@@ -2462,6 +2575,46 @@
 				"name": "HRSOut4_Pace",
 				"core": [14,16,24,33],
 				"hint": "<b>HRSOut4_Pace</b> = <i>1 to 65535 (us)</i>"
+			},
+			{
+				"name": "Hserial5_Baud",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial5_Baud</b> = <i>BaudRate for USART5</i>"
+			},
+			{
+				"name": "Hserial5_Clear",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial5_Clear</b> = <i>True or False</i><br><b>Hserial5_Clear</b> = <i>Yes or No</i><br><b>Hserial5_Clear</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hserial5_Parity",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial5_Parity</b> = <i>Odd or Even</i>"
+			},
+			{
+				"name": "HRSOut5_Pace",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut5_Pace</b> = <i>1 to 65535 (us)</i>"
+			},
+			{
+				"name": "Hserial6_Baud",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial6_Baud</b> = <i>BaudRate for USART6</i>"
+			},
+			{
+				"name": "Hserial6_Clear",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial6_Clear</b> = <i>True or False</i><br><b>Hserial6_Clear</b> = <i>Yes or No</i><br><b>Hserial6_Clear</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hserial6_Parity",
+				"core": [14,16,24,33],
+				"hint": "<b>Hserial6_Parity</b> = <i>Odd or Even</i>"
+			},
+			{
+				"name": "HRSOut6_Pace",
+				"core": [14,16,24,33],
+				"hint": "<b>HRSOut6_Pace</b> = <i>1 to 65535 (us)</i>"
 			},
 			{
 				"name": "ICD_Req",
@@ -3044,7 +3197,7 @@
 			},
 			{
 				"name": "#endif",
-				"hint": "<b>#endif</b><br><br><i><span style='color:#008000;'>Assembler <b>End If</b> statement</font</i>>"
+				"hint": "<b>#endif</b><br><br><i><span style='color:#008000;'>Assembler <b>End If</b> statement</span</i>>"
 			},
 			{
 				"name": "#while",
