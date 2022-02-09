@@ -124,7 +124,7 @@ exports.failRange = failRange;
 
 
 function getCore(doc) {
-    return cache.get(doc).symbols.device.$.$info.core;
+    return cache.get(doc).symbols.device.$.$info?.core;
 }
 exports.getCore = getCore;
 
@@ -185,7 +185,7 @@ exports.filterSymbols = filterSymbols;
 
 
 function getSymbols(input) {
-    const r = /(?:"[^"]*")|[';].*$|\(\*[^\*]*\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+).*?('[\t ]*$[\s\S]*?(?:\r\n\r\n|\n\n|\r\r)|(?=$))|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
+    const r = /(?:"[^"]*")|[';].*$|\(\*[\s\S]*?\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+).*?('[\t ]*$[\s\S]*?(?:\r\n\r\n|\n\n|\r\r)|(?=$))|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
 
     const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
     
@@ -334,7 +334,7 @@ function openDevice(name) {
         const items = {},  comps = [],  words = [],  token = Tokens[type],  kind  = Enums[type].com || 0;
         for (const m of rxp.matchAll(txt)) {
             const name = m[1];
-            items[m[1].toLowerCase()] = { name, value: m[2] };
+            items[m[1].toLowerCase()] = { name,  token,  value: m[2] };
             comps.push(new vscode.CompletionItem({ label: name,  description: m[2] }, kind));
             words.push(name);
         }
@@ -373,3 +373,47 @@ function parseDoc(doc, mask = Types._.main, skip = {}, result = {}) {
     return result;
 }
 exports.parseDoc = parseDoc;
+
+
+function codeHTML(text, doc) {
+    const res = [],   keys = {},   styles = STS.getThemeStyle(keys),   items = cache.get(doc).semantic.items.$;
+
+    Object.entries(PAT.RXP.types).map(([k,v]) => keys[v.id] = k);
+
+    const makeStyle = (id, txt) => {
+        let out = txt,  s = styles[keys[id]] || {};     if (!s.enable) return out;
+        if (  /bold/i.test(s.fontStyle)) out = '<b>' + out + '</b>';
+        if (/italic/i.test(s.fontStyle)) out = '<i>' + out + '</i>';
+        out = `<span style="color:${s.foreground};">${out}</span>`;
+        return '\0' + (res.push(out) - 1) + '\0';
+    }
+
+    text = text.replace(PAT.ALL(null,'^[SCNB]'), function (m) {
+        for (const [k,v] of Object.entries(arguments[arguments.length - 1])) if (v) return makeStyle(k, v);
+        return m;
+    });
+
+    text = text.replace(PAT.ALL(DTB.words(getCore(doc))),       function (m) {
+        const i = DTB.find(m);                          return !i ? m : makeStyle(i.token, m);
+    });
+
+    if (items?.dev) {
+        text = text.replace(PAT.ALL(Object.keys(items.dev)),    function(m){
+            const i = items.dev[m.toLowerCase()];       return !i ? m : makeStyle(i.token, m);
+        });
+    }
+
+    if (items?.doc) {
+        text = text.replace(PAT.ALL(Object.keys(items.doc)),    function(m){
+            const i = items.doc[m.toLowerCase()];       return !i ? m : makeStyle(i.token, m);
+        });
+    }
+
+    text = text.replace(PAT.ALL(null,'^[O]'),                   function(m){
+        for (const [k,v] of Object.entries(arguments[arguments.length - 1])) if (v) return makeStyle(k, v);
+        return m;
+    });
+
+    return '<pre>' + text.replace(/\0(\d+)\0/g, (m,v) => res[v]) + '</pre>';
+}
+exports.codeHTML = codeHTML;

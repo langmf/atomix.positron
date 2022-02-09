@@ -113,6 +113,13 @@ function parseThemes(themes) {
 }
 
 
+exports.getThemeStyle = (keys) => {
+    const styles = exports.cache.themes[vscode.ColorThemeKind[vscode.window.activeColorTheme.kind].toLowerCase()] || {};
+    if (keys) Object.entries(styles).map(([k,v]) => keys[v.token] = keys[v.scope] = k);
+    return styles;
+}
+
+
 function Settings_Header(value) {
     if (typeof value.header !== 'object') value.header = {};
     if (!value.header.text) value.header.text = def_Header.replace(/^[\r\n]+/,'');
@@ -187,9 +194,6 @@ function Update_Highlight(value) {
 
 
 exports.Settings = (value) => {
-    root.context.globalState.update('untitled_header', undefined);
-    root.context.globalState.update('HLT', undefined);
-
     const isSave = value ? true : false;
     
     value = Object.assign({},   root.context.globalState.get('USER'),   value);

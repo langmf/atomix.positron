@@ -2,6 +2,7 @@
 
 const vscode  = require("vscode");
 const fs      = require("fs");
+const path    = require("path");
 const root    = require("./root");
 
 
@@ -85,36 +86,37 @@ exports.words = (core) => {
 }
 
 
-/*
-function exportMCD(fName) {
-    let text = '',  types = {},  def = {};
 
-    try{  text = fs.readFileSync(fName, 'utf-8');  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
-    
-    const hdr = text.match(/^DATABASE([\s\S]+?)^KEY/m);
-    if (hdr) { for (const m of hdr[1].matchAll(/^([\w]+)[\t ]*=[\t ]*"?(\w+)"?/igm)) def[m[1].toLowerCase()] = m[2]; }
+if (0) {
+    function exportMCD(fName) {
+        let text = '',  types = {},  def = {};
 
-    for (const m of text.matchAll(/^KEY[\t ]*\(([^\)]+)\)([\s\S]+?)^ENDKEY/gm)) {
-        let hint, core, tp;
-        for (const x of m[2].matchAll(/^[\t ]+([\w]+)[\t ]*=[\t ]*(.+)$/igm)) {
-            let v = x[2].trim();
-            let n = x[1].toLowerCase();
-            if (n === 'hint') { v = v.replace(/^"|"$/g,'');    if (v) hint = v; }
-            if (n === 'devicecore') { v = v.replace(/[\[\] dc]/g,'').split(',').map( i => parseInt(i)).toString();   if (v !== '12,14,16,24,33') core = v; }
-            if (n === 'highlighter') tp = v;
+        try{  text = fs.readFileSync(fName, 'utf-8');  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
+        
+        const hdr = text.match(/^DATABASE([\s\S]+?)^KEY/m);
+        if (hdr) { for (const m of hdr[1].matchAll(/^([\w]+)[\t ]*=[\t ]*"?(\w+)"?/igm)) def[m[1].toLowerCase()] = m[2]; }
+
+        for (const m of text.matchAll(/^KEY[\t ]*\(([^\)]+)\)([\s\S]+?)^ENDKEY/gm)) {
+            let hint, core, tp;
+            for (const x of m[2].matchAll(/^[\t ]+([\w]+)[\t ]*=[\t ]*(.+)$/igm)) {
+                let v = x[2].trim();
+                let n = x[1].toLowerCase();
+                if (n === 'hint') { v = v.replace(/^"|"$/g,'');    if (v) hint = v; }
+                if (n === 'devicecore') { v = v.replace(/[\[\] dc]/g,'').split(',').map( i => parseInt(i)).toString();   if (v !== '12,14,16,24,33') core = v; }
+                if (n === 'highlighter') tp = v;
+            }
+            const x = types[tp] = types[tp] || [];
+            const s = m[1].replace(/["\r\n ]/g,'');
+            x.push({ name: s, core, hint });
         }
-        const x = types[tp] = types[tp] || [];
-        const s = m[1].replace(/["\r\n ]/g,'');
-        x.push({ name: s, core, hint });
+
+        const obj = { 
+            default: def,
+            titles: Object.keys(types).reduce((a,v) => (a[v] = v.replace(/([a-z])([A-Z])/, '$1_$2')) && a, {}), 
+            types };
+
+        const res = JSON.stringify(obj, null, '\t').replace(/^([\t ]+"core":[\t ]+)"([^"]+)"/igm,'$1[$2]');
+        try{  text = fs.writeFileSync(__dirname + '\\Database.json', res);  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
     }
-
-    const obj = { 
-        default: def,
-        titles: Object.keys(types).reduce((a,v) => (a[v] = v.replace(/([a-z])([A-Z])/, '$1_$2')) && a, {}), 
-        types };
-
-    const res = JSON.stringify(obj, null, '\t').replace(/^([\t ]+"core":[\t ]+)"([^"]+)"/igm,'$1[$2]');
-    try{  text = fs.writeFileSync(__dirname + '\\Database.json', res);  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
+    exportMCD(path.resolve(vscode.workspace.getConfiguration("pos").main.compiler, "..\\..\\") + "\\database.mcd");
 }
-exportMCD(path.resolve(vscode.workspace.getConfiguration("pos").main.compiler, "..\\..\\") + "\\database.mcd");
-*/

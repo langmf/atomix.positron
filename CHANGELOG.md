@@ -54,3 +54,7 @@
 - Added highlight editor, general settings editor and editor header for a new file.
 - Added about page and page with programs.
 - Added auto format.
+
+## Version 1.2.5 (09/02/2022)
+- Added highlight for hover action.
+- Various minor fixes

@@ -34,48 +34,36 @@ function autoFormat(doc, formats) {
 }
 
 
-function parse_DOC(doc, tokens, formats) {
-    const items = {},  text = doc.getText(),  files = common.parseDoc(doc);
+function parseALL(doc, tokens, formats) {
+    const text = doc.getText(),   files = common.parseDoc(doc),   dev = cache.get(doc).symbols.$.device,   SEM = cache.get(doc).semantic;
     
-    for (const file of Object.values(files)) {
-        for (const type of Object.values(file.types)) Object.assign(items, type.$items)
-    } 
+    let items,  words;
 
-    for (const m of PAT.WORDS(text, Object.keys(items))) {
-        const n = m[1].toLowerCase(),  token = items[n].token;
-        
+    const addToken = (m, i = null) => {
+        if(i === null) i = items[m[1].toLowerCase()];           if (!i) return;
         const range = new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length));
-        
-        tokens.push(range, token);          if (formats) formats.push({ range,  word: m[1],  name: items[n].name });
-    }
-}
-
-
-function parse_DEV(doc, tokens, formats) {
-    const text = doc.getText(),  dev = cache.get(doc).symbols.$.device;
-
-    for (const sfr of common.Types._.dev) {
-        const token = dev[sfr].token,  items = dev[sfr].items;
-
-        for (const m of PAT.WORDS(text, dev[sfr].words)) {
-            const range = new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length));
-            
-            tokens.push(range, token);      if (formats) formats.push({ range,  word: m[1],  name: items[m[1].toLowerCase()].name });
-        }
-    }
-}
-
-
-function parse_DTB(doc, tokens, formats) {
-    const text = doc.getText(),  core = common.getCore(doc);
-
-    for (const m of PAT.WORDS(text, DTB.words(core))) {
-        const i = DTB.find(m[1]);        if (!i) continue;
-
-        const range = new vscode.Range(doc.positionAt(m.index), doc.positionAt(m.index + m[0].length));
-        
         tokens.push(range, i.token);        if (formats) formats.push({ range,  word: m[1],  name: i.name });
     }
+    
+
+    // -------------------------- parse DOC --------------------------
+    items = {};
+
+    for (const file of Object.values(files)) for (const type of Object.values(file.types)) Object.assign(items, type.$items)
+    
+    SEM.items.doc = items;          for (const m of PAT.WORDS(text, Object.keys(items)))  addToken(m);
+
+
+    // -------------------------- parse DEV --------------------------
+    items = {};     words = [];
+    
+    for (const sfr of common.Types._.dev) { Object.assign(items, dev[sfr].items);    words.push(dev[sfr].words); }
+
+    SEM.items.dev = items;          for (const m of PAT.WORDS(text, words.join('|')))  addToken(m);
+
+
+    // -------------------------- parse DTB --------------------------
+    for (const m of PAT.WORDS(text, DTB.words(common.getCore(doc))))  addToken(m, DTB.find(m[1]));
 }
 
 
@@ -92,11 +80,7 @@ async function provideDocumentSemanticTokens(doc) {
 
     const formats = initFormat(doc),   tokens = new vscode.SemanticTokensBuilder(legend),   SYM = cache.get(doc).symbols;
 
-    parse_DOC(doc, tokens, formats);
-    parse_DEV(doc, tokens, formats);
-    parse_DTB(doc, tokens, formats);
-
-    autoFormat(doc, formats);
+    parseALL(doc, tokens, formats);         autoFormat(doc, formats);
 
     if (SYM.$.local) {
         const dev = SYM.$.local,  e = dev.range.end;     tokens.push(new vscode.Range(e.translate(0,-dev.name.length), e), dev.token);
@@ -108,6 +92,7 @@ async function provideDocumentSemanticTokens(doc) {
 
     return result;
 }
+
 
 exports.default = () => {
     legend = common.legend();
