@@ -49,7 +49,9 @@ function parseALL(doc, tokens, formats) {
     // -------------------------- parse DOC --------------------------
     items = {};
 
-    for (const file of Object.values(files)) for (const type of Object.values(file.types)) Object.assign(items, type.$items)
+    for (const file of Object.values(files)) {
+        for (const type of Object.values(file.types)) Object.assign(items, type.$items)
+    }
     
     SEM.items.doc = items;          for (const m of PAT.WORDS(text, Object.keys(items)))  addToken(m);
 
@@ -57,7 +59,9 @@ function parseALL(doc, tokens, formats) {
     // -------------------------- parse DEV --------------------------
     items = {};     words = [];
     
-    for (const sfr of common.Types._.dev) { Object.assign(items, dev[sfr].items);    words.push(dev[sfr].words); }
+    for (const sfr of common.Types._.dev.map(v => dev[v]).filter(v => v.words)) {
+        Object.assign(items, sfr.items);    words.push(sfr.words);
+    }
 
     SEM.items.dev = items;          for (const m of PAT.WORDS(text, words.join('|')))  addToken(m);
 
