@@ -114,15 +114,17 @@ async function HLT_update() {
 }
 
 
-function HDR_input(el) {
+function HDR_input() {
 	clearTimeout(HDR_input.tmr);		HDR_input.tmr = setTimeout(async()=>{
-		STS.header.text = el.value;
+		STS.header.text   = header_box.value;
+		STS.header.enable = header_enable.checked;
 		STS_edit('header');
 	}, 500);
 }
 
 function HDR_update() {
-	$('#header_box').html(STS.header.text);
+	header_box.innerHTML  = STS.header.text;
+	header_enable.checked = STS.header.enable;
 }
 
 

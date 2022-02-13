@@ -8,9 +8,9 @@ const DTB    = require("./database");
 const newColors = (rep = {})  => { 
     const obj = {
 
-    'Comment_Line':         {  enable:1,    foreground: "#000080",      fontStyle: "italic",        scope:"comment_line.pos"     },
-    'Comment_Block':        {  enable:1,    foreground: "#000080",      fontStyle: "italic",        scope:"comment_block.pos"    },
-    'String':               {  enable:1,    foreground: "#008000",      fontStyle: "",              scope:"string_quoted.pos"    },
+    'Comment_Line':         {  enable:1,    foreground: "#0000A0",      fontStyle: "italic",        scope:"comment_line.pos"     },
+    'Comment_Block':        {  enable:1,    foreground: "#0000A0",      fontStyle: "italic",        scope:"comment_block.pos"    },
+    'String':               {  enable:1,    foreground: "#009000",      fontStyle: "",              scope:"string_quoted.pos"    },
     
     'Number':               {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"numeric_base.pos"     },
     'Number_Binary':        {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"numeric_bin.pos"      },
@@ -24,14 +24,14 @@ const newColors = (rep = {})  => {
     'Bracket_Square':       {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"bracket_square.pos"   },
     'Bracket_Curly':        {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"bracket_curly.pos"    },
 
-    'Device':               {  enable:1,    foreground: "#000080",      fontStyle: "bold",          token:"pos_device"           },
+    'Device':               {  enable:1,    foreground: "#0000B0",      fontStyle: "bold",          token:"pos_device"           },
     'Define':               {  enable:1,    foreground: "#000000",      fontStyle: "bold",          token:"pos_define"           },
     'Symbol':               {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_symbol"           },
-    'Label':                {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_label"            },
-    'Procedure':            {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_procedure"        },
+    'Label':                {  enable:1,    foreground: "#0044B3",      fontStyle: "",              token:"pos_label"            },
+    'Procedure':            {  enable:1,    foreground: "#0050D3",      fontStyle: "",              token:"pos_procedure"        },
     'Variable':             {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_variable"         },
-    'SFR':                  {  enable:1,    foreground: "#008000",      fontStyle: "",              token:"pos_devregs"          },
-    'SFR_Bitname':          {  enable:1,    foreground: "#008000",      fontStyle: "",              token:"pos_devbits"          },
+    'SFR':                  {  enable:1,    foreground: "#009000",      fontStyle: "",              token:"pos_devregs"          },
+    'SFR_Bitname':          {  enable:1,    foreground: "#009000",      fontStyle: "",              token:"pos_devbits"          },
 
     };
     return repColors(obj, rep);
@@ -47,6 +47,8 @@ const rep_Dark = {
     'Comment.+':            {  foreground: "#5C6370"  },
     'String|SFR.*':         {  foreground: "#98C379"  },
     'Device':               {  foreground: "#87CEFA"  },
+    'Label':                {  foreground: "#14A5FF"  },
+    'Procedure':            {  foreground: "#61AFEF"  },
     '*black':               [  "#000000",  "#D4D4D4"  ]
 }
 
@@ -122,7 +124,8 @@ exports.getThemeStyle = (keys) => {
 
 function Settings_Header(value) {
     if (typeof value.header !== 'object') value.header = {};
-    if (!value.header.text) value.header.text = def_Header.replace(/^[\r\n]+/,'');
+    if (!value.header.text)   value.header.text = def_Header.replace(/^[\r\n]+/,'');
+    if (typeof value.header.enable === 'undefined') value.header.enable = true;
 }
 
 

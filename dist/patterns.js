@@ -49,7 +49,8 @@ exports.EQU     = newRXP(/^(\w+)[\t ]+EQU[\t ]+(.*)$/im);
 exports.DEF     = newRXP(/^\$define[\t ]+([a-z][\w]*)[\t ]+(.*)$/im);
 
 
-exports.ALL     = (words, pat = null) => {
+exports.ALL     = (words, pat = null) =>
+{
     words = parseWords(words || '');         if (words) words = `${RXP.prefix}(?<words>${words})${RXP.postfix}`;
     pat = pat === null ? words : RXP.patterns(pat || '', true) + (words ? '|': '') + words;
     return new RegExp(pat, 'igm');
@@ -65,7 +66,8 @@ exports.WORDS   = (input, words, pre = RXP.prefix, post = RXP.postfix) =>
 }
 
 
-exports.PPI = (input, name, res = '') => {
+exports.PPI = (input, name, res = '') =>
+{
     if (input) {
         const match = RegExp(`^\\[${name}START\\]([\\s\\S]+)^\\[${name}END\\]`, 'im').exec(input);
         if (match) {
@@ -75,4 +77,27 @@ exports.PPI = (input, name, res = '') => {
         }
     }
     return res;
+}
+
+
+exports.INI = (input, name, res) =>
+{
+    let rep,  rxp = new RegExp(`(?<=^|[\\r\\n])\\[${name}\\][\r\n]+([\\s\\S]+?[\\r\\n]*)(?=\\[|$)`, 'i');
+    
+    if (typeof res === 'object')
+    {
+        const match = rxp.exec(input);
+        if (match) {
+            let m,  txt = match[1],  rxp = new RegExp('^(.+?)[\\t ]*=[\\t ]*(\\w+)', 'igm');
+            while ((m = rxp.exec(txt)) !== null) res[m[1]] = parseInt(m[2]);
+        }
+        return res;
+    }
+    else if (typeof res === 'string')
+    {
+        input = input.replace(rxp, function(){ rep = true;   return res; });
+        if (!rep) input += res;
+        return input;
+    }
+    return rxp;
 }

@@ -44,6 +44,22 @@ exports.IsAsmLst = (fName) => {
 }
 
 
+function readFile(fName, def = '', ext) {
+    fName = typeof fName === 'object' ? fName.uri.fsPath : fName;               if (ext) fName = extFile(fName, ext);
+    try   {  return fs.readFileSync(fName, 'utf-8');  }
+    catch {  return def; }
+}
+exports.readFile = readFile;
+
+
+function writeFile(fName, txt = '', ext) {
+    fName = typeof fName === 'object' ? fName.uri.fsPath : fName;               if (ext) fName = extFile(fName, ext);
+    try   {  fs.writeFileSync(fName, txt, 'utf-8');     return true;  }
+    catch {  return false; }
+}
+exports.writeFile = writeFile;
+
+
 function checkFile(fName) {
     if (fs.existsSync(fName) && fs.statSync(fName).isFile()) return fName; 
 }

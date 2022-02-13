@@ -6,8 +6,15 @@ const common  = require("./common");
 const DTB     = require("./database");
 
 
-function getMarkdown(text) {
-    const mark = new vscode.MarkdownString(text);       mark.supportHtml = true;        mark.isTrusted   = true;        return mark;
+function getMarkdown(text, pre) {
+    const mark = new vscode.MarkdownString();       mark.supportHtml = true;        mark.isTrusted   = true;
+    if (pre) {
+        mark.appendMarkdown(/\n/.test(text) ? '<pre>' + text + '</pre>' : text.replace(/\t/g, '&nbsp;'.repeat(8)));
+        mark.appendCodeblock('');
+    } else {
+        mark.appendMarkdown(text);
+    }
+    return mark;
 }
 
 
@@ -22,7 +29,7 @@ function provideHover(doc, position) {
             
             const text = type.$items[word].text + "\t' [" + (file.isLocal ? "Local" : file.scope) + "]";
 
-            return new vscode.Hover(getMarkdown(common.codeHTML(text, name)));
+            return new vscode.Hover(getMarkdown(common.codeHTML(text, name), true));
         }
     }
 

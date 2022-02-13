@@ -19,7 +19,7 @@
 
 
 <nav>
-	<div class="nav nav-tabs" id="nav-tab" role="tablist">
+	<div class="nav nav-tabs" id="nav-tab-main" role="tablist">
 		<button class="nav-link active" data-bs-toggle="tab" type="button" role="tab" aria-selected="true"  id="nav-gen-tab"  data-bs-target="#nav-gen" aria-controls="nav-gen">General</button>
 		<button class="nav-link"		data-bs-toggle="tab" type="button" role="tab" aria-selected="false" id="nav-hlt-tab"  data-bs-target="#nav-hlt" aria-controls="nav-hlt">Highlighter</button>
 		<button class="nav-link"        data-bs-toggle="tab" type="button" role="tab" aria-selected="false" id="nav-hdr-tab"  data-bs-target="#nav-hdr" aria-controls="nav-hdr">Header</button>
@@ -95,11 +95,11 @@
 	
 		<div class="tab-content" id="nav-tabTheme">
 
-			<div class="tab-pane fade show active" role="tabpanel" id="nav-light" aria-labelledby="nav-light-tab">Theme Light</div>
+			<div class="tab-pane fade show active" role="tabpanel" id="nav-light" aria-labelledby="nav-light-tab"></div>
 			
-			<div class="tab-pane fade" role="tabpanel" id="nav-dark" aria-labelledby="nav-dark-tab">Theme Dark</div>
+			<div class="tab-pane fade" role="tabpanel" id="nav-dark" aria-labelledby="nav-dark-tab"></div>
 		
-			<div class="tab-pane fade" role="tabpanel" id="nav-highcontrast" aria-labelledby="nav-highcontrast-tab">Theme HighContrast</div>
+			<div class="tab-pane fade" role="tabpanel" id="nav-highcontrast" aria-labelledby="nav-highcontrast-tab"></div>
 
 			<div class="tab-pane fade" role="tabpanel" id="nav-hltsetup" aria-labelledby="nav-hltsetup-tab">
 				<div class="col my-3 mx-3 px-3">
@@ -118,20 +118,21 @@
 
 
 	<div class="tab-pane fade" role="tabpanel" id="nav-hdr" aria-labelledby="nav-hdr-tab">
-		<div class="d-flex">
-			<textarea class="form-control mt-4 mx-3" style="font-family:monospace;white-space:nowrap;" id="header_box" rows="24" oninput="HDR_input(this)"></textarea>
+		<div class="d-flex flex-wrap">
+			<textarea class="form-control mt-4 mx-3" style="font-family:monospace;white-space:nowrap;" id="header_box" rows="22" oninput="HDR_input()"></textarea>
+			<label class="mt-4 mx-3"><input type="checkbox" class="form-check-input me-2" id="header_enable" oninput="HDR_input();" />Insert automatically into a new document</label>
 		</div>
 	</div>
 </div>
 
 
 <script>
+	parse_TAB();
+
 	$(async () => {
 		await URI.ready;
-
 		await STS_update();
-
-		parse_ALL();
+		await parse_ALL();
 	});
 </script>
 

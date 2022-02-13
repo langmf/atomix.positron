@@ -10,6 +10,7 @@ const definition = require("./definition");
 const completion = require("./completion");
 const commands   = require("./commands");
 const webview    = require("./webview");
+const plugins    = require("./plugins");
 
 
 function activate(context)
@@ -27,8 +28,10 @@ function activate(context)
         completion.default()
     );
 }
-
-
-function deactivate() { }
 exports.activate = activate;
+
+
+async function deactivate() {
+    await plugins.unload();
+}
 exports.deactivate = deactivate;

@@ -8,9 +8,10 @@ const cache  = require("./cache");
 const PAT    = require("./patterns");
 const DTB    = require("./database");
 const STS    = require("./settings");
+const PLG    = require("./plugins");
 
 
-let cache_dev = {};
+const cache_dev = {},   statusVer = createVersion();
 
 
 const [Types, Tokens] = newTypes({
@@ -37,7 +38,7 @@ exports.Types   = Types;
 exports.Tokens  = Tokens;
 exports.Enums   = Enums;
 
-exports.legend  = () => new vscode.SemanticTokensLegend([...Object.values(Tokens), ...DTB.Tokens]);
+exports.legend  = () => new vscode.SemanticTokensLegend([...Object.values(Tokens),  ...DTB.Tokens]);
 
 
 exports.activate = () => {
@@ -50,20 +51,28 @@ exports.activate = () => {
     if (root.debug) console.timeEnd("STS");
 
     vscode.workspace.onDidOpenTextDocument(onDidOpenTextDocument);
+    vscode.window.onDidChangeActiveTextEditor(onDidChangeActiveTextEditor);
     vscode.window.onDidChangeTextEditorSelection(onDidChangeTextEditorSelection);
     vscode.window.onDidChangeActiveColorTheme(() => STS.Update());
+}
 
+
+function onDidChangeActiveTextEditor(editor) {
+    showVersion(editor?.document);
 }
 
 
 function onDidOpenTextDocument(eDoc) {
     const doc = eDoc.fileName.endsWith('\\settings.json') ? vscode.window.activeTextEditor?.document : eDoc;
-    if (!doc) return;
+    
+    if (!doc || doc.languageId !== 'pos') return;
 
-    if (doc.languageId === 'pos' && doc.fileName.startsWith('Untitled-')) {
-        if (doc.getText().length) return;
+    if (doc.fileName.startsWith('Untitled-'))
+    {
+        if (doc.getText().length || !STS.cache.header.enable) return;
         
-        clearTimeout(onDidOpenTextDocument.tmr);        onDidOpenTextDocument.tmr = setTimeout(() => {
+        clearTimeout(onDidOpenTextDocument.tmr);        onDidOpenTextDocument.tmr = setTimeout(() =>
+        {
             const hdr =  STS.cache.header.text.replace(/<%[\t ]*(.+?)[\t ]*%>/ig, (a,v) => {
                 switch (v = v.trim()) {
                     case 'date':    return (new Date()).toLocaleDateString();
@@ -75,7 +84,13 @@ function onDidOpenTextDocument(eDoc) {
             const edit = new vscode.WorkspaceEdit();
             edit.replace(doc.uri, new vscode.Range(0,0,0,0), hdr);
             vscode.workspace.applyEdit(edit);
-        }, 200);
+        },
+        200);
+    } else {
+        PLG.load(PLG.file(doc.fileName));
+
+        const editor = vscode.window.activeTextEditor;
+        if (doc.fileName === editor?.document?.fileName) onDidChangeActiveTextEditor(editor);
     }
 }
 
@@ -91,8 +106,12 @@ function onDidChangeTextEditorSelection(sel) {
     {
         const editor = sel.textEditor,  i = getWordInclude(editor.document, sel.selections[0].active);      if (!i) return;
         const file   = findInclude(i.name);
+
         editor.selections = editor.selections.map(s => new vscode.Selection(s.start.translate(0,1), s.end.translate(0,1)));
-        try { if (file) vscode.workspace.openTextDocument(vscode.Uri.file(file)).then(doc => vscode.window.showTextDocument(doc)); }catch(e){}
+        
+        try {
+            if (file) vscode.workspace.openTextDocument(vscode.Uri.file(file)).then(doc => vscode.window.showTextDocument(doc));
+        } catch {}
     }
 }
 
@@ -414,6 +433,84 @@ function codeHTML(text, doc) {
         return m;
     });
 
-    return '<pre>' + text.replace(/\0(\d+)\0/g, (m,v) => res[v]) + '</pre>';
+    return text.replace(/\0(\d+)\0/g, (m,v) => res[v]);
 }
 exports.codeHTML = codeHTML;
+
+
+function createVersion() {
+    const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, -1);
+    item.command = 'pos.editversion';
+    vscode.commands.registerCommand(item.command, async () => {
+        const doc = vscode.window.activeTextEditor?.document;
+        const res = await vscode.window.showInputBox({ value: getVersion(doc) });
+        if (res) setVersion(doc, res);
+    });
+    return item;
+}
+
+
+function getVersion(doc, str = true) {
+    const def = {  Enable: 1,  Rollover: 255,  Major: 0,  Minor: 0,  Release: 0,  Build:0  };
+    const ver = PAT.INI(root.readFile(doc, '',  '.mci'), 'Version', def);
+    return !str ? ver : `${ver.Major}.${ver.Minor}.${ver.Release}.${ver.Build}`;
+}
+exports.getVersion = getVersion;
+
+
+function setVersion(doc, prm) {
+    let v = getVersion(doc, false);
+    
+    if (prm) {
+        const m = /^[\t ]*(enable[\t ]*=[\t ]*(\d))|(rollover[\t ]*=[\t ]*(\d))|((\d+)\.(\d+)\.(\d+)\.(\d+))[\t ]*$/i.exec(prm);
+        if (!m) return;
+        if (m[1]) v.Enable   = parseInt(m[2]);
+        if (m[3]) v.Rollover = parseInt(m[4]);
+        if (m[5]) {  v.Major = parseInt(m[6]);   v.Minor = parseInt(m[7]);   v.Release = parseInt(m[8]);   v.Build = parseInt(m[9]);  }
+    }
+    else {
+        if (v.Enable) {
+            v.Build++;
+
+            if (v.Build > v.Rollover) {
+                v.Build = 0;
+                v.Release++;
+
+                if (v.Release > v.Rollover) {
+                    v.Release = 0;
+                    v.Minor++;
+
+                    if (v.Minor > v.Rollover) {
+                        v.Minor = 0;
+                        v.Major++;
+
+                        if (v.Major > v.Rollover) v.Major = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    let txt = Object.entries(v).reduce((a,[k,v]) => a += k + '=' + v + '\r\n', '[Version]\r\n');
+
+    txt = PAT.INI(root.readFile(doc, '',  '.mci'), 'Version', txt);
+    root.writeFile(doc, txt, ".mci");
+
+    showVersion(doc, true);
+}
+exports.setVersion = setVersion;
+
+
+function showVersion(doc, change) {
+    if (!doc || doc.languageId !== 'pos') { statusVer.hide();    return; }
+    
+    if (change) {
+        statusVer.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
+        setTimeout(() => { statusVer.backgroundColor = undefined; },  600);
+    }
+    
+    statusVer.text = 'Ver ' + getVersion(doc);
+    statusVer.tooltip = doc.fileName;
+    statusVer.show();
+}
+exports.showVersion = showVersion;

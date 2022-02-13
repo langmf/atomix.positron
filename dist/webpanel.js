@@ -13,11 +13,25 @@ class WebPanel {
     constructor(title, data, viewType = 'simpleHTML', viewColumn, onVisibleCallback)
     {
         this.onVisibleCallback = onVisibleCallback;
-        this.panel = Array.isArray(viewType) ? viewType[0] : vscode.window.createWebviewPanel(viewType, title, viewColumn);
-        
-        const webview = this.panel.webview;
 
-        webview.options = { enableScripts: true,  localResourceRoots: [vscode.Uri.file(root.path.pds),  vscode.Uri.file(root.extensionPath)] };
+        this.panel = Array.isArray(viewType) ? viewType[0] : vscode.window.createWebviewPanel(viewType, title, viewColumn);
+
+        const webview = this.panel.webview,   file = webview.options.localResourceRoots?.[3]?.fsPath;
+        
+        if (data === null) {
+            data = [file];
+            webview.options.enableScripts = true;
+        } else {
+            webview.options = {
+                enableScripts: true,
+                localResourceRoots: [
+                    vscode.Uri.file(root.path.pds),
+                    vscode.Uri.file(root.extensionPath),
+                    (Array.isArray(data) && vscode.Uri.file(path.dirname(data[0]))),
+                    (Array.isArray(data) && vscode.Uri.file(data[0]))
+                ]
+            }
+        }
 
         webview.onDidReceiveMessage(e => e.request ? this.vscode_Eval(e) : this[e.type](...(e.args || [])));
         
@@ -57,14 +71,17 @@ exports.WebPanel = WebPanel;
 class WebPage {
     constructor(name)
     {
-        this.name   = name;
-        this.title  = "Positron " + name;
-        this.type   = "posweb_" + name;
-        this.cmd    = "pos.web" + name;
-        this.file   = "panel_" + name + ".htm";
+        const i = typeof name === 'object' ? Object.assign({ type: 'posweb_Custom',  title: path.parse(name.file).name }, name) : null;
+
+        this.name   = i ? i.name  : name;
+        this.file   = i ? i.file  : "panel_"    + name + ".htm";
+        this.title  = i ? i.title : "Positron " + name;
+        this.type   = i ? i.type  : "posweb_"   + name;
+        this.cmd    = i ? i.cmd   : "pos.web"   + name;
+
         this.create = (panel) => {
-            if (panel && panel.webview) {
-                this.web = new WebPanel(this.title, [this.file], [panel]);
+            if (panel) {
+                this.web = new WebPanel(this.title, this.type === 'posweb_Custom' ? null : [this.file], [panel]);
             } else {
                 if (this.web) this.web.panel.reveal();  else  this.web = new WebPanel(this.title, [this.file], this.type);
             }

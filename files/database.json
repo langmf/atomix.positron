@@ -25,10 +25,10 @@
 				"Keyword":              {  "foreground": "#000000",   "fontStyle": "bold"  },
 				"KeywordImportant":     {  "foreground": "#FF0000",   "fontStyle": "bold"  },
 				"KeywordMacro":         {  "foreground": "#000000"                         },
-				"KeywordDeclare":       {  "foreground": "#800000",   "fontStyle": "bold"  },
-				"KeywordASM":           {  "foreground": "#000080",   "fontStyle": "bold"  },
+				"KeywordDeclare":       {  "foreground": "#900000",   "fontStyle": "bold"  },
+				"KeywordASM":           {  "foreground": "#0000A0",   "fontStyle": "bold"  },
 				"KeywordUser":          {  "foreground": "#000000",   "fontStyle": "bold"  },
-				"KeywordPreprocessor":  {  "foreground": "#800000",   "fontStyle": "bold"  }
+				"KeywordPreprocessor":  {  "foreground": "#900000",   "fontStyle": "bold"  }
 			},
 			"dark":
 			{

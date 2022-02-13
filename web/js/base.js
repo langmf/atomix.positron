@@ -4,10 +4,15 @@ const vscode = acquireVsCodeApi(),   vscode_REQ = {};
 
 
 const URI = {
-	file(v)	    	{  return this.encode(v, 'file:///');  },
-	parse(v)		{  return this.base + this.encode(v);  },
-	encode(v,s)		{  return (s || '') + encodeURI(v.replace(/\\/g,'/'));  },
-	ready:			vscode_Eval().this.web_CFG().then(v => { Object.assign(URI, v) })
+	file(v)	    		{  return this.encode(v, 'file:///');  },
+	parse(v)			{  return this.base + this.encode(v);  },
+	encode(v,s)			{  return (s || '') + encodeURI(v.replace(/\\/g,'/'));  },
+	ready:				vscode_Eval().this.web_CFG().then(v => { Object.assign(URI, v) })
+}
+
+const STATE = {
+	get(v = null)		{  const s = vscode.getState() || {};	return v === null ? s : s[v] || (s[v] = {});  },
+	set(v = null)		{  vscode.setState(v === null ? {} : Object.assign(this.get(), v));  }
 }
 
 
@@ -109,6 +114,17 @@ async function parse_FileURL() {
 		const v = $(this).attr("href") ? 'href' : 'src',   i = $(this).attr(v).slice(f.length);
 		const url = i.replace(/!([^!]+)!/g, (m,t) => objectPath(URI.path, t));
 		$(this).attr(v, URI.parse(url));
+	});
+}
+
+
+function parse_TAB() {
+	for (const [k,v] of Object.entries(STATE.get('tabs'))) {
+		if (k.startsWith('nav-tab')) bootstrap.Tab.getOrCreateInstance(document.querySelector(`#${k}>#${v}`)).show();
+	}
+
+	$('.nav-tabs button').on('click', function() {
+		const tabs = STATE.get('tabs');		tabs[this.parentElement.id] = this.id;		STATE.set({tabs});
 	});
 }
 
