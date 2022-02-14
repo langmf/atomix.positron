@@ -44,6 +44,8 @@ const def_Record = {
 }
 
 const rep_Dark = {
+    'Define':               {  foreground: "#D19A66",  fontStyle: ""  },
+    'Symbol':               {  foreground: "#56B6C2"  },
     'Comment.+':            {  foreground: "#5C6370"  },
     'String|SFR.*':         {  foreground: "#98C379"  },
     'Device':               {  foreground: "#87CEFA"  },

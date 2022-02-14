@@ -394,16 +394,20 @@ function parseDoc(doc, mask = Types._.main, skip = {}, result = {}) {
 exports.parseDoc = parseDoc;
 
 
-function codeHTML(text, doc, pre) {
-    const res = [],   keys = {},   styles = STS.getThemeStyle(keys),   items = cache.get(doc).semantic.items.$;
+function codeHTML(text, doc, mark) {
+    const res = [],   keys = {},   esc = !/\n/.test(text),   styles = STS.getThemeStyle(keys),   items = cache.get(doc).semantic.items.$;
 
     Object.entries(PAT.RXP.types).map(([k,v]) => keys[v.id] = k);
 
     const makeStyle = (id, txt) => {
-        let out = txt,  s = styles[keys[id]] || {};     if (!s.enable) return out;
+        let out = !(mark && esc) ? txt : txt.replace(/[\\`*_{}[\]()#+\-.!]/g, '\\$&');
+        
+        const s = styles[keys[id]] || {};       if (!s.enable) return out;
+        
         if (  /bold/i.test(s.fontStyle)) out = '<b>' + out + '</b>';
         if (/italic/i.test(s.fontStyle)) out = '<i>' + out + '</i>';
         out = `<span style="color:${s.foreground};">${out}</span>`;
+        
         return '\0' + (res.push(out) - 1) + '\0';
     }
 
@@ -433,8 +437,8 @@ function codeHTML(text, doc, pre) {
         return m;
     });
 
-    if (pre) text = /\n/.test(text) ? '<pre>' + text + '</pre>' : text.replace(/\t/g, (m) => '&nbsp;'.repeat(8))
-                                                                      .replace(/ +/g, (m) => '&nbsp;'.repeat(m.length));
+    if (mark) text =  !esc ?  '<pre>' + text + '</pre>'  :  text.replace(/\t/g,    ()  => '&nbsp;'.repeat(6))
+                                                                .replace(/ {2,}/g, (m) => '&nbsp;'.repeat(m.length));
     
     return text.replace(/\0(\d+)\0/g, (m,v) => res[v]);
 }
