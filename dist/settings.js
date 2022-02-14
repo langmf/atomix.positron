@@ -27,8 +27,8 @@ const newColors = (rep = {})  => {
     'Device':               {  enable:1,    foreground: "#0000B0",      fontStyle: "bold",          token:"pos_device"           },
     'Define':               {  enable:1,    foreground: "#000000",      fontStyle: "bold",          token:"pos_define"           },
     'Symbol':               {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_symbol"           },
-    'Label':                {  enable:1,    foreground: "#0044B3",      fontStyle: "",              token:"pos_label"            },
-    'Procedure':            {  enable:1,    foreground: "#0050D3",      fontStyle: "",              token:"pos_procedure"        },
+    'Label':                {  enable:1,    foreground: "#9100BD",      fontStyle: "",              token:"pos_label"            },
+    'Procedure':            {  enable:1,    foreground: "#0000E0",      fontStyle: "",              token:"pos_procedure"        },
     'Variable':             {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_variable"         },
     'SFR':                  {  enable:1,    foreground: "#009000",      fontStyle: "",              token:"pos_devregs"          },
     'SFR_Bitname':          {  enable:1,    foreground: "#009000",      fontStyle: "",              token:"pos_devbits"          },
@@ -47,7 +47,7 @@ const rep_Dark = {
     'Comment.+':            {  foreground: "#5C6370"  },
     'String|SFR.*':         {  foreground: "#98C379"  },
     'Device':               {  foreground: "#87CEFA"  },
-    'Label':                {  foreground: "#14A5FF"  },
+    'Label':                {  foreground: "#C678DD"  },
     'Procedure':            {  foreground: "#61AFEF"  },
     '*black':               [  "#000000",  "#D4D4D4"  ]
 }

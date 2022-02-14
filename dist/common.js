@@ -394,7 +394,7 @@ function parseDoc(doc, mask = Types._.main, skip = {}, result = {}) {
 exports.parseDoc = parseDoc;
 
 
-function codeHTML(text, doc) {
+function codeHTML(text, doc, pre) {
     const res = [],   keys = {},   styles = STS.getThemeStyle(keys),   items = cache.get(doc).semantic.items.$;
 
     Object.entries(PAT.RXP.types).map(([k,v]) => keys[v.id] = k);
@@ -433,6 +433,9 @@ function codeHTML(text, doc) {
         return m;
     });
 
+    if (pre) text = /\n/.test(text) ? '<pre>' + text + '</pre>' : text.replace(/\t/g, (m) => '&nbsp;'.repeat(8))
+                                                                      .replace(/ +/g, (m) => '&nbsp;'.repeat(m.length));
+    
     return text.replace(/\0(\d+)\0/g, (m,v) => res[v]);
 }
 exports.codeHTML = codeHTML;
