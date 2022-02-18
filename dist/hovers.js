@@ -1,7 +1,6 @@
 "use strict";
 
 const vscode  = require("vscode");
-const cache   = require("./cache");
 const common  = require("./common");
 const DTB     = require("./database");
 
@@ -23,23 +22,23 @@ function provideHover(doc, position) {
         for (const type of Object.values(file.types)) {
             if (!(word in type.$items)) continue;
             
-            const text = type.$items[word].text + "\t' [" + (file.isLocal ? "Local" : file.scope) + "]";
+            let text = type.$items[word].code,   scope = "\t' [" + (file.isLocal ? "Local" : file.scope) + "]";
+
+            text += (/\n/.test(text) ? '\n\n' : '') + scope;
 
             return new vscode.Hover(getMarkdown(common.codeHTML(text, name, true), true));
         }
     }
 
 
-    const dev = cache.get(doc).symbols.$.device;
-    
-    for (const items of common.Types._.dev.map(v => dev[v].items)) {
+    for (const items of common.getSFR(doc).map(v => v.items)) {
         if (word in items) return new vscode.Hover(items[word].value);
     }
 
 
     const word2 = common.getWordRange(doc, position, /[-+*$#\w\d_]+/i),   i = DTB.find(word2, common.getCore(doc))
     
-    if (i && i.hint) return new vscode.Hover(getMarkdown(i.hint.replace(/^"|"$/g,'')));
+    if (i && i.hint) return new vscode.Hover(getMarkdown(i.hint));
 
 
     return null;

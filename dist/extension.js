@@ -8,6 +8,7 @@ const semantic   = require("./semantic");
 const hovers     = require("./hovers");
 const definition = require("./definition");
 const completion = require("./completion");
+const signature  = require("./signature");
 const commands   = require("./commands");
 const webview    = require("./webview");
 const plugins    = require("./plugins");
@@ -25,7 +26,8 @@ function activate(context)
         semantic.default(),
         hovers.default(),
         definition.default(),
-        completion.default()
+        completion.default(),
+        signature.default()
     );
 }
 exports.activate = activate;

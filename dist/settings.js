@@ -12,9 +12,9 @@ const newColors = (rep = {})  => {
     'Comment_Block':        {  enable:1,    foreground: "#0000A0",      fontStyle: "italic",        scope:"comment_block.pos"    },
     'String':               {  enable:1,    foreground: "#009000",      fontStyle: "",              scope:"string_quoted.pos"    },
     
-    'Number':               {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"numeric_base.pos"     },
-    'Number_Binary':        {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"numeric_bin.pos"      },
-    'Number_Hex':           {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"numeric_hex.pos"      },
+    'Number':               {  enable:1,    foreground: "#DC0000",      fontStyle: "",              scope:"numeric_base.pos"     },
+    'Number_Binary':        {  enable:1,    foreground: "#C00000",      fontStyle: "",              scope:"numeric_bin.pos"      },
+    'Number_Hex':           {  enable:1,    foreground: "#C00000",      fontStyle: "",              scope:"numeric_hex.pos"      },
 
     'Operator':             {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"operator_base.pos"    },
     'Operator_Math':        {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"operator_math.pos"    },
@@ -27,8 +27,8 @@ const newColors = (rep = {})  => {
     'Device':               {  enable:1,    foreground: "#0000B0",      fontStyle: "bold",          token:"pos_device"           },
     'Define':               {  enable:1,    foreground: "#000000",      fontStyle: "bold",          token:"pos_define"           },
     'Symbol':               {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_symbol"           },
-    'Label':                {  enable:1,    foreground: "#9100BD",      fontStyle: "",              token:"pos_label"            },
-    'Procedure':            {  enable:1,    foreground: "#0000E0",      fontStyle: "",              token:"pos_procedure"        },
+    'Label':                {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_label"            },
+    'Procedure':            {  enable:1,    foreground: "#000000",      fontStyle: "bold",          token:"pos_procedure"        },
     'Variable':             {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_variable"         },
     'SFR':                  {  enable:1,    foreground: "#009000",      fontStyle: "",              token:"pos_devregs"          },
     'SFR_Bitname':          {  enable:1,    foreground: "#009000",      fontStyle: "",              token:"pos_devbits"          },
@@ -39,19 +39,21 @@ const newColors = (rep = {})  => {
 
 const def_Record = {
     'light'            :    {  enable:1,    foreground: "#000000",   fontStyle:""  },
-    'dark'             :    {  enable:1,    foreground: "#D4D4D4",   fontStyle:""  },
-    'highcontrast'     :    {  enable:1,    foreground: "#D4D4D4",   fontStyle:""  }
+    'dark'             :    {  enable:1,    foreground: "#D0D0D0",   fontStyle:""  },
+    'highcontrast'     :    {  enable:1,    foreground: "#D0D0D0",   fontStyle:""  }
 }
 
 const rep_Dark = {
-    'Define':               {  foreground: "#D19A66",  fontStyle: ""  },
-    'Symbol':               {  foreground: "#56B6C2"  },
+    'Number':               {  foreground: "#EE82EE"  },
+    'Number_.*':            {  foreground: "#DB7093"  },
+    'Symbol':               {  foreground: "#00CED1"  },
     'Comment.+':            {  foreground: "#5C6370"  },
     'String|SFR.*':         {  foreground: "#98C379"  },
     'Device':               {  foreground: "#87CEFA"  },
-    'Label':                {  foreground: "#C678DD"  },
-    'Procedure':            {  foreground: "#61AFEF"  },
-    '*black':               [  "#000000",  "#D4D4D4"  ]
+    'Label':                {  foreground: "#61AFEF"  },
+    'Procedure':            {  foreground: "#00BFFF",  fontStyle: ""  },
+    'Define':               {  foreground: "#DEB887",  fontStyle: ""  },
+    '*black':               [  "#000000",  "#D0D0D0"  ]
 }
 
 const def_Header =

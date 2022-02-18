@@ -17,7 +17,7 @@ const cache_dev = {},   statusVer = createVersion();
 const [Types, Tokens] = newTypes({
     main  : [ "variable", "procedure", "symbol", "define", "label" ],
     lang  : [ "device", "declare", "include" ],
-    dev   : [ "devregs", "devbits" ]
+    sfr   : [ "devregs", "devbits" ]
 });
 
 const Enums = {
@@ -54,44 +54,21 @@ exports.activate = () => {
     vscode.window.onDidChangeActiveTextEditor(onDidChangeActiveTextEditor);
     vscode.window.onDidChangeTextEditorSelection(onDidChangeTextEditorSelection);
     vscode.window.onDidChangeActiveColorTheme(() => STS.Update());
+
+    onDidChangeActiveTextEditor(vscode.window.activeTextEditor);
+    onDidOpenTextDocument(vscode.window.activeTextEditor?.document);
 }
 
 
 function onDidChangeActiveTextEditor(editor) {
-    showVersion(editor?.document);
+    const doc = editor?.document;
+    if (!doc || doc.languageId !== 'pos') {  statusVer.hide();    return;  } else {  updateVersion(doc);    statusVer.show();  }
 }
 
 
-function onDidOpenTextDocument(eDoc) {
-    const doc = eDoc.fileName.endsWith('\\settings.json') ? vscode.window.activeTextEditor?.document : eDoc;
-    
+function onDidOpenTextDocument(doc) {
     if (!doc || doc.languageId !== 'pos') return;
-
-    if (doc.fileName.startsWith('Untitled-'))
-    {
-        if (doc.getText().length || !STS.cache.header.enable) return;
-        
-        clearTimeout(onDidOpenTextDocument.tmr);        onDidOpenTextDocument.tmr = setTimeout(() =>
-        {
-            const hdr =  STS.cache.header.text.replace(/<%[\t ]*(.+?)[\t ]*%>/ig, (a,v) => {
-                switch (v = v.trim()) {
-                    case 'date':    return (new Date()).toLocaleDateString();
-                    case 'time':    return (new Date()).toLocaleTimeString();
-                    case 'year':    return (new Date()).getFullYear();
-                    default:        return process.env[v] || '';
-                }
-            });
-            const edit = new vscode.WorkspaceEdit();
-            edit.replace(doc.uri, new vscode.Range(0,0,0,0), hdr);
-            vscode.workspace.applyEdit(edit);
-        },
-        200);
-    } else {
-        PLG.load(PLG.file(doc.fileName));
-
-        const editor = vscode.window.activeTextEditor;
-        if (doc.fileName === editor?.document?.fileName) onDidChangeActiveTextEditor(editor);
-    }
+    if (doc.fileName.startsWith('Untitled-'))  untitledHeader(doc);  else  PLG.load(PLG.file(doc.fileName));
 }
 
 
@@ -113,6 +90,23 @@ function onDidChangeTextEditorSelection(sel) {
             if (file) vscode.workspace.openTextDocument(vscode.Uri.file(file)).then(doc => vscode.window.showTextDocument(doc));
         } catch {}
     }
+}
+
+
+function untitledHeader(doc) {
+    if (doc.getText().length || !STS.cache.header.enable) return;
+
+    const hdr =  STS.cache.header.text.replace(/<%[\t ]*(.+?)[\t ]*%>/ig, (a,v) => {
+        switch (v = v.trim()) {
+            case 'date':    return (new Date()).toLocaleDateString();
+            case 'time':    return (new Date()).toLocaleTimeString();
+            case 'year':    return (new Date()).getFullYear();
+            default:        return process.env[v] || '';
+        }
+    });
+
+    const edit = new vscode.WorkspaceEdit();        edit.replace(doc.uri, new vscode.Range(0,0,0,0), hdr);
+    vscode.workspace.applyEdit(edit);
 }
 
 
@@ -148,9 +142,18 @@ function getCore(doc) {
 exports.getCore = getCore;
 
 
+function getSFR(doc) {
+    const res = [],   dev = cache.get(doc).symbols.$.device || {};
+    for (const k of Types._.sfr) if (k in dev) res.push(dev[k]);
+    return res;
+}
+exports.getSFR = getSFR;
+
+
 function getCompletions(doc) {
-    const dev = cache.get(doc).symbols.$.device;
-    return [...DTB.comps(getCore(doc)), ...dev[Types.devregs].comps, ...dev[Types.devbits].comps];
+    const res = [...DTB.comps(getCore(doc))];
+    for (const v of getSFR(doc)) res.push(...v.comps);
+    return res;
 }
 exports.getCompletions = getCompletions;
 
@@ -204,15 +207,16 @@ exports.filterSymbols = filterSymbols;
 
 
 function getSymbols(input) {
-    const r = /(?:"[^"]*")|[';].*$|\(\*[\s\S]*?\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+).*?('[\t ]*$[\s\S]*?(?:\r\n\r\n|\n\n|\r\r)|(?=$))|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
+    const r = /(?:"[^"]*")|[';].*$|\(\*[\s\S]*?\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
 
     const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
     
-    let d, m, v = [];
+    let d,  m,  v = [],  help,  text = input + '\r\n';
 
-    while ((m = r.exec(input)) !== null) {
-        if (m[1] == null) continue;
+    while ((m = r.exec(text)) !== null) {
         
+        if (m[1] == null) { help = m[0];    continue; }
+
         if      (m[3])  d = { name: m[3],   id: "label"   }
         else if (m[4])  d = { name: m[4],   id: "end"     }
         else if (m[5])  d = { name: m[5],   id: "include" }            
@@ -225,9 +229,11 @@ function getSymbols(input) {
         d.end   = m.index + m[0].length;
         d.type  = getTypeFromID[d.id];
         d.token = Tokens[d.type];
-        d.text  = m[2];
+        d.code  = m[2];
         
-        v.push(d);
+        if (help && help.startsWith('(**')) d.help = help.replace(/^\(\*\*[\r\n]*|[\r\n]*\*\)$/g, '');
+        
+        v.push(d);          help = null;
     }
     
     return v;
@@ -503,14 +509,12 @@ function setVersion(doc, prm) {
     txt = PAT.INI(root.readFile(doc, '',  '.mci'), 'Version', txt);
     root.writeFile(doc, txt, ".mci");
 
-    showVersion(doc, true);
+    updateVersion(doc, true);
 }
 exports.setVersion = setVersion;
 
 
-function showVersion(doc, change) {
-    if (!doc || doc.languageId !== 'pos') { statusVer.hide();    return; }
-    
+function updateVersion(doc, change) {
     if (change) {
         statusVer.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
         setTimeout(() => { statusVer.backgroundColor = undefined; },  600);
@@ -518,6 +522,5 @@ function showVersion(doc, change) {
     
     statusVer.text = 'Ver ' + getVersion(doc);
     statusVer.tooltip = doc.fileName;
-    statusVer.show();
 }
-exports.showVersion = showVersion;
+exports.updateVersion = updateVersion;

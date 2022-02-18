@@ -32,12 +32,12 @@
 			},
 			"dark":
 			{
-				"Keyword":              {  "foreground": "#D4D4D4",   "fontStyle": "bold"  },
+				"Keyword":              {  "foreground": "#D0D0D0",   "fontStyle": "bold"  },
 				"KeywordImportant":     {  "foreground": "#FF0000",   "fontStyle": "bold"  },
-				"KeywordMacro":         {  "foreground": "#D4D4D4"                         },
+				"KeywordMacro":         {  "foreground": "#D0D0D0"                         },
 				"KeywordDeclare":       {  "foreground": "#BC4F4F",   "fontStyle": "bold"  },
 				"KeywordASM":           {  "foreground": "#E5C07B",   "fontStyle": "bold"  },
-				"KeywordUser":          {  "foreground": "#D4D4D4",   "fontStyle": "bold"  },
+				"KeywordUser":          {  "foreground": "#D0D0D0",   "fontStyle": "bold"  },
 				"KeywordPreprocessor":  {  "foreground": "#BC4F4F",   "fontStyle": "bold"  }
 			}
 		}
@@ -47,8 +47,7 @@
 		"Keyword": [
 			{
 				"name": "Include",
-				"hint": "<b>Include</b> <i>&quot;Filename&quot;</i>",
-				"comp": "Test"
+				"hint": "<b>Include</b> <i>&quot;Filename&quot;</i>"
 			},
 			{
 				"name": "Isr-,Isr",
@@ -164,7 +163,7 @@
 				"hint": "Parameter holds the address of RAM"
 			},
 			{
-				"name": "BycRef,ByVal",
+				"name": "BycRef",
 				"core": [14,16,24,33],
 				"hint": "Parameter holds the address of flash memory"
 			},
@@ -668,7 +667,18 @@
 			{
 				"name": "EWrite",
 				"core": [14,16,24,33],
-				"hint": "<b>EWrite</b> <i>Address, [Variable {, Variable}]</i>"
+				"hint": "<b>EWrite</b> <i>Address, [Variable {, Variable}]</i>",
+				"comp": "Positron",
+				"sign": {
+					"code": "Address, ...Variable",
+					"help": {
+						"info": "Write information to the on-board EEPROM available on some PICmicro™ types.",
+						"args": [
+							"Address is a constant, variable, or expression, that contains the address of interest within EEPROM.",
+							"Variable is a user defined variable."
+						]
+					}
+				}
 			},
 			{
 				"name": "Exp",

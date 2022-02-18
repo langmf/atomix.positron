@@ -41,18 +41,18 @@ exports.Init = (fName = 'database.json') => {
         const token = prefix + type.toLowerCase();
         
         for (const x of arr) {
-            const core = x.core,  hint = x.hint,  comp = x.comp;
+            const core = x.core,  hint = x.hint,  comp = x.comp,  sign = x.sign;
             
             for (const name of x.name.split(',').map(v => v.trim())) {
                 const m = name.match(/^(\w+?)(\d*)\.\.\.(\d+)(\w*)$/i);
                 
                 if (!m) {
                     const word = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    items[name.toLowerCase()] = { name,  word,  token,  core,  hint,  comp };
+                    items[name.toLowerCase()] = { name,  word,  token,  core,  hint,  comp,  sign };
                 } else {
                     for (let b = parseInt(m[2] || 0), e = parseInt(m[3]); b <= e; b++ ) {
                         const word = m[1] + (m[2] || b ? b : '') + m[4]; 
-                        items[word.toLowerCase()] = { name:word,  word,  token,  core,  hint,  comp };
+                        items[word.toLowerCase()] = { name:word,  word,  token,  core,  hint,  comp,  sign };
                     }
                 }
             }

@@ -31,5 +31,5 @@ exports.deactivate = async() => {
 
 
 exports.command = async (data, state) => {
-    //if (data.action === 'program' && state) newPage();
+    if (data.action === 'program' && state) newPage();
 }

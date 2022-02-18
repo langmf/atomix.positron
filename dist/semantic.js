@@ -35,7 +35,7 @@ function autoFormat(doc, formats) {
 
 
 function parseALL(doc, tokens, formats) {
-    const text = doc.getText(),   files = common.parseDoc(doc),   dev = cache.get(doc).symbols.$.device,   SEM = cache.get(doc).semantic;
+    const text = doc.getText(),   files = common.parseDoc(doc),   SEM = cache.get(doc).semantic;
     
     let items,  words;
 
@@ -59,7 +59,7 @@ function parseALL(doc, tokens, formats) {
     // -------------------------- parse DEV --------------------------
     items = {};     words = [];
     
-    for (const sfr of common.Types._.dev.map(v => dev[v]).filter(v => v.words)) {
+    for (const sfr of common.getSFR(doc).filter(v => v.words)) {
         Object.assign(items, sfr.items);    words.push(sfr.words);
     }
 

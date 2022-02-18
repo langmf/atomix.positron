@@ -59,11 +59,15 @@
 - Added highlight for hover action
 - Various minor fixes
 
-## Version 1.2.9 (13/02/2022)
+## Version 1.4.0 (13/02/2022)
 - Added enable header
-- Improved display hover block
 - Added saving active tab on the settings page
 - Added file processing "Positron.js" in the current folder
 - Added file processing "Programmer.cmd" in the current folder
 - Added version display and editing in the file (*.mci)
+
+## Version 1.4.5 (18/02/2022)
+- Added help with Procedure and Define Signatures
 - Slightly corrected colors by default
+- Improved display hover block
+- Various minor fixes
