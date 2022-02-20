@@ -71,3 +71,8 @@
 - Slightly corrected colors by default
 - Improved display hover block
 - Various minor fixes
+
+## Version 1.4.7 (20/02/2022)
+- Added some elements in the settings editor
+- Improved device type detection
+- Various minor fixes

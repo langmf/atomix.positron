@@ -16,7 +16,7 @@ function provideCompletionItems(doc, position) {
     
     for (const file of Object.values(files)) {
         for (const type of Object.values(file.types)) {
-            const kind  = common.Enums[type.$type].com || 0,    description = `[${file.scope}]`;
+            const kind  = common.Enums[type.$type].com || 0,    description = `[ ${file.scope} ]`;
             
             for (const v of Object.values(type.$items)) {
                 result.push(new vscode.CompletionItem({ label: v.name,  description }, kind));

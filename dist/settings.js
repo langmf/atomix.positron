@@ -44,7 +44,7 @@ const def_Record = {
 }
 
 const rep_Dark = {
-    'Number':               {  foreground: "#EE82EE"  },
+    'Number':               {  foreground: "#FF69B4"  },
     'Number_.*':            {  foreground: "#DB7093"  },
     'Symbol':               {  foreground: "#00CED1"  },
     'Comment.+':            {  foreground: "#5C6370"  },
@@ -68,15 +68,20 @@ const def_Header =
 `;
 
 const def_Editor = {
-    "fontFamily":
-    {
-        name: 'Font Family',   type: 'string',   value: "",
-        enum: ['Arial', 'Calibri', 'Segoe UI', 'Consolas', 'Lucida Console', 'Courier New', 'monospace']
+    "fontFamily": {
+        name: 'Font Family',        enum: ['Arial', 'Calibri', 'Segoe UI', 'Consolas', 'Lucida Console', 'Courier New', 'monospace']
     },
-    "fontSize":
-    {
-        name: 'Font Size',     type: 'number',   value: "",
-        enum: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24]
+    "fontSize": {
+        name: 'Font Size',          enum: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24]
+    },
+    "minimap.enabled": {
+        name: 'Mini Map',           enum: [true, false]
+    },
+    "guides.indentation": {
+        name: 'Line Indentation',   enum: [true, false]
+    },
+    "quickSuggestions": {
+        name: 'Quick Suggestions',  enum: [false]
     }
 }
 
@@ -141,13 +146,20 @@ function Settings_Editor(value) {
 function Update_Editor(value) {
     const config = vscode.workspace.getConfiguration(),   cfg_pos = config.get('[pos]');
 
+    const isNumeric = (num) => (typeof(num) === 'number' || typeof(num) === "string" && num.trim() !== '') && !isNaN(num);
+
     for (const [k,i] of Object.entries(value.editor)) {
         const key = 'editor.' + k;
 
         if (typeof i !== 'object') { delete value.editor[k];    cfg_pos[key] = undefined;    continue; }
 
-        const v = i.value.replace(/^--.+?--$/, '');
-        cfg_pos[key] =  !v ? undefined : (i.type === 'number' ? parseInt(v) : v);
+        let v = (i.value || '').replace(/^--.+?--$/, '');
+        
+        if (isNumeric(v))                   v = Number(v);
+        else if (/^true|false$/i.test(v))   v = v.toLowerCase() == 'true';
+        else if (/^[\t ]*{/i.test(v))       try { v = JSON.parse(v); }catch{}
+
+        cfg_pos[key] =  (v == null || v === '') ? undefined : v;
     }
 
     config.update('[pos]', cfg_pos, vscode.ConfigurationTarget.Global);

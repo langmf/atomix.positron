@@ -129,18 +129,18 @@ function HDR_update() {
 
 
 async function EDT_add(el) {
-	const k = el.innerText,   n = $('#editor_addname').val().trim(),   t = $('#editor_addtype').val().trim(),   e = $('#editor_addenum').val();
+	const k = el.innerText,   n = $('#editor_addname').val().trim(),   e = $('#editor_addenum').val();
 	
 	const a = e.length ? e.split(',').map(v => v.trim()) : undefined;
 	
-	STS.editor[k] = STS.editor[k] || { name:n, type:t, enum:a, value:'' };			await STS_edit('editor');
+	STS.editor[k] = STS.editor[k] || { name:n,  enum:a,  value:'' };			await STS_edit('editor');
 }
 
 async function EDT_input(el) {
 	if (typeof el === 'string') { STS.editor[el] = '';		await STS_edit('editor');		return; }
 	
 	el = el || event.target;		const val = el.value,   key = el.getAttribute('id'),   i = STS.editor[key];
-	
+
 	i.value = val;		clearTimeout(EDT_input.tmr);		EDT_input.tmr = setTimeout(STS_edit, 200);
 }
 
@@ -148,15 +148,17 @@ async function EDT_update() {
 	let out = '';
 
 	for (const [k,i] of Object.entries(STS.editor)) {
+		const val = (i.value || '').replace(/"/g, '&quot;');
+
 		const sel = !Array.isArray(i.enum) ? '' :
 			'\n<select class="form-select" onchange="var t = this.nextElementSibling; t.value=this.value; EDT_input(t);">\n' +
 			'<option disabled selected value style="display:none;"> -- select an option -- </option><option>-- default --</option>\n' +
-			i.enum.map(v => `<option ${v==i.value?'selected':''} >${v}</option>`).join('') + '\n</select>\n';
+			i.enum.map(v => `<option ${v.toString() === val ? 'selected' : ''} >${v}</option>`).join('') + '\n</select>\n';
 
 		out += `<li class="list-group-item d-flex flex-wrap align-items-center">
 					<span class="flex-fill my-2 me-3">${i.name || k}</span>
 					<div  class="flex-fill my-2 me-5 ${sel ? 'select-editable' : ''}" style="min-width:100px;max-width:200px;">${sel}
-						<input type="text" class="form-control input-sm" id="${k}" value="${i.value}" onblur="EDT_input(this)" onkeyup="(event.keyCode===13&&EDT_input(this))" />
+						<input type="text" class="form-control input-sm" id="${k}" value="${val}" onblur="EDT_input(this)" onkeyup="(event.keyCode===13&&EDT_input(this))" />
 					</div>
 					<button type="button" class="btn btn-primary btn-sm w-auto my-2" onclick="EDT_input('${k}');">Remove</button>
 				</li>`;
@@ -168,8 +170,13 @@ async function EDT_update() {
 	if (add[0].children.length === 0) {
 		let out = '',   lst = await vscode_Eval().vscode.workspace.getConfiguration('editor');
 
-		for (const k of Object.keys(lst).sort()) {
+		for (const [k,v] of Object.entries(lst).sort()) {
 				out += `<li><a class="dropdown-item" href="#" onclick="EDT_add(this)">${k}</a></li>`;
+				if (typeof v === 'object' && v != null) {
+					for (const n of Object.keys(v).sort()) {
+						out += `<li><a class="dropdown-item" href="#" onclick="EDT_add(this)">${k}.${n}</a></li>`;
+					}
+				}
 		}
 		
 		add.html(out);

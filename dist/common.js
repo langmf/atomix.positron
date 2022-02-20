@@ -196,11 +196,11 @@ function listSymbols() {
 function filterSymbols(list) {
     const showInRoot = root.config.outline.showInRoot.split(",").map(v => v.trim().toLowerCase());
     
-    return Object.values(list).reduce((res, v) => {
-        if (v.children.length && v.$type !== Types.device) {
-            if (showInRoot.includes(v.name.toLowerCase())) return res.concat(v.children);  else  res.push(v);
+    return Object.entries(list).reduce((r, [k,v]) => {
+        if (k === 'DEVICE' || (v.children.length && v.$type !== Types.device)) {
+            if (showInRoot.includes(v.name.toLowerCase())) return r.concat(v.children);  else  r.push(v);
         }
-        return res;
+        return r;
     }, []);
 }
 exports.filterSymbols = filterSymbols;
@@ -271,7 +271,7 @@ async function parseIncludes(doc, list, timeout = 5000) {
 
 
 async function parseSymbols(doc) {
-    const Blocks = [],  list = listSymbols(),  SYM = cache.get(doc).symbols;
+    const Blocks = [],  list = listSymbols(),  SYM = cache.get(doc).symbols,  old = SYM.list;
 
     const newSymbol = function(item) {
         const obj = list[item.type],  name = item.name.toLowerCase();
@@ -289,23 +289,17 @@ async function parseSymbols(doc) {
 
     for (const [k,v] of Object.entries(list)) if (v.$items && !Object.keys(v.$items).length) delete list[k];
 
-    await parseIncludes(doc, list);
-
-    parseDevice(doc, list);
-
-    SYM.list = list;
+    SYM.list = list;        await parseIncludes(doc, list);         parseDevice(doc, list, old);         SYM.list = list;
     
     return filterSymbols(list);
 }
 exports.parseSymbols = parseSymbols;
 
 
-function parseDevice(doc, list) {
-    const SYM = cache.get(doc).symbols,  old = SYM.list;
+function parseDevice(doc, list, old) {
+    const devs = getDevice(doc),   SYM = cache.get(doc).symbols;
 
-    let dev,  devs,  name,  local,  r = doc.lineAt(0).range;
-
-    SYM.list = list;      devs = getDevice(doc);
+    let dev,  name,  local,  r = doc.lineAt(0).range;
 
     if (devs.length) { dev = devs.pop();    name = dev.value.name;     if (dev.isLocal) { local = dev.value;   r = dev.value.range; } }
 
@@ -321,11 +315,16 @@ function parseDevice(doc, list) {
 
     SYM.device = dev;
 
-    if (root.config.outline.showRegisters && !root.IsAsmLst(doc)) {
-        list.DEVICE = new vscode.DocumentSymbol(name, "", vscode.SymbolKind.EnumMember, r, r);
-        const x = list.DEVICE.children,  kind = list.DEVICE.kind;
-        for (const v of Object.values(dev[Types.devregs].items)) {
-            x.push(new vscode.DocumentSymbol(v.name + " ", " " + v.value, kind, r, r));
+    if (!root.IsAsmLst(doc)) {
+        const showRegs = root.config.outline.showRegisters;
+
+        list.DEVICE = new vscode.DocumentSymbol((showRegs ? name : name.substring(1)), "", vscode.SymbolKind.EnumMember, r, r);
+        
+        if (showRegs) {
+            const x = list.DEVICE.children,  kind = list.DEVICE.kind;
+            for (const v of Object.values(dev[Types.devregs].items)) {
+                x.push(new vscode.DocumentSymbol(v.name + " ", " " + v.value, kind, r, r));
+            }
         }
     }
 }
@@ -342,6 +341,10 @@ function getDevice(doc, skip = {}, result = []) {
     for (const [k,v] of Object.entries(items)) if (k in DTB.files) result.push({ isLocal,  value:v });
 
     for (const item of Object.values(INC.$)) if (item?.fsPath) getDevice(item.fsPath, skip, result);
+
+    if (!result.length && isLocal && root.config.smartParentIncludes) {
+        const prt = cache.get(doc).$.parent;      if (prt) getDevice(prt, skip, result);
+    }
 
     return result;
 }
