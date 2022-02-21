@@ -29,4 +29,4 @@ function provideCompletionItems(doc, position) {
     return result;
 }
 
-exports.default = () => vscode.languages.registerCompletionItemProvider({ scheme: "file", language: "pos" }, { provideCompletionItems }, ".");
+exports.default = () => vscode.languages.registerCompletionItemProvider({ scheme: "file", language: "pos" }, { provideCompletionItems });
