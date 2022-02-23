@@ -22,7 +22,7 @@ function provideHover(doc, position) {
         for (const type of Object.values(file.types)) {
             if (!(word in type.$items)) continue;
             
-            let text = type.$items[word].code,   scope = "\t' [ " + (file.isLocal ? "Local" : file.scope) + " ]";
+            let text = type.$items[word].code,   scope = "\t '&nbsp;[&nbsp;" + (file.isLocal ? "Local" : file.scope) + "&nbsp;]";
 
             text += (/\n/.test(text) ? '\n\n' : '') + scope;
 

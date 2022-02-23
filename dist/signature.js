@@ -1,9 +1,20 @@
 "use strict";
 
-const vscode = require("vscode");
+const vscode  = require("vscode");
+const root    = require("./root");
 const cache   = require("./cache");
 const common  = require("./common");
-const DTB    = require("./database");
+const DTB     = require("./database");
+
+
+function getMarkdown(text) {
+    const mark = new vscode.MarkdownString();       mark.supportHtml = true;        mark.isTrusted   = true;
+    text =  text.replace(/^[\t ]*\w+[\t ]*:[\t ]*(None)?[\t ]*$/igm, '')
+                .replace(/\n+$/, '').replace(/\n+/g, '\n')
+                .replace(/(?<!\n\n)^[\t ]*\w+[\t ]*:/im, '\n$&');
+    mark.appendMarkdown('<pre>' + text + '</pre>');
+    return mark;
+}
 
 
 function getCode(code) {
@@ -24,6 +35,7 @@ function getCount(code) {
     return cnt === null ? 0 : cnt.length;
 }
 
+
 function getInfo(doc, pos) {
     const code = doc.lineAt(pos).text.substring(0, pos.character),   clean = getCode(code);
     const name = getName(clean),   count = getCount(clean);
@@ -32,12 +44,22 @@ function getInfo(doc, pos) {
 }
 
 
+function parseHelp(help, res = {}) {
+    if (!help || !root.config.showHelpSignature) return res;             if (typeof help === 'object') return help;
+    
+    if (typeof help === 'string') {
+        if (help[0] === '*') try {  return JSON.parse('{' + help.slice(1) + '}');  }catch{};
+        res.info = getMarkdown(help);
+    }
+
+    return res;
+}
+
+
 function parseItem(x) {
-    let text = '',  help = {},  i = x.sign || x;
+    const i = x.sign || x,   help = parseHelp(i.help);
 
-    try {  if (i.help) help = typeof i.help === 'object' ? i.help : JSON.parse('{' + i.help + '}');  }catch{}
-
-    text = !x.sign ? (help.code || i.code) : `cmd ${x.name}(${i.code || ''})`;
+    const text = !x.sign ? (help.code || i.code) : `cmd ${x.name}(${i.code || ''})`;
 
     const m = text.match(/(?:proc|sub|cmd|\$define|\$defeval)[\t ]+(([\w\u0400-\u04FF]+)[\t ]*(?:\((.*?)\))?(?:[\t ]*,[\t ]*([\w\d\.]+))?)/i);
 
@@ -83,4 +105,4 @@ function provideSignatureHelp(doc, position, token, context) {
 }
 
 
-exports.default = () => vscode.languages.registerSignatureHelpProvider({ language: "pos" }, { provideSignatureHelp }, { triggerCharacters: "(",  retriggerCharacters: [",", " "] });
+exports.default = () => vscode.languages.registerSignatureHelpProvider({ language: "pos" }, { provideSignatureHelp }, "(");

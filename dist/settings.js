@@ -13,8 +13,8 @@ const newColors = (rep = {})  => {
     'String':               {  enable:1,    foreground: "#009000",      fontStyle: "",              scope:"string_quoted.pos"    },
     
     'Number':               {  enable:1,    foreground: "#DC0000",      fontStyle: "",              scope:"numeric_base.pos"     },
-    'Number_Binary':        {  enable:1,    foreground: "#C00000",      fontStyle: "",              scope:"numeric_bin.pos"      },
-    'Number_Hex':           {  enable:1,    foreground: "#C00000",      fontStyle: "",              scope:"numeric_hex.pos"      },
+    'Number_Binary':        {  enable:1,    foreground: "#DC0000",      fontStyle: "",              scope:"numeric_bin.pos"      },
+    'Number_Hex':           {  enable:1,    foreground: "#DC0000",      fontStyle: "",              scope:"numeric_hex.pos"      },
 
     'Operator':             {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"operator_base.pos"    },
     'Operator_Math':        {  enable:1,    foreground: "#000000",      fontStyle: "",              scope:"operator_math.pos"    },
@@ -44,11 +44,10 @@ const def_Record = {
 }
 
 const rep_Dark = {
-    'Number':               {  foreground: "#FF69B4"  },
-    'Number_.*':            {  foreground: "#DB7093"  },
+    'Number.*':             {  foreground: "#F08080"  },
     'Symbol':               {  foreground: "#00CED1"  },
     'Comment.+':            {  foreground: "#5C6370"  },
-    'String|SFR.*':         {  foreground: "#98C379"  },
+    'String|SFR.*':         {  foreground: "#98c379"  },
     'Device':               {  foreground: "#87CEFA"  },
     'Label':                {  foreground: "#61AFEF"  },
     'Procedure':            {  foreground: "#00BFFF",  fontStyle: ""  },

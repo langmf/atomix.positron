@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.4.8",
+	"version": "1.4.9",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -248,6 +248,12 @@
 					"type": "boolean",
 					"default": true,
 					"description": "Whether to allow smart mode for the included files from the parent file.\nAfter change mode need reload VSCode IDE.\t! This is experimental feature !",
+					"scope": "resource"
+				},
+				"pos.showHelpSignature": {
+					"type": "boolean",
+					"default": true,
+					"description": "Whether to show help the signature procedures (from the comment from above).",
 					"scope": "resource"
 				},
 				"pos.outline.showRegisters": {

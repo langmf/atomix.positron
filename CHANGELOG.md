@@ -76,3 +76,7 @@
 - Added some elements in the settings editor
 - Improved device type detection
 - Various minor fixes
+
+## Version 1.4.9 (23/02/2022)
+- Added help with Procedure and Define Signatures (from the comment above)
+- Various minor fixes

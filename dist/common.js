@@ -207,31 +207,36 @@ exports.filterSymbols = filterSymbols;
 
 
 function getSymbols(input) {
-    const r = /(?:"[^"]*")|[';].*$|\(\*[\s\S]*?\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
+    const r = /"([^"]*)"|[';](.*)$|\(\*([\s\S]*?)\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s;']|$)|(endproc|endsub)(?=[\s;']|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
 
     const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
     
-    let d,  m,  v = [],  help,  text = input + '\r\n';
+    let d,  m,  v = [],  help = null,  text = input + '\r\n';
 
     while ((m = r.exec(text)) !== null) {
         
-        if (m[1] == null) { help = m[0];    continue; }
-
-        if      (m[3])  d = { name: m[3],   id: "label"   }
-        else if (m[4])  d = { name: m[4],   id: "end"     }
-        else if (m[5])  d = { name: m[5],   id: "include" }            
-        else if (m[6])  d = { name: m[7],   id: m[6].toLowerCase().replace(/static[\t ]+/g,'') }
-        else if (m[8])  d = { name: m[9],   id: m[8].toLowerCase()  }
-        else if (m[11]) d = { name: m[12],  id: "device"  }
-        else continue;
+        if (m[2]) {  if (m[2].indexOf('----') === 0) help = [];  else if (help) help.push(m[2]);  }
         
-        d.start = m.index + m[1].length;
+        if (m[3] && m[3][0] === '*') help = [m[3]];
+
+        if      (m[4] == null) continue;
+        else if (m[6])  d = { name: m[6],   id: "label"   }
+        else if (m[7])  d = { name: m[7],   id: "end"     }
+        else if (m[8])  d = { name: m[8],   id: "include" }            
+        else if (m[9])  d = { name: m[10],  id: m[9].toLowerCase().replace(/static[\t ]+/g,'') }
+        else if (m[11]) d = { name: m[12],  id: m[11].toLowerCase()  }
+        else if (m[14]) d = { name: m[15],  id: "device"  }
+        else continue;
+
+        if (/^\d+$/.test(d.name)) continue;
+        
+        d.start = m.index + m[4].length;
         d.end   = m.index + m[0].length;
         d.type  = getTypeFromID[d.id];
         d.token = Tokens[d.type];
-        d.code  = m[2];
+        d.code  = m[5];
         
-        if (help && help.startsWith('(**')) d.help = help.replace(/^\(\*\*[\r\n]*|[\r\n]*\*\)$/g, '');
+        if (help && help.length) d.help = help.join('\n');
         
         v.push(d);          help = null;
     }
