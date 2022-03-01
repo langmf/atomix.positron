@@ -24,9 +24,9 @@ function provideHover(doc, position) {
             
             let text = type.$items[word].code,   scope = "\t '&nbsp;[&nbsp;" + (file.isLocal ? "Local" : file.scope) + "&nbsp;]";
 
-            text += (/\n/.test(text) ? '\n\n' : '') + scope;
+            if (/\n/.test(text)) text = text.replace(/[\r\n]+$/, '') + '\n\n';
 
-            return new vscode.Hover(getMarkdown(common.codeHTML(text, name, true), true));
+            return new vscode.Hover(getMarkdown(common.codeHTML(text + scope, name, true), true));
         }
     }
 
