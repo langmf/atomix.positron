@@ -61,7 +61,7 @@ exports.activate = () => {
 
 
 function onDidChangeActiveTextEditor(editor) {
-    const doc = editor?.document;
+    const doc = editor?.document;            openInclude.skip = true;
     if (!doc || doc.languageId !== 'pos') {  statusVer.hide();    return;  } else {  updateVersion(doc);    statusVer.show();  }
 }
 
@@ -73,23 +73,24 @@ function onDidOpenTextDocument(doc) {
 
 
 function onDidChangeTextEditorSelection(sel) {
-    if (sel.textEditor.document.languageId !== "pos") return;
-    
-    if (sel.kind == vscode.TextEditorSelectionChangeKind.Mouse)
-    {
-        if (root.config.output.ClickHide) vscode.commands.executeCommand("workbench.action.closePanel");
-    }
-    else if (sel.kind == vscode.TextEditorSelectionChangeKind.Command)
-    {
-        const editor = sel.textEditor,  i = getWordInclude(editor.document, sel.selections[0].active);      if (!i) return;
-        const file   = findInclude(i.name);
+    const kind = vscode.TextEditorSelectionChangeKind;
+    //console.log("main", sel.kind, openInclude.skip)
+    if (sel.kind == kind.Keyboard || sel.textEditor.document.languageId !== "pos") return;
+    if (sel.kind == kind.Mouse    && root.config.output.ClickHide) vscode.commands.executeCommand("workbench.action.closePanel");
+    if (sel.kind == kind.Command  || typeof sel.kind === 'undefined2') openInclude(sel);
+}
 
-        editor.selections = editor.selections.map(s => new vscode.Selection(s.start.translate(0,1), s.end.translate(0,1)));
-        
-        try {
-            if (file) vscode.workspace.openTextDocument(vscode.Uri.file(file)).then(doc => vscode.window.showTextDocument(doc));
-        } catch {}
-    }
+
+function openInclude(sel) {
+    //console.log("sel", sel.kind, openInclude.skip)
+    //if (openInclude.skip) { openInclude.skip = false;    return; }
+
+    const editor = sel.textEditor,  i = getWordInclude(editor.document, sel.selections[0].active);      if (!i) return;
+    const file   = findInclude(i.name);
+
+    editor.selections = editor.selections.map(s => new vscode.Selection(s.start.translate(0,1), s.end.translate(0,1)));
+    
+    try { if (file) vscode.workspace.openTextDocument(vscode.Uri.file(file)).then(doc => vscode.window.showTextDocument(doc)); } catch {}
 }
 
 
@@ -169,12 +170,14 @@ function newTypes(value) {
 }
 
 
-function findInclude(name, cur = path.dirname(vscode.window.activeTextEditor.document.fileName)) {
+function findInclude(name, value) {
     if (path.isAbsolute(name)) return root.checkFile(name);
 
-    let result,  curPath = cur.endsWith("\\") ? cur : cur + "\\";
+    let result,  arr = [path.dirname(vscode.window.activeTextEditor.document.fileName) + "\\"];
 
-    for (const x of [curPath, ...Object.values(root.path.include)]) {
+    if (value) { value = value.endsWith("\\") ? value : value + "\\";    if (value !== arr[0]) arr.unshift(value); }
+
+    for (const x of [...arr,  ...Object.values(root.path.include)]) {
         if (Array.isArray(x)) { for (const v of x) if (result = root.checkFile(v + name)) return result; }
         else                  {                    if (result = root.checkFile(x + name)) return result; }
     }
