@@ -83,3 +83,6 @@
 
 ## Version 1.5.0 (01/03/2022)
 - Fixed adding separator when showing Hover block.
+
+## Version 1.5.2 (02/04/2022)
+- Fixed navigation when clicked on the includes elements.

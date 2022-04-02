@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.5.1",
+	"version": "1.5.2",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -278,8 +278,7 @@
 		},
 		"configurationDefaults": {
 			"[pos]": {
-				"editor.semanticHighlighting.enabled": true,
-				"editor.snippetSuggestions": "top"
+				"editor.semanticHighlighting.enabled": true
 			}
 		},
 		"languages": [

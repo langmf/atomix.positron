@@ -61,7 +61,7 @@ exports.activate = () => {
 
 
 function onDidChangeActiveTextEditor(editor) {
-    const doc = editor?.document;            openInclude.skip = true;
+    const doc = editor?.document;
     if (!doc || doc.languageId !== 'pos') {  statusVer.hide();    return;  } else {  updateVersion(doc);    statusVer.show();  }
 }
 
@@ -74,21 +74,20 @@ function onDidOpenTextDocument(doc) {
 
 function onDidChangeTextEditorSelection(sel) {
     const kind = vscode.TextEditorSelectionChangeKind;
-    //console.log("main", sel.kind, openInclude.skip)
     if (sel.kind == kind.Keyboard || sel.textEditor.document.languageId !== "pos") return;
     if (sel.kind == kind.Mouse    && root.config.output.ClickHide) vscode.commands.executeCommand("workbench.action.closePanel");
-    if (sel.kind == kind.Command  || typeof sel.kind === 'undefined2') openInclude(sel);
+    if (sel.kind == null) openInclude(sel);
 }
 
 
 function openInclude(sel) {
-    //console.log("sel", sel.kind, openInclude.skip)
-    //if (openInclude.skip) { openInclude.skip = false;    return; }
-
+    //console.log("main", sel.kind, sel)
     const editor = sel.textEditor,  i = getWordInclude(editor.document, sel.selections[0].active);      if (!i) return;
     const file   = findInclude(i.name);
+    const r = new vscode.Range(sel.selections[0].active, sel.selections[0].active.translate(0,1));
+    const w = editor.document.getText(r).toLowerCase();         if (w !== 'n') return;
 
-    editor.selections = editor.selections.map(s => new vscode.Selection(s.start.translate(0,1), s.end.translate(0,1)));
+    editor.selections = editor.selections.map(s => new vscode.Selection(s.start.translate(0,-1), s.end.translate(0,-1)));
     
     try { if (file) vscode.workspace.openTextDocument(vscode.Uri.file(file)).then(doc => vscode.window.showTextDocument(doc)); } catch {}
 }
@@ -225,7 +224,7 @@ function getSymbols(input) {
         if      (m[4] == null) continue;
         else if (m[6])  d = { name: m[6],   id: "label"   }
         else if (m[7])  d = { name: m[7],   id: "end"     }
-        else if (m[8])  d = { name: m[8],   id: "include" }            
+        else if (m[8])  d = { name: m[8],   id: "include",  ofs: 1   }            
         else if (m[9])  d = { name: m[10],  id: m[9].toLowerCase().replace(/static[\t ]+/g,'') }
         else if (m[11]) d = { name: m[12],  id: m[11].toLowerCase()  }
         else if (m[14]) d = { name: m[15],  id: "device"  }
@@ -286,7 +285,7 @@ async function parseSymbols(doc) {
         
         if (name in obj.$items) return;  else  obj.$items[name] = item;
         
-        const r = item.range = new vscode.Range(doc.positionAt(item.start), doc.positionAt(item.end));
+        const r = item.range = new vscode.Range(doc.positionAt(item.start + (item.ofs || 0)), doc.positionAt(item.end));
         const sym = new vscode.DocumentSymbol(item.name, "", obj.kind, r, r);
         
         if (Blocks.length === 0)  obj.children.push(sym);  else  Blocks[Blocks.length - 1].children.push(sym);

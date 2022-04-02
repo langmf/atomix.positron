@@ -68,19 +68,22 @@ const def_Header =
 
 const def_Editor = {
     "fontFamily": {
-        name: 'Font Family',        enum: ['Arial', 'Calibri', 'Segoe UI', 'Consolas', 'Lucida Console', 'Courier New', 'monospace']
+        name: 'Font Family',            enum: ['Arial', 'Calibri', 'Segoe UI', 'Consolas', 'Lucida Console', 'Courier New', 'monospace']
     },
     "fontSize": {
-        name: 'Font Size',          enum: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24]
+        name: 'Font Size',              enum: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24]
     },
     "minimap.enabled": {
-        name: 'Mini Map',           enum: [true, false]
+        name: 'Mini Map',               enum: [true, false]
     },
     "guides.indentation": {
-        name: 'Line Indentation',   enum: [true, false]
+        name: 'Line Indentation',       enum: [true, false]
     },
     "quickSuggestions": {
-        name: 'Quick Suggestions',  enum: [false]
+        name: 'Quick Suggestions',      enum: [false]
+    },
+    "snippetSuggestions": {
+        name: 'Snippet Suggestions',    enum: ["top", "bottom", "inline", "none"]
     }
 }
 
