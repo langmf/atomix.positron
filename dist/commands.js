@@ -153,7 +153,7 @@ async function viewFile(ext = "") {
     const file = getFName(doc.fileName) + ext;        if (!checkFileMsg(file)) return;
 
     doc    = await vscode.workspace.openTextDocument(vscode.Uri.file(file));
-    editor = await vscode.window.showTextDocument(doc, {viewColumn: vscode.ViewColumn.Beside });
+    editor = await vscode.window.showTextDocument(doc, {viewColumn: vscode.ViewColumn[root.config.viewColumnASM] });
 
     const idx  = doc.getText().toLowerCase().indexOf(text.toLowerCase());           if (idx == -1) return;
     const pos1 = doc.positionAt(idx),   pos2 = doc.positionAt(idx + text.length),   range = new vscode.Range(pos1, pos2);

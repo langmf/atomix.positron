@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.5.2",
+	"version": "1.5.3",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -266,6 +266,13 @@
 					"type": "string",
 					"default": "",
 					"description": "Whether to show elements at the root of the tree. (example 'Procedures, Variables')",
+					"scope": "resource"
+				},
+				"pos.viewColumnASM": {
+					"type": "string",
+					"enum": ["Beside", "Active", "One", "Two"],
+					"default": "Beside",
+					"description": "Denotes a location of an editor in the window.",
 					"scope": "resource"
 				},
 				"pos.x.DEBUG": {

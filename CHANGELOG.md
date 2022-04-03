@@ -86,3 +86,6 @@
 
 ## Version 1.5.2 (02/04/2022)
 - Fixed navigation when clicked on the includes elements.
+
+## Version 1.5.3 (03/04/2022)
+- Added selection a location of an editor (for new open ASM or LST files) in the window.
