@@ -74,7 +74,9 @@ async function run(exe, arg = "", workDir, time) {
 }
 
 
-async function runCompile(one = true) {
+async function runCompile(nFile) {
+    const one = (nFile == null);
+
     if (!runInit(one)) return;
     
     const cfg  = vscode.workspace.getConfiguration("pos"),   exe = cfg.get("main.compiler"),   doc = vscode.window.activeTextEditor.document;
@@ -82,7 +84,7 @@ async function runCompile(one = true) {
     if (cfg.get("saveAllFilesBeforeRun") && !(await vscode.workspace.saveAll())) { vscode.window.showErrorMessage("All files can't be saved");     return; }
     if (cfg.get("saveFileBeforeRun")     && !(await doc.save()))                 { vscode.window.showErrorMessage("File can't be saved");          return; }
     
-    const file = doc.fileName,  dir = path.dirname(file);
+    const file = nFile || doc.fileName,  dir = path.dirname(file);
     
     const data = { action: 'compile',  one,  file,  dir,  exe,  arg: `"${file}"` };
     
@@ -96,11 +98,13 @@ async function runCompile(one = true) {
 }
 
 
-async function runProgram(one = true) {
+async function runProgram(nFile) {
+    const one = (nFile == null);
+
     if (!runInit(one)) return;
     
     const cfg  = vscode.workspace.getConfiguration("pos"),   exe = cfg.get("main.programmer"),   doc = vscode.window.activeTextEditor.document;
-    const fn   = getFName(doc.fileName);
+    const fn   = getFName(nFile || doc.fileName);
     
     if (!checkFileOut(fn + ".pbe") || !checkFileOut(fn + ".hex")) return;
     
@@ -111,7 +115,7 @@ async function runProgram(one = true) {
                     .replace(/\$target-device\$/ig,     dev)
                     .replace(/\$exe-path\$/ig,          path.dirname(exe));
     
-    const file = doc.fileName,  dir = path.dirname(file),  cmd = cmdFile(file);
+    const file = nFile || doc.fileName,  dir = path.dirname(file),  cmd = cmdFile(file);
     
     const data = { action: 'program',  one,  file,  dir,  exe,  arg,  dev,  hex };
 
@@ -123,10 +127,11 @@ async function runProgram(one = true) {
 
 
 async function runCombine() {
+    const nFile = vscode.window.activeTextEditor.document.fileName;
     output.clear();
-    await runCompile(false);
+    await runCompile(nFile);
     output.appendLine("");
-    await runProgram(false);
+    await runProgram(nFile);
 }
 
 
