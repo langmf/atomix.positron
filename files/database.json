@@ -967,7 +967,7 @@
 			{
 				"name": "HRSIn3",
 				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>HRSIn3</b>, <i>{,Timeout Value (in mS), Timeout Label}</i><br><b>HRSIn2</b>, <i>{Timeout Value (in mS), Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
+				"hint": "<i>Variable = </i><b>HRSIn3</b>, <i>{,Timeout Value (in mS), Timeout Label}</i><br><b>HRSIn3</b>, <i>{Timeout Value (in mS), Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
 			},
 			{
 				"name": "HRSOut4",
@@ -982,7 +982,7 @@
 			{
 				"name": "HRSIn4",
 				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>HRSIn4</b>, <i>{,Timeout, Timeout Label}</i><br><b>HRSIn2</b>, <i>{Timeout, Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
+				"hint": "<i>Variable = </i><b>HRSIn4</b>, <i>{,Timeout, Timeout Label}</i><br><b>HRSIn4</b>, <i>{Timeout, Timeout Label}, {ParityErrorLabel}, Modifiers, Variable {, Variable}</i>"
 			},
 			{
 				"name": "HRSOut5",
@@ -3235,7 +3235,7 @@
 				"hint": "<b>Auto_Context_Save</b> <i> On or Off</i>"
 			},
 			{
-				"name": "Auto_Variable_Bank_Cross"
+				"name": "Auto_Variable_Bank_Cross, Access_Upper_64K"
 			},
 			{
 				"name": "FSR_CONTEXT_SAVE"

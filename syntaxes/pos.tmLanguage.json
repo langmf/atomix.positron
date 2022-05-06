@@ -44,7 +44,7 @@
 		"numbers": {
 				"patterns": [
 					{ "name": "numeric_base.pos",			"match": "(?i)(?<![#\\w\\d])-?(\\d+\\.?\\d*|\\.\\d+)(e(-|\\+)?\\d+)?\\b"	},
-					{ "name": "numeric_bin.pos",			"match": "(?i)(?<![#\\w\\d])%\\d+\\b"										},
+					{ "name": "numeric_bin.pos",			"match": "(?i)(?<![#\\w\\d])(%|0b)[0-1]+\\b"								},
 					{ "name": "numeric_hex.pos",			"match": "(?i)(?<![#\\w\\d])(0|0x|\\$)[0-9a-f]+\\b"							}
 				]
 		},

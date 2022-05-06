@@ -11,7 +11,7 @@ const RXP     = {
         'Comment_Block':        {   id: 'CB',     pat: "\\(\\*[\\s\\S]*?\\*\\)"                                         },
 
         'Number':               {   id: 'N',      pat: "(?<![#\\w\\d\0])-?(\\d+\\.?\\d*|\\.\\d+)(e(-|\\+)?\\d+)?\\b"    },
-        'Number_Binary':        {   id: 'NB',     pat: "(?<![#\\w\\d])%\\d+\\b"                                         },
+        'Number_Binary':        {   id: 'NB',     pat: "(?<![#\\w\\d])(%|0b)[0-1]+\\b"                                  },
         'Number_Hex':           {   id: 'NH',     pat: "(?<![#\\w\\d])(0|0x|\\$)[0-9a-f]+\\b"                           },
 
         'Operator':             {   id: 'O',      pat: "[=<>?]"                                                         },
