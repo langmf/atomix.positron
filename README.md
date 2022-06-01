@@ -8,9 +8,9 @@ stable and offer a simple, yet efficient way to write code that you never believ
 features, such as Strings, 32-bit and 64-bit Floating point variables, signed and unsigned integer variables, from a single bit, 8-bits, 16-bits, 24-bits and 32-bits.
 Full procedure support, and built in commands to do simple things like flash an LED, to more complex SPI, or I2C, or RS232 interfacing, Displaying on both graphic and
 alphanumeric LCDs, etc... The list goes on..... It also produces code that is extremely fast, making use of even the smallest and least expensive of the PIC microcontrollers.
-The compilers also have a dedicated [user forum](http://protoncompilers.com) setup by the good people who use them.
+The compilers also have a dedicated [user forum](https://protoncompiler.com) setup by the good people who use them.
 
-[Les Johnson (Writer and Creator of the Positron Compilers)](https://sites.google.com/view/rosetta-tech/home)
+[Les Johnson (Writer and Creator of the Positron Compilers)](https://rosettamicro.com)
 
 ## About
 This extension implements basic language features of Positron for [Visual Studio Code](https://code.visualstudio.com/) and
