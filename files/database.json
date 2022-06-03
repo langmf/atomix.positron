@@ -3244,7 +3244,7 @@
 				"name": "LABEL_BANK_RESET"
 			},
 			{
-				"name": "MemWrite_Int_Control"
+				"name": "MemWrite_Int_Control, Compiler_Start_Address"
 			}
 		],
 		"KeywordASM": [
