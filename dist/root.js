@@ -4,8 +4,6 @@ const vscode = require('vscode');
 const fs     = require("fs");
 const os     = require("os");
 const path   = require('path');
-const winver = require('win-version-info');
-const performance = require('perf_hooks');
 
 
 exports.activate = (context) => {
@@ -30,8 +28,7 @@ function onDidChangeConfiguration() {
         include: {
             main:   loader + "Includes\\",
             src:    loader + "Includes\\Sources\\",
-            user:   os.homedir() + "\\PDS\\Includes\\",
-            dirs:   cfg.main.includeDirs.map(v => v.endsWith("\\") ? v : v + "\\")
+            user:   os.homedir() + "\\PDS\\Includes\\"
         },
         ext,
         web:    ext + "web\\"
@@ -114,7 +111,7 @@ exports.objectPath = objectPath;
 
 function exeInfo(fName) {
     if (Array.isArray(fName)) return fName.map(v => exeInfo(v));
-    const res = { name: fName,   icon: extFile(fName, ['.png', '.gif', '.webp', '.svg']) };
+    const winver = require('win-version-info'),   res = { name: fName, icon: extFile(fName, ['.png', '.gif', '.webp', '.svg']) };
     try {  res.stat = fs.statSync(fName);    res.date = new Date(res.stat.mtime).toLocaleString();    res.info = winver(fName);  }catch{};
     return res;
 }

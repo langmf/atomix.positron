@@ -75,7 +75,7 @@ function onDidOpenTextDocument(doc) {
 function onDidChangeTextEditorSelection(sel) {
     const kind = vscode.TextEditorSelectionChangeKind;
     if (sel.kind == kind.Keyboard || sel.textEditor.document.languageId !== "pos") return;
-    if (sel.kind == kind.Mouse    && root.config.output.ClickHide) vscode.commands.executeCommand("workbench.action.closePanel");
+    if (sel.kind == kind.Mouse    && root.config.output.ClickHide) OutputHide(1);
     if (sel.kind == null) openInclude(sel);
 }
 
@@ -108,6 +108,14 @@ function untitledHeader(doc) {
     const edit = new vscode.WorkspaceEdit();        edit.replace(doc.uri, new vscode.Range(0,0,0,0), hdr);
     vscode.workspace.applyEdit(edit);
 }
+
+
+function OutputHide(act) {
+    const tmo = root.config.output.DelayHide;       clearTimeout(OutputHide._tmr);      OutputHide._tmr = null;
+    if (act === 1) vscode.commands.executeCommand("workbench.action.closePanel");
+    if (act === 2) if (tmo) OutputHide._tmr = setTimeout(OutputHide, tmo, 1);
+}
+exports.OutputHide = OutputHide;
 
 
 function getWordInclude(doc, position, retLoc = false) {

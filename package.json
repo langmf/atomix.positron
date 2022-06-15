@@ -2,14 +2,22 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.6.0",
+	"version": "1.6.8",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
-		"vscode": "^1.62.0"
+		"vscode": "^1.65.0"
 	},
 	"keywords": [
-		"pic", "dspic", "pic24", "pic18", "pic16", "pic12", "microchip", "positron", "proton"
+		"pic",
+		"dspic",
+		"pic24",
+		"pic18",
+		"pic16",
+		"pic12",
+		"microchip",
+		"positron",
+		"proton"
 	],
 	"categories": [
 		"Programming Languages",
@@ -190,15 +198,6 @@
 					"default": "-L1 -H1 -R -J -E -M -PPIC$target-device$ -F\"$hex-filename$\" -B\"$exe-path$\"",
 					"description": "Arguments for programmer"
 				},
-				"pos.main.includeDirs": {
-					"type": "array",
-					"uniqueItems": true,
-					"items": {
-						"type": "string"
-					},
-					"default": [],
-					"description": "Custom directories with files for include statement"
-				},
 				"pos.output.ClickHide": {
 					"type": "boolean",
 					"default": false,
@@ -270,7 +269,12 @@
 				},
 				"pos.viewColumnASM": {
 					"type": "string",
-					"enum": ["Beside", "Active", "One", "Two"],
+					"enum": [
+						"Beside",
+						"Active",
+						"One",
+						"Two"
+					],
 					"default": "Beside",
 					"description": "Denotes a location of an editor in the window.",
 					"scope": "resource"
@@ -346,6 +350,6 @@
 		"publisherDisplayName": "atomix"
 	},
 	"dependencies": {
-		"win-version-info": "^5.0.1"
+		"win-version-info": "^6.0.1"
 	}
 }

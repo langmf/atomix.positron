@@ -8,7 +8,7 @@ const root    = require("./root");
 const common  = require("./common");
 const plugins = require("./plugins");
 
-const output  = vscode.window.createOutputChannel("Positron");
+const output  = vscode.window.createOutputChannel("Positron", "pos-output");
 
 let _process, _statbar, _isRunning = false;
 
@@ -33,15 +33,35 @@ function cmdFile(fn = "") {
 }
 
 
+function parseLink(data, fmt) {
+    let res = data.toString(),   _acp = parseLink._acp;             if (!fmt) return res;
+
+    try {
+        if (!_acp) {
+            _acp = parseInt(child.execSync('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Nls\\CodePage /v ACP').toString().match(/(\d+)[\r\n]*$/));
+            const ct = { 65001:'utf-8', 51949:'euc-kr', 54936:'gb18030', 51932:'euc-jp', 21866:'koi8-u', 20866:'koi8-r', 950:'big5', 866:'ibm866' };
+            if      (_acp in ct) _acp = ct[_acp];
+            else if (_acp >= 1250  && _acp <= 1258)  _acp = 'windows-'  + _acp;
+            else if (_acp >= 28592 && _acp <= 28606) _acp = 'iso-8859-' + (_acp - 28590);
+        }
+        res = (new TextDecoder(parseLink._acp = _acp)).decode(data).toString()
+                   .replace(/( line \[(\d+)\]\tin )file \[([^\]]+)\]/ig, function(v,p,e,f){ return p + ' [file:///' + f.replace(/ /g, '%20') + '#' + e + ']'; });
+    } catch(e) { console.error(e) }
+
+    return res;
+}
+
+
 function runInit(clearOut = true) {
     if (!vscode.window.activeTextEditor) return;
     if (clearOut) output.clear();
+    common.OutputHide();
     output.show(true);
     return true;
 }
 
 
-async function run(exe, arg = "", workDir, time) {
+async function run(exe, arg = "", workDir, time, fmt) {
     if (_isRunning) { vscode.window.showInformationMessage("Program is already running!");     return; }
     
     try   {   fs.accessSync(exe, fs.constants.X_OK);   } catch {   vscode.window.showErrorMessage(`Can't be executed - ${exe}`);    return; }
@@ -50,15 +70,15 @@ async function run(exe, arg = "", workDir, time) {
     
     if (_statbar) _statbar.dispose();
     _statbar = vscode.window.setStatusBarMessage(`Running ${path.basename(exe)} ... `);
-    
+
     const cmd = `"${exe}" ${arg}`,   startTime = new Date();
 
     output.appendLine("[Running]  " + cmd);
     
     exports.process = _process = child.spawn(cmd, [], {cwd: workDir, shell: true});
-    
-    _process.stdout.on("data", data => {  output.append(data.toString());  });
-    _process.stderr.on("data", data => {  output.append(data.toString());  });
+
+    _process.stdout.on("data", data => {  output.append(parseLink(data, fmt));  });
+    _process.stderr.on("data", data => {  output.append(parseLink(data, fmt));  });
 
     _process.on("exit", code => {
         const endTime = new Date(),  elapsedTime = (endTime.getTime() - startTime.getTime()) / 1000;
@@ -88,7 +108,7 @@ async function runCompile(nFile) {
     
     const data = { action: 'compile',  one,  file,  dir,  exe,  arg: `"${file}"` };
     
-    let res = await plugins.command(data, false) || await run(data.exe,  data.arg,  data.dir,  data.time);
+    let res = await plugins.command(data, false) || await run(data.exe,  data.arg,  data.dir,  data.time,  true);
 
     res     = await plugins.command(data, true)  || res;
 
@@ -143,8 +163,7 @@ function stopCompile() {
 
 
 async function runWait(fnc) {
-    await fnc();         const cfg = vscode.workspace.getConfiguration("pos").output;
-    setTimeout(function(){ if (cfg.DelayHide) vscode.commands.executeCommand("workbench.action.closePanel"); }, cfg.DelayHide);
+    await fnc();        common.OutputHide(2);
 }
 
 

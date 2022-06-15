@@ -89,3 +89,11 @@
 
 ## Version 1.5.3 (03/04/2022)
 - Added selection a location of an editor (for new open ASM or LST files) in the window.
+
+## Version 1.6.4 (06/06/2022)
+- Added way to jump to error or warning line directly from Output message.
+- Some improvements.
+
+## Version 1.6.7 (11/06/2022)
+- Fixed auto converting the path into Output message.
+- Fixed work on 32-bit systems.
