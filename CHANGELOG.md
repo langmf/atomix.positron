@@ -98,7 +98,8 @@
 - Fixed auto converting the path into Output message.
 - Fixed work on 32-bit systems.
 
-## Version 1.7.0 (07/07/2022)
+## Version 1.7.1 (07/07/2022)
 - Added highlighting macro definitions.
 - Added editing the theme of "High Contrast Light".
+- Added icons for operations to save and save all.
 - Small improvements.

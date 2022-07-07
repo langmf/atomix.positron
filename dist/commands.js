@@ -188,12 +188,14 @@ async function viewFile(ext = "") {
 
 
 exports.register = () => {
-    vscode.commands.registerCommand("pos.runCompile",   () => {    runWait(runCompile); });
-    vscode.commands.registerCommand("pos.runProgram",   () => {    runWait(runProgram); });
-    vscode.commands.registerCommand("pos.runCombine",   () => {    runWait(runCombine); });
-    vscode.commands.registerCommand("pos.stopCompile",  () => {    stopCompile();       });
-    vscode.commands.registerCommand("pos.viewAsm",      () => {    viewFile(".asm");    });
-    vscode.commands.registerCommand("pos.viewLst",      () => {    viewFile(".lst");    });
+    vscode.commands.registerCommand("pos.save",         () => {    vscode.window.activeTextEditor.document.save();  });
+    vscode.commands.registerCommand("pos.save_all",     () => {    vscode.workspace.saveAll();                      });
+    vscode.commands.registerCommand("pos.runCompile",   () => {    runWait(runCompile);     });
+    vscode.commands.registerCommand("pos.runProgram",   () => {    runWait(runProgram);     });
+    vscode.commands.registerCommand("pos.runCombine",   () => {    runWait(runCombine);     });
+    vscode.commands.registerCommand("pos.stopCompile",  () => {    stopCompile();           });
+    vscode.commands.registerCommand("pos.viewAsm",      () => {    viewFile(".asm");        });
+    vscode.commands.registerCommand("pos.viewLst",      () => {    viewFile(".lst");        });
 };
 
 

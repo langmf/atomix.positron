@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.7.0",
+	"version": "1.7.1",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -37,24 +37,40 @@
 				"command": "pos.runCompile",
 				"title": "Compile",
 				"icon": {
-					"light": "./images/compile_light.svg",
-					"dark": "./images/compile_dark.svg"
+					"light": "./images/light/compile.svg",
+					"dark": "./images/dark/compile.svg"
 				}
 			},
 			{
 				"command": "pos.runCombine",
 				"title": "Compile and Program",
 				"icon": {
-					"light": "./images/combine_light.svg",
-					"dark": "./images/combine_dark.svg"
+					"light": "./images/light/combine.svg",
+					"dark": "./images/dark/combine.svg"
 				}
 			},
 			{
 				"command": "pos.runProgram",
 				"title": "Program",
 				"icon": {
-					"light": "./images/download_light.svg",
-					"dark": "./images/download_dark.svg"
+					"light": "./images/light/download.svg",
+					"dark": "./images/dark/download.svg"
+				}
+			},
+            			{
+				"command": "pos.save",
+				"title": "Save",
+				"icon": {
+					"light": "./images/light/save.svg",
+					"dark": "./images/dark/save.svg"
+				}
+			},
+			{
+				"command": "pos.save_all",
+				"title": "Save All",
+				"icon": {
+					"light": "./images/light/save_all.svg",
+					"dark": "./images/dark/save_all.svg"
 				}
 			},
 			{
@@ -134,24 +150,34 @@
 			],
 			"editor/title": [
 				{
-					"when": "resourceLangId == pos && config.pos.showIconsInTitleMenu",
+					"when": "resourceLangId == pos && config.pos.showSaveIconsInTitleMenu",
+					"command": "pos.save",
+					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == pos && config.pos.showSaveIconsInTitleMenu",
+					"command": "pos.save_all",
+					"group": "navigation@1"
+				},
+				{
+					"when": "resourceLangId == pos && config.pos.showMainIconsInTitleMenu",
 					"command": "pos.runCompile",
-					"group": "navigation@1"
-				},
-				{
-					"when": "resourceLangId == pos && config.pos.showIconsInTitleMenu",
-					"command": "pos.runCombine",
-					"group": "navigation@1"
-				},
-				{
-					"when": "resourceLangId == pos && config.pos.showIconsInTitleMenu",
-					"command": "pos.runProgram",
-					"group": "navigation@1"
-				},
-				{
-					"when": "resourceLangId == pos && config.pos.showIconsInTitleMenu",
-					"submenu": "pos.positron",
 					"group": "navigation@2"
+				},
+				{
+					"when": "resourceLangId == pos && config.pos.showMainIconsInTitleMenu",
+					"command": "pos.runCombine",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceLangId == pos && config.pos.showMainIconsInTitleMenu",
+					"command": "pos.runProgram",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceLangId == pos && config.pos.showMainIconsInTitleMenu",
+					"submenu": "pos.positron",
+					"group": "navigation@3"
 				}
 			],
 			"pos.positron": [
@@ -174,8 +200,8 @@
 				"id": "pos.positron",
 				"label": "Positron",
 				"icon": {
-					"light": "./images/settings_light.svg",
-					"dark": "./images/settings_dark.svg"
+					"light": "./images/light/settings.svg",
+					"dark": "./images/dark/settings.svg"
 				}
 			}
 		],
@@ -225,10 +251,16 @@
 					"description": "Whether to show items (View Asm, View Lst) in editor context menu.",
 					"scope": "resource"
 				},
-				"pos.showIconsInTitleMenu": {
+				"pos.showSaveIconsInTitleMenu": {
+					"type": "boolean",
+					"default": false,
+					"description": "Whether to show save icons in editor title menu.",
+					"scope": "resource"
+				},
+				"pos.showMainIconsInTitleMenu": {
 					"type": "boolean",
 					"default": true,
-					"description": "Whether to show icons in editor title menu.",
+					"description": "Whether to show main icons in editor title menu.",
 					"scope": "resource"
 				},
 				"pos.saveAllFilesBeforeRun": {
@@ -246,7 +278,7 @@
 				"pos.smartParentIncludes": {
 					"type": "boolean",
 					"default": true,
-					"description": "Whether to allow smart mode for the included files from the parent file.\nAfter change mode need reload VSCode IDE.\t! This is experimental feature !",
+					"description": "Whether to allow smart mode for the included files from the parent file.\nAfter change mode need reload VSCode IDE.",
 					"scope": "resource"
 				},
 				"pos.showHelpSignature": {
