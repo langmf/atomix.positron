@@ -27,6 +27,7 @@ const newColors = (rep = {})  => {
     'Device':               {  enable:1,    foreground: "#0000B0",      fontStyle: "bold",          token:"pos_device"           },
     'Define':               {  enable:1,    foreground: "#000000",      fontStyle: "bold",          token:"pos_define"           },
     'Symbol':               {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_symbol"           },
+    'Macro':                {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_macro"            },
     'Label':                {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_label"            },
     'Procedure':            {  enable:1,    foreground: "#000000",      fontStyle: "bold",          token:"pos_procedure"        },
     'Variable':             {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_variable"         },
@@ -38,9 +39,10 @@ const newColors = (rep = {})  => {
 }
 
 const def_Record = {
-    'light'            :    {  enable:1,    foreground: "#000000",   fontStyle:""  },
-    'dark'             :    {  enable:1,    foreground: "#D0D0D0",   fontStyle:""  },
-    'highcontrast'     :    {  enable:1,    foreground: "#D0D0D0",   fontStyle:""  }
+    'light'             :   {  enable:1,    foreground: "#000000",   fontStyle:""  },
+    'dark'              :   {  enable:1,    foreground: "#D0D0D0",   fontStyle:""  },
+    'highcontrast'      :   {  enable:1,    foreground: "#D0D0D0",   fontStyle:""  },
+    'highcontrastlight' :   {  enable:1,    foreground: "#000000",   fontStyle:""  }
 }
 
 const rep_Dark = {
@@ -50,6 +52,7 @@ const rep_Dark = {
     'String|SFR.*':         {  foreground: "#98c379"  },
     'Device':               {  foreground: "#87CEFA"  },
     'Label':                {  foreground: "#61AFEF"  },
+    'Macro':                {  foreground: "#F4A460"  },
     'Procedure':            {  foreground: "#00BFFF",  fontStyle: ""  },
     'Define':               {  foreground: "#DEB887",  fontStyle: ""  },
     '*black':               [  "#000000",  "#D0D0D0"  ]
@@ -68,10 +71,10 @@ const def_Header =
 
 const def_Editor = {
     "fontFamily": {
-        name: 'Font Family',            enum: ['Arial', 'Calibri', 'Segoe UI', 'Consolas', 'Lucida Console', 'Courier New', 'monospace']
+        name: 'Font Family',            enum: ['Consolas', 'DejaVu Sans Mono', 'Lucida Console', 'Courier New', 'Segoe UI', 'Arial']
     },
     "fontSize": {
-        name: 'Font Size',              enum: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24]
+        name: 'Font Size',              enum: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 36, 48, 72]
     },
     "minimap.enabled": {
         name: 'Mini Map',               enum: [true, false]
@@ -114,7 +117,8 @@ function parseThemes(themes) {
     const tmp_Theme = Object.keys(db_types).reduce((a,v) => (a[v] = {}) && a, {});
 
     for (const [name, theme] of Object.entries(themes)) {
-        const db_theme = Object.assign({}, tmp_Theme, db_themes[name] || (name === 'highcontrast' && db_themes['dark']));
+        const fd_Theme = db_themes[name] || (name === 'highcontrast' && db_themes['dark']) || (name === 'highcontrastlight' && db_themes['light']);
+        const db_theme = Object.assign({}, tmp_Theme, fd_Theme);
 
         for (const [type, value] of Object.entries(db_theme)) {
             const def_Token = type in db_types ? { token: DTB.prefix + type.toLowerCase() } : null;
@@ -170,9 +174,10 @@ function Update_Editor(value) {
 
 function Settings_Highlight(value) {
     const def_Themes = parseThemes({
-        'light'            : newColors(),
-        'dark'             : newColors(rep_Dark),
-        'highcontrast'     : newColors(rep_Dark)
+        'light'                 : newColors(),
+        'dark'                  : newColors(rep_Dark),
+        'highcontrast'          : newColors(rep_Dark),
+        'highcontrastlight'     : newColors()
     });
 
     if (typeof value.themes !== 'object') value.themes = {};
@@ -196,7 +201,7 @@ function Settings_Highlight(value) {
 
 
 function Update_Highlight(value) {
-    const textMateRules = [],  rules = {},  config = vscode.workspace.getConfiguration(); 
+    const textMateRules = [],  rules = {},  config = vscode.workspace.getConfiguration();
     const colors = value.themes[vscode.ColorThemeKind[vscode.window.activeColorTheme.kind].toLowerCase()] || {};
 
     for (const rec of Object.values(colors)) {

@@ -81,7 +81,8 @@
 			<div class="nav nav-tabs mt-4" id="nav-tab-hlt" role="tablist">
 				<button class="nav-link active" data-bs-toggle="tab" type="button" role="tab" aria-selected="true"  id="nav-light-tab" data-bs-target="#nav-light" aria-controls="nav-light">Light</button>
 				<button class="nav-link"        data-bs-toggle="tab" type="button" role="tab" aria-selected="false" id="nav-dark-tab"  data-bs-target="#nav-dark"  aria-controls="nav-dark">Dark</button>
-				<button class="nav-link"        data-bs-toggle="tab" type="button" role="tab" aria-selected="false" id="nav-highcontrast-tab" data-bs-target="#nav-highcontrast"  aria-controls="nav-highcontrast">HighContrast</button>
+				<button class="nav-link"        data-bs-toggle="tab" type="button" role="tab" aria-selected="false" id="nav-highcontrast-tab" data-bs-target="#nav-highcontrast"  aria-controls="nav-highcontrast">HighContrast Dark</button>
+				<button class="nav-link"        data-bs-toggle="tab" type="button" role="tab" aria-selected="false" id="nav-highcontrastlight-tab" data-bs-target="#nav-highcontrastlight"  aria-controls="nav-highcontrastlight">HighContrast Light</button>
 				<button class="nav-link"		data-bs-toggle="tab" type="button" role="tab" aria-selected="false" id="nav-hltsetup-tab" data-bs-target="#nav-hltsetup"  aria-controls="nav-hltsetup">Setup</button>
 			</div>
 		</nav>
@@ -94,12 +95,15 @@
 		
 			<div class="tab-pane fade" role="tabpanel" id="nav-highcontrast" aria-labelledby="nav-highcontrast-tab"></div>
 
+			<div class="tab-pane fade" role="tabpanel" id="nav-highcontrastlight" aria-labelledby="nav-highcontrastlight-tab"></div>
+            
 			<div class="tab-pane fade" role="tabpanel" id="nav-hltsetup" aria-labelledby="nav-hltsetup-tab">
 				<div class="col my-3 mx-3 px-3">
 					<div class="card">
 						<div class="card-header bg-hdr text-center">Titles</div>
 						<div class="card-body">
-							<div class="btn-group"><button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Add</button><ul class="dropdown-menu" id="nav-titles-add"></ul></div>
+							<div class="btn-group"><button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Add</button>
+                            <ul class="dropdown-menu" id="nav-titles-add" style="max-height:400px; overflow:hidden; overflow-y:scroll;"></ul></div>
 							<div><ul class="list-group mt-3" id="nav-titles"></ul></div>
 						</div>
 					</div>

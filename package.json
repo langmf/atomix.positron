@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.6.8",
+	"version": "1.7.0",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -257,7 +257,7 @@
 				},
 				"pos.outline.showRegisters": {
 					"type": "boolean",
-					"default": true,
+					"default": false,
 					"description": "Whether to show registers of device.",
 					"scope": "resource"
 				},

@@ -15,7 +15,7 @@ const cache_dev = {},   statusVer = createVersion();
 
 
 const [Types, Tokens] = newTypes({
-    main  : [ "variable", "procedure", "symbol", "define", "label" ],
+    main  : [ "variable", "procedure", "symbol", "define", "label", "macro" ],
     lang  : [ "device", "declare", "include" ],
     sfr   : [ "devregs", "devbits" ]
 });
@@ -28,6 +28,7 @@ const Enums = {
     [Types.device]    :  { id: ["device"],               title: "Devices",       sym: vscode.SymbolKind.EnumMember,   com: vscode.CompletionItemKind.EnumMember },
     [Types.include]   :  { id: ["include"],              title: "Includes",      sym: vscode.SymbolKind.File,         com: vscode.CompletionItemKind.File       },
     [Types.label]     :  { id: ["label"],                title: "Labels",        sym: vscode.SymbolKind.Field,        com: vscode.CompletionItemKind.Field      },
+    [Types.macro]     :  { id: ["macro"],                title: "Macro",         sym: vscode.SymbolKind.Event,        com: vscode.CompletionItemKind.Event      },
     [Types.define]    :  { id: ["$define","$defeval"],   title: "Defines",       sym: vscode.SymbolKind.Enum,         com: vscode.CompletionItemKind.Enum       },
     [Types.devregs]   :  { id: [],                       title: "",              sym: vscode.SymbolKind.EnumMember,   com: vscode.CompletionItemKind.EnumMember },
     [Types.devbits]   :  { id: [],                       title: "",              sym: vscode.SymbolKind.EnumMember,   com: vscode.CompletionItemKind.EnumMember }
@@ -217,7 +218,7 @@ exports.filterSymbols = filterSymbols;
 
 
 function getSymbols(input) {
-    const r = /"([^"]*)"|[';](.*)$|\(\*([\s\S]*?)\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s';]|$)|(endproc|endsub)(?=[\s';]|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
+    const r = /"([^"]*)"|[';](.*)$|\(\*([\s\S]*?)\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s';]|$)|(endproc|endsub)(?=[\s';]|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(\w+)[\t ]+macro\b.*?(?=$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
 
     const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
     
@@ -235,7 +236,8 @@ function getSymbols(input) {
         else if (m[8])  d = { name: m[8],   id: "include",  ofs: 1   }            
         else if (m[9])  d = { name: m[10],  id: m[9].toLowerCase().replace(/static[\t ]+/g,'') }
         else if (m[11]) d = { name: m[12],  id: m[11].toLowerCase()  }
-        else if (m[14]) d = { name: m[15],  id: "device"  }
+        else if (m[14]) d = { name: m[14],  id: "macro"  }
+        else if (m[15]) d = { name: m[16],  id: "device"  }
         else continue;
 
         if (/^\d+$/.test(d.name)) continue;
