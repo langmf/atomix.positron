@@ -23,6 +23,7 @@ function onDidChangeConfiguration() {
     exports.config = cfg;       exports.debug = cfg.x.DEBUG;
 
     exports.path = {
+        ext,
         pds,
         loader,
         include: {
@@ -30,8 +31,8 @@ function onDidChangeConfiguration() {
             src:    loader + "Includes\\Sources\\",
             user:   os.homedir() + "\\PDS\\Includes\\"
         },
-        ext,
-        web:    ext + "web\\"
+        web:    ext + "web\\",
+        docs:   pds + "PDS\\Docs\\"
     }
 }
 

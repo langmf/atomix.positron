@@ -91,15 +91,21 @@
 - Added selection a location of an editor (for new open ASM or LST files) in the window.
 
 ## Version 1.6.4 (06/06/2022)
-- Added way to jump to error or warning line directly from Output message.
+- Added way to jump to error or warning line directly from "Output" window.
 - Some improvements.
 
 ## Version 1.6.7 (11/06/2022)
-- Fixed auto converting the path into Output message.
+- Fixed auto converting the path into "Output" window.
 - Fixed work on 32-bit systems.
 
 ## Version 1.7.1 (07/07/2022)
 - Added highlighting macro definitions.
 - Added editing the theme of "High Contrast Light".
 - Added icons for operations to save and save all.
+- Small improvements.
+
+## Version 1.7.4 (27/07/2022)
+- Added PreprocessorJS based on the JavaScript engine (see "PreprocessorJS" in menu "Help").
+- Fixed way to jump to error or warning line directly from "Output" window.
+- Added submenu "Help".
 - Small improvements.

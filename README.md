@@ -28,6 +28,7 @@ provide not only syntax highlighting, but also basic snippets integration and au
 - Auto Format
 - User highlight editor
 - Web pages (About, Programs)
+- PreprocessorJS
 
 ## Snippets
 - Auto Indentation Rules

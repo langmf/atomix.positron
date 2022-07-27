@@ -5,8 +5,8 @@
 	
 	"patterns":
 	[ 
+		{	"include": "#preprocessor"  },
 		{	"include": "#comments"		},
-		{	"include": "#custom"		},
 		{	"include": "#strings"		},
 		{	"include": "#brackets"		},
 		{	"include": "#numbers"		},
@@ -15,15 +15,16 @@
 	
 	"repository":
 	{
-		"custom":  {
-				"patterns": [
-					{ "name": "keyword.other.unit.pos",		"match": "(?i)\\u00A7([\\w\\d\\-_]*)|->" },
-					{
-					   "begin":			"(?i)^\\s*(type)\\s+([a-zA-Z\\u0400-\\u04FF]\\w*)\\s*\\{",			"end":   "\\}",	 
-					   "beginCaptures":	{  "1": {"name": "storage.type.class.mf"},		"2": {"name": "entity.name.class.pos"}},
-					   "patterns":		[{ "include": "$self" }]
-					}
-				]
+		"preprocessor":  {
+				"patterns": [{
+					"begin": "\\(\\*\\u00A7{2}",	"beginCaptures": { "0" : { "name" : "comment_block.pos" }},
+					"end": "\\*\\)",				"endCaptures":   { "0" : { "name" : "comment_block.pos" }},
+					"patterns": [ { "include": "source.js" } ]
+				}, {
+					"begin": "('|;)\\u00A7{2}",		"beginCaptures": { "0": { "name": "comment_line.pos" }},
+					"end": "\\n",
+					"patterns": [ { "include": "source.js" } ]
+				}]
 		},
 		"comments": {
 				"patterns": [

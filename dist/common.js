@@ -320,7 +320,7 @@ function parseDevice(doc, list, old) {
 
     if (devs.length) { dev = devs.pop();    name = dev.value.name;     if (dev.isLocal) { local = dev.value;   r = dev.value.range; } }
 
-    name = "Ρ" + (name || DTB.db.default.device);
+    name = "\u03A1" + (name || DTB.db.default.device);
 
     SYM.local  = local;
     
@@ -418,6 +418,16 @@ function parseDoc(doc, mask = Types._.main, skip = {}, result = {}) {
     return result;
 }
 exports.parseDoc = parseDoc;
+
+
+function getDocs(doc, skip = {}, result = []) {
+    if (typeof doc === 'object') doc = doc.uri.fsPath;      if (skip[doc]) return;      skip[doc] = true;       result.push(doc);
+
+    for (const item of Object.values(cache.get(doc).includes.$)) if (item?.fsPath) getDocs(item.fsPath, skip, result);
+
+    return result;
+}
+exports.getDocs = getDocs;
 
 
 function codeHTML(text, doc, mark) {
