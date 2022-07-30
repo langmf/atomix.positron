@@ -109,3 +109,7 @@
 - Fixed way to jump to error or warning line directly from "Output" window.
 - Added submenu "Help".
 - Small improvements.
+
+## Version 1.7.5 (30/07/2022)
+- Added go to references (makes a search for all project files).
+- Added submenu "Samples" (allows you to navigate by examples in folders "C:\Users\NameUser\PDS\Samples").

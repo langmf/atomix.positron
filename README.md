@@ -20,6 +20,7 @@ provide not only syntax highlighting, but also basic snippets integration and au
 - Complete syntax highlighting for Positron
 - Run Compiler and Programmer
 - Goto Definition
+- Goto References
 - Signatures
 - Completion
 - Semantic

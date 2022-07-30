@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+	<link  href="css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+	<script src="js/bootstrap.bundle.min.js"></script>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/atv.js"></script>
+
+	<link  href="css/base.css" type="text/css" rel="stylesheet" />
+	<script src="js/base.js"></script>
+
+    <style>
+        .tree { column-width: 260px; }
+        .tree, .tree ul { margin:0; padding:0; list-style:none; }
+        .tree ul        { margin-left:1em; position:relative }
+        .tree ul ul     { margin-left:.5em }
+        .tree ul:before { content:""; display:block; width:0; position:absolute; top:0; bottom:0; left:0; border-left:1px solid; color:gray; }
+        .tree li        { display:table; margin:0; padding:0 1em; line-height:2em; color:var(--vscode-textLink-foreground); font-weight:500; position:relative; cursor:pointer; }
+        .tree ul li:before { content:""; display:block; width:10px; height:0; border-top:1px solid; margin-top:-1px; position:absolute; top:1em; left:0; color:gray; }
+        .tree ul li:last-child:before { background:var(--vscode-sideBar-background); height:auto; top:1em; bottom:0 }
+        .folder-open    { margin-right:7px; width: 1em; content: url("img/folder_open.svg") }
+        .folder-close   { margin-right:7px; width: 1em; content: url("img/folder_close.svg") }
+        body.vscode-dark          .tree i  { filter: invert(1) brightness(0.8); }
+        body.vscode-high-contrast .tree i  { filter: invert(1) brightness(0.8); }
+    </style>
+</head>
+
+<body class="p-3">
+
+
+<div class="card mt-3">
+	<div class="card-header bg-hdr text-center">Samples</div>
+	<div class="card-body"><ul id="samples"></ul></div>
+</div>
+
+<br />
+
+<div class="card mt-5 mb-3">
+	<div class="card-header bg-hdr text-center">Samples24</div>
+	<div class="card-body"><ul id="samples24"></ul></div>
+</div>
+
+
+<script>
+    $.fn.extend({
+        treed: function () {
+            var tree = $(this);     tree.addClass("tree");
+            
+            tree.find('li').has("ul").each(function(){
+                var branch = $(this);       branch.prepend("<i class='folder-close'></i>");         branch.addClass('branch');
+                branch.on('click', function(e){ if (this == e.target) {
+                        var icon = $(this).children('i:first');    icon.toggleClass("folder-open folder-close");    $(this).children().children().toggle();
+                }})
+                branch.children().children().toggle();
+            });
+
+            tree.find('.branch i').each(function(){   $(this).on('click', function() { $(this).closest('li').click(); });   });
+        }
+    });
+    
+    const PrintSamples = async function(value, ext = '\.(bas)$') {
+        const el = $('#' + value.toLowerCase()),   getName = (v,e) => (v = v.split('\\').pop(), !e ? v : v.split(e).shift());
+
+        const getSamples = function(x) {
+            let res = '';
+            for (const item of x) {
+                if (typeof item !== 'object') { res += `<li onclick="vscode_Eval().openDoc('${item.replace(/\\/g, '/')}')">${getName(item, '.')}</li>\n`;    continue; }
+                const [i] = Object.entries(item),  out = getSamples(i[1]);      if (out) res += '<li>' + getName(i[0]) + '\n<ul>\n' + out + '\n</ul>\n</li>\n';
+                
+            }
+            return res;
+        }
+
+        el.html('Update ... Please wait a few moments.');           const res = await vscode_Eval().root.searchDirs(URI.path.user + value, ext);
+        el.html('');
+        el.append(getSamples(res));
+        el.treed();
+    }
+
+    $(async () => {
+            await URI.ready;
+            await PrintSamples('Samples');
+            await PrintSamples('Samples24');
+            parse_ALL();
+    });
+</script>
+
+
+</body>
+</html>

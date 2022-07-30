@@ -128,3 +128,9 @@ function openURL(url) {
 }
 exports.openURL = openURL;
 
+
+function openDoc(url, prm) {
+    vscode.commands.executeCommand('vscode.open', vscode.Uri.file(url), prm || {viewColumn: vscode.ViewColumn.One});
+}
+exports.openDoc = openDoc;
+

@@ -19,17 +19,19 @@ function onDidChangeConfiguration() {
     const loader = path.dirname(cfg.main.compiler) + "\\";
     const pds    = path.resolve(cfg.main.compiler, "..\\..") + "\\";
     const ext    = exports.extensionPath + "\\";
+    const user   = os.homedir() + "\\PDS\\";
     
     exports.config = cfg;       exports.debug = cfg.x.DEBUG;
 
     exports.path = {
         ext,
         pds,
+        user,
         loader,
         include: {
             main:   loader + "Includes\\",
             src:    loader + "Includes\\Sources\\",
-            user:   os.homedir() + "\\PDS\\Includes\\"
+            user:   user + "Includes\\"
         },
         web:    ext + "web\\",
         docs:   pds + "PDS\\Docs\\"
@@ -138,14 +140,40 @@ exports.exeList = exeList;
 
 
 function searchFiles(dirPath, mask = '', deep = 0, result = []) {
-    const rxp = new RegExp(mask, 'i'),   dir = dirPath.replace(/\\$/,'');           if (deep >= 0) deep--;
+    const rxp = new RegExp(mask, 'i'),   dir = dirPath.replace(/\\$/,'');           if (deep !== true && deep >= 0) deep--;
 
 	for (const file of fs.readdirSync(dir)) {
 		const value = dir + "\\" + file;
-		if (fs.statSync(value).isDirectory()) { if (deep >= 0) searchFiles(value, mask, deep, result); }
-        else { if (rxp.test(value)) result.push(value); }
+
+		if (fs.statSync(value).isDirectory()) {
+            if (deep >= 0) searchFiles(value, mask, deep, result);
+        } else {
+            if (rxp.test(value)) result.push(value);
+        }
 	}
   
 	return result;
 }
 exports.searchFiles = searchFiles;
+
+
+function searchDirs(dirPath, mask = '', deep = true) {
+    if (!Array.isArray(mask)) mask = [mask, ''];
+
+    const rxpFile = new RegExp(mask[0], 'i'),   rxpDir = new RegExp(mask[1], 'i'),   dir = dirPath.replace(/\\$/,''),   files = [],   dirs = [];
+    
+    if (deep !== true && deep >= 0) deep--;
+
+	for (const file of fs.readdirSync(dir)) {
+		const value = dir + "\\" + file;
+
+		if (fs.statSync(value).isDirectory()) {
+            if (deep >= 0 && rxpDir.test(file)) dirs.push({ [value]: searchDirs(value, mask, deep) });
+        } else {
+            if (rxpFile.test(file)) files.push(value);
+        }
+	}
+  
+	return [...dirs, ...files];
+}
+exports.searchDirs = searchDirs;

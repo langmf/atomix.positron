@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.7.4",
+	"version": "1.7.5",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -27,6 +27,7 @@
 		"onLanguage:pos",
 		"onWebviewPanel:posweb_Settings",
 		"onWebviewPanel:posweb_Programs",
+		"onWebviewPanel:posweb_Samples",
 		"onWebviewPanel:posweb_About",
 		"onWebviewPanel:posweb_Custom"
 	],
@@ -92,6 +93,10 @@
 			{
 				"command": "pos.webPrograms",
 				"title": "Programs"
+			},
+			{
+				"command": "pos.webSamples",
+				"title": "Samples"
 			},
 			{
 				"command": "pos.webAbout",
@@ -200,6 +205,10 @@
 				{
 					"command": "pos.webPrograms",
 					"group": "positron@2"
+				},
+				{
+					"command": "pos.webSamples",
+					"group": "positron@7"
 				},
 				{
 					"command": "pos.webAbout",

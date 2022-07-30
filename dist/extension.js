@@ -9,6 +9,7 @@ const hovers     = require("./hovers");
 const definition = require("./definition");
 const completion = require("./completion");
 const signature  = require("./signature");
+const references = require("./references");
 const commands   = require("./commands");
 const webview    = require("./webview");
 const plugins    = require("./plugins");
@@ -27,7 +28,8 @@ function activate(context)
         hovers.default(),
         definition.default(),
         completion.default(),
-        signature.default()
+        signature.default(),
+        references.default()
     );
 }
 exports.activate = activate;
