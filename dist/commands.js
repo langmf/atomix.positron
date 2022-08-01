@@ -67,12 +67,9 @@ function parseACP(data) {
 function outputCompiler(data) {
     let res = parseACP(data);
     try {
-        res = res.replace(/(\d+)[\t ]+bytes[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,     function(v,c,a){ 
-                    return v + " (" + ((Number(c) / Number(a)) * 100).toFixed(2) + " %)"; 
-                })
-                .replace(/(\d+)[\t ]+variables[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig, function(v,c,a){ 
-                    return v + " (" + ((Number(c) / Number(a)) * 100).toFixed(2) + " %)"; 
-                });
+        res = res.replace(/([\t ]+line[\t ]+\[(\d+)\][\t ]+in[\t ]+)file[\t ]+\[([^\]]+)\]/ig,    function(v,p,e,f){  return p + ' [file:///' + f.replace(/ /g, '%20') + '#' + e + ']';      });
+        res = res.replace(/(\d+)[\t ]+bytes[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,       function(v,c,a)  {  return v + " (" + ((Number(c) / Number(a)) * 100).toFixed(2) + " %)";  });
+        res = res.replace(/(\d+)[\t ]+variables[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,   function(v,c,a)  {  return v + " (" + ((Number(c) / Number(a)) * 100).toFixed(2) + " %)";  });
     } catch(e) { console.error(e) }
     return res;
 }

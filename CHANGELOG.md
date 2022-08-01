@@ -114,7 +114,7 @@
 - Added go to references (makes a search for all project files).
 - Added submenu "Samples" (allows you to navigate by examples in folders "C:\Users\NameUser\PDS\Samples").
 
-## Version 1.7.8 (01/08/2022)
+## Version 1.7.9 (01/08/2022)
 - Added information usage of bytes and variables as a percentage in the "Output" window.
 - Fixed navigation by errors in "Output" window.
 - Improved display in the "Samples" window.
