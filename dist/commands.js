@@ -50,7 +50,7 @@ function parseBrace(v) {
 }
 
 
-function parseOutput(data) {
+function parseACP(data) {
     let res = data.toString();
     try {
         let p = parseInt(child.execSync('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Nls\\CodePage /v ACP').toString().match(/(\d+)[\r\n]*$/));
@@ -60,9 +60,21 @@ function parseOutput(data) {
         else if (p >= 28592 && p <= 28606) p = 'iso-8859-' + (p - 28590);
         res = (new TextDecoder(p)).decode(data).toString();
     } catch(e) { console.error(e) }
-    return res.replace(/([\t ]+line[\t ]+\[(\d+)\][\t ]+in[\t ]+)file[\t ]+\[([^\]]+)\]/ig, function(v,p,e,f){ 
-        return p + ' [file:///' + f.replace(/ /g, '%20') + '#' + e + ']'; 
-    });
+    return res;
+}
+
+
+function outputCompiler(data) {
+    let res = parseACP(data);
+    try {
+        res = res.replace(/(\d+)[\t ]+bytes[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,     function(v,c,a){ 
+                    return v + " (" + ((Number(c) / Number(a)) * 100).toFixed(2) + " %)"; 
+                })
+                .replace(/(\d+)[\t ]+variables[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig, function(v,c,a){ 
+                    return v + " (" + ((Number(c) / Number(a)) * 100).toFixed(2) + " %)"; 
+                });
+    } catch(e) { console.error(e) }
+    return res;
 }
 
 
@@ -103,7 +115,7 @@ async function run(exe, arg = "", workDir, time, fmt) {
 
     _process.on("exit", code => {
         const endTime = new Date(),  elapsedTime = (endTime.getTime() - startTime.getTime()) / 1000;
-        if (fmt) output.append(parseOutput(buf));
+        if (fmt) output.append(outputCompiler(buf));
         output.appendLine("[Done] exited with code=" + code + " in " + elapsedTime + " seconds");
         _statbar.dispose();
         _isRunning = false;

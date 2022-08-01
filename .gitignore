@@ -1,5 +1,3 @@
-/files/help/*
+/files/help/
 *.exe
 *.vsix
-.gitignore
-.gitattributes
