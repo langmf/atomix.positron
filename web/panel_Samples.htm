@@ -13,12 +13,13 @@
 	<script src="js/base.js"></script>
 
     <style>
-        .tree { column-width: 260px; }
+        .tree { column-width: 270px; }
         .tree, .tree ul { margin:0; padding:0; list-style:none; }
         .tree ul        { margin-left:1em; position:relative }
         .tree ul ul     { margin-left:.5em }
         .tree ul:before { content:""; display:block; width:0; position:absolute; top:0; bottom:0; left:0; border-left:1px solid; color:gray; }
-        .tree li        { display:table; margin:0; padding:0 1em; line-height:2em; color:var(--vscode-textLink-foreground); font-weight:500; position:relative; cursor:pointer; }
+        .tree li        { margin:0; padding:0 1em; line-height:2em; color:var(--vscode-textLink-foreground); font-weight:500; position:relative; cursor:pointer; white-space:nowrap; }
+        .tree li:hover  { color:var(--vscode-editor-foreground); }
         .tree ul li:before { content:""; display:block; width:10px; height:0; border-top:1px solid; margin-top:-1px; position:absolute; top:1em; left:0; color:gray; }
         .tree ul li:last-child:before { background:var(--vscode-sideBar-background); height:auto; top:1em; bottom:0 }
         .folder-open    { margin-right:7px; width: 1em; content: url("img/folder_open.svg") }

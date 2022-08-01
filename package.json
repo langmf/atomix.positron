@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.7.5",
+	"version": "1.7.6",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {

@@ -58,9 +58,11 @@ function parseOutput(data) {
         if      (p in x) p = x[p];
         else if (p >= 1250  && p <= 1258)  p = 'windows-'  + p;
         else if (p >= 28592 && p <= 28606) p = 'iso-8859-' + (p - 28590);
-        res = (new TextDecoder(p)).decode(data).toString().replace(/( line \[(\d+)\]\tin )file \[([^\]]+)\]/ig, function(v,p,e,f){ return p + ' [file:///' + f.replace(/ /g, '%20') + '#' + e + ']'; });
+        res = (new TextDecoder(p)).decode(data).toString();
     } catch(e) { console.error(e) }
-    return res;
+    return res.replace(/([\t ]+line[\t ]+\[(\d+)\][\t ]+in[\t ]+)file[\t ]+\[([^\]]+)\]/ig, function(v,p,e,f){ 
+        return p + ' [file:///' + f.replace(/ /g, '%20') + '#' + e + ']'; 
+    });
 }
 
 
