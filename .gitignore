@@ -1,5 +1,5 @@
 /files/help/*
 *.exe
 *.vsix
-#.gitignore
-#.gitattributes
+.gitignore
+.gitattributes
