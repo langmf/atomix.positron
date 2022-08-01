@@ -1,0 +1,10 @@
+# These are binary so should never be modified by git.
+*.png binary
+*.jpg binary
+*.gif binary
+*.bmp binary
+*.exe binary
+*.bin binary
+*.res binary
+*.zip binary
+*.7z  binary
