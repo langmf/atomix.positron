@@ -118,3 +118,6 @@
 - Added information usage of bytes and variables as a percentage in the "Output" window.
 - Fixed navigation by errors in "Output" window.
 - Improved display in the "Samples" window.
+
+## Version 1.8.0 (02/08/2022)
+- Added new settings of the editor ("Selection Highlight", "Occurrences Highlight").
