@@ -197,6 +197,11 @@ async function runWait(fnc) {
 }
 
 
+async function showSettings() {
+    vscode.commands.executeCommand('workbench.action.openSettings', '@ext:atomix.positron');     
+}
+
+
 async function viewFile(ext = "") {
     if (!vscode.window.activeTextEditor) return;
     
@@ -338,6 +343,7 @@ exports.register = () => {
     vscode.commands.registerCommand("pos.runProgram",   () => {    runWait(runProgram);             });
     vscode.commands.registerCommand("pos.runCombine",   () => {    runWait(runCombine);             });
     vscode.commands.registerCommand("pos.stopCompile",  () => {    stopCompile();                   });
+    vscode.commands.registerCommand("pos.showSettings", () => {    showSettings();                  });
     vscode.commands.registerCommand("pos.viewAsm",      () => {    viewFile(".asm");                });
     vscode.commands.registerCommand("pos.viewLst",      () => {    viewFile(".lst");                });
     vscode.commands.registerCommand("pos.helpPJS",      () => {    HELP("PreprocessorJS.pdf");      });

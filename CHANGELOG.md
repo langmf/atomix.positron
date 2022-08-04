@@ -121,3 +121,7 @@
 
 ## Version 1.8.0 (02/08/2022)
 - Added new settings of the editor ("Selection Highlight", "Occurrences Highlight").
+
+## Version 1.8.1 (04/08/2022)
+- The menu items are renamed: "Settings" => "Editor", "Programs" => "Tools".
+- Added the menu item "Settings" (go to the page with extension settings).

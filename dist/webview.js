@@ -4,7 +4,7 @@ const vscode    = require("vscode");
 const webpanel  = require("./webpanel");
 
 
-const Enums = [ "Settings", "Programs", "Samples", "About", "Custom" ];
+const Enums = [ "Editor", "Tools", "Samples", "About", "Custom" ];
 
 const Items  = Enums.reduce((a,v) => (a[v] = new webpanel.WebPage(v)) && a, {});
 
