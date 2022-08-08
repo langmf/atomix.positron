@@ -2318,6 +2318,14 @@
 				"hint": "<b>GLCD_Fast_Strobe</b> = <i>True or False</i><br><b>GLCD_Fast_Strobe</b> = <i>Yes or No</i><br><b>GLCD_Fast_Strobe</b> = <i>1 or 0</i>"
 			},
 			{
+				"name": "GLCD_Strobe_Delay",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "GLCD_Read_Delay",
+				"core": [14,16,24,33]
+			},
+			{
 				"name": "Hbus_Bitrate",
 				"core": [14,16,24,33],
 				"hint": "<b>Hbus_Bitrate</b> = <i>100 to 400</i>"

@@ -157,7 +157,7 @@ async function EDT_update() {
 
 		out += `<li class="list-group-item d-flex flex-wrap align-items-center">
 					<span class="flex-fill my-2 me-3">${i.name || k}</span>
-					<div  class="flex-fill my-2 me-5 ${sel ? 'select-editable' : ''}" style="min-width:100px;max-width:180px;">${sel}
+					<div  class="flex-fill my-2 me-5 ${sel ? 'select-editable' : ''}" style="min-width:100px;max-width:190px;">${sel}
 						<input type="text" class="form-control input-sm" id="${k}" value="${val}" onblur="EDT_input(this)" onkeyup="(event.keyCode===13&&EDT_input(this))" />
 					</div>
 					<button type="button" class="btn btn-primary btn-sm w-auto my-2" onclick="EDT_input('${k}');">Remove</button>

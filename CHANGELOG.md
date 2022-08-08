@@ -111,7 +111,7 @@
 - Small improvements.
 
 ## Version 1.7.5 (30/07/2022)
-- Added go to references (makes a search for all project files).
+- Added go to references (search for text in all files in the project).
 - Added submenu "Samples" (allows you to navigate by examples in folders "C:\Users\NameUser\PDS\Samples").
 
 ## Version 1.7.9 (01/08/2022)
@@ -125,3 +125,6 @@
 ## Version 1.8.1 (04/08/2022)
 - The menu items are renamed: "Settings" => "Editor", "Programs" => "Tools".
 - Added the menu item "Settings" (go to the page with extension settings).
+
+## Version 1.8.2 (08/08/2022)
+- Updated file "database.json".

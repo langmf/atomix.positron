@@ -1,3 +1,5 @@
-/files/help/
 *.exe
 *.vsix
+
+files/help/PreprocessorJS.docx
+files/help/PreprocessorJS.pdf
