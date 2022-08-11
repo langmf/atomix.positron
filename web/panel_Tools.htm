@@ -32,7 +32,7 @@
 
 		$('#card_tools').html('Update ... Please wait a few moments.');
 
-		const list = await vscode_Eval().root.exeList(URI.path.pds + 'Plugin', '\.(mf|cmd|exe)$');
+		const list = await vscode_Eval().root.exeList(URI.path.pds + 'Plugin', '\.(mf|cmd|exe|lnk)$');
 
 		$('#card_tools').html('');
 

@@ -114,7 +114,7 @@ exports.objectPath = objectPath;
 
 function exeInfo(fName) {
     if (Array.isArray(fName)) return fName.map(v => exeInfo(v));
-    const winver = require('win-version-info'),   res = { name: fName, icon: extFile(fName, ['.png', '.gif', '.webp', '.svg']) };
+    const winver = require('win-version-info'),   res = { name: fName, icon: extFile(fName, ['.svg', '.ico', '.webp', '.png', '.jpg', '.gif']) };
     try {  res.stat = fs.statSync(fName);    res.date = new Date(res.stat.mtime).toLocaleString();    res.info = winver(fName);  }catch{};
     return res;
 }
@@ -122,13 +122,15 @@ exports.exeInfo = exeInfo;
 
 
 function exeList(dirPath, mask = '', deep = 1, result = []) {
-    const rxp = /^[\t ]*[';:\/]*[\t ]*exe_info[\t ]*=[\t ]*(.+)$/im;
+    const rxp = /\*exe\*[\t ]*=[\t ]*([^\*]+)/im;
   
 	for (const file of searchFiles(dirPath, mask, deep)) {
         const exe = exeInfo(file);
         if (!exe.info) {
-            try      {  const txt = fs.readFileSync(file, 'utf-8'),   m = rxp.exec(txt);    if (m) exe.info = JSON.parse(m[1]);  }
-            catch(e) {  console.error("exeList => ", e);  }
+            try {
+                const mts = rxp.exec(fs.readFileSync(file, path.extname(file).toLowerCase() === '.lnk' ? 'utf-16le' : 'utf-8')); 
+                if (mts) {  exe.info = JSON.parse(mts[1]);   if (exe.info.icon) exe.icon = path.resolve(path.dirname(file), exe.info.icon);  }
+            } catch(e) {  console.error("exeList => ", e);  }
         }
         exe.info = Object.assign({ FileDescription: path.basename(file), FileVersion:'', CompanyName:'' }, exe.info);
         result.push(exe);
