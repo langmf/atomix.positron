@@ -79,6 +79,9 @@ const def_Editor = {
     "minimap.enabled": {
         name: 'Mini Map',                   enum: [true, false]
     },
+    "rulers": {
+        name: 'Vertical Rulers',            enum: [[80], [120], [80, 120], [{"column":80,"color":"#FF00FF"},100,{"column":120,"color":"#FF0000"}]]
+    },
     "guides.indentation": {
         name: 'Line Indentation',           enum: [true, false]
     },
@@ -86,7 +89,7 @@ const def_Editor = {
         name: 'Quick Suggestions',          enum: [false]
     },
     "snippetSuggestions": {
-        name: 'Snippet Suggestions',        enum: ["top", "bottom", "inline", "none"]
+        name: 'Snippet Suggestions',        enum: ['top', 'bottom', 'inline', 'none']
     },
     "selectionHighlight": {
         name: 'Selection Highlight',        enum: [true, false]
@@ -169,7 +172,7 @@ function Update_Editor(value) {
         
         if (isNumeric(v))                   v = Number(v);
         else if (/^true|false$/i.test(v))   v = v.toLowerCase() == 'true';
-        else if (/^[\t ]*{/i.test(v))       try { v = JSON.parse(v); }catch{}
+        else if (/^[\t ]*[{[]/i.test(v))    try { v = JSON.parse(v); }catch{}
 
         cfg_pos[key] =  (v == null || v === '') ? undefined : v;
     }

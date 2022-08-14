@@ -16,8 +16,9 @@ const cache_dev = {},   statusVer = createVersion();
 
 const [Types, Tokens] = newTypes({
     main  : [ "variable", "procedure", "symbol", "define", "label", "macro" ],
-    lang  : [ "device", "declare", "include" ],
-    sfr   : [ "devregs", "devbits" ]
+    other : [ "declare"             ],
+    lang  : [ "device",  "include"  ],
+    sfr   : [ "devregs", "devbits"  ]
 });
 
 const Enums = {
@@ -145,8 +146,8 @@ function failRange(doc, position) {
 exports.failRange = failRange;
 
 
-function getCore(doc) {
-    return cache.get(doc).symbols.device.$.$info?.core;
+function getCore(doc, isAll = false) {
+    const dev = cache.get(doc).symbols.device.$;        return isAll ? dev : dev.$info?.core;
 }
 exports.getCore = getCore;
 
@@ -157,6 +158,14 @@ function getSFR(doc) {
     return res;
 }
 exports.getSFR = getSFR;
+
+
+function getWords(doc, mask = Types.$('main, other')) {
+    const items = {},   files = parseDoc(doc, mask);
+    for (const file of Object.values(files)) { for (const type of Object.values(file.types)) Object.assign(items, type.$items); }
+    return items;
+}
+exports.getWords = getWords;
 
 
 function getCompletions(doc) {
@@ -218,7 +227,7 @@ exports.filterSymbols = filterSymbols;
 
 
 function getSymbols(input) {
-    const r = /"([^"]*)"|[';](.*)$|\(\*([\s\S]*?)\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s';]|$)|(endproc|endsub)(?=[\s';]|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+([\w\u0400-\u04FF]+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(\w+)[\t ]+macro\b.*?(?=$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
+    const r = /"([^"]*)"|[';](.*)$|\(\*([\s\S]*?)\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s';]|$)|(endproc|endsub)(?=[\s';]|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+(\w+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(\w+)[\t ]+macro\b.*?(?=$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
 
     const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
     
@@ -392,6 +401,7 @@ function openDevice(name) {
     const defs = devFile("Defs\\" + name + ".def");         devSFR(obj, Types.devbits, PAT.DEF, defs);
 
     obj.$info = PAT.PPI(ppi, "INFO", {});
+    obj.core  = obj.$info?.core;
 
     return cache_dev[name] = obj;
 }

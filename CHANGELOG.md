@@ -1,4 +1,8 @@
 
+## 1.8.5 - 2022-08-14
+- Added new setting of the editor ("Vertical Rulers").
+- Improved work and added new operators in PreprocessorJS.
+
 ## 1.8.4 - 2022-08-11
 - Improved display of the "Tools" page.
 

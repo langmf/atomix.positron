@@ -222,15 +222,20 @@ async function viewFile(ext = "") {
 }
 
 
-async function PreprocessorJS() {
-    const main = vscode.window.activeTextEditor.document;           let doc;
+async function PreprocessorJS(doc) {
+    const main = vscode.window.activeTextEditor.document,   dev  = common.getCore(main, true),   words = common.getWords(main);           
+    const ver  = common.getVersion(main, false),  Major = ver.Major,  Minor = ver.Minor,  Release = ver.Release,  Build = ver.Build;
 
     //------------------------- Helpers --------------------------
-    const ver = common.getVersion(main, false),  Major = ver.Major,  Minor = ver.Minor,  Release = ver.Release,  Build = ver.Build;
-
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
     
     const random = (value = 255, ofs = 0) => Math.floor(Math.random()*(value || 255)) + ofs;
+
+    const define = (value) => {
+        value = (value || '').toLowerCase();            if (!(value in words)) return;
+        const m = words[value].code.match(/^\$?\w+[\t ]+\w+(\([^\)]*\)|\[[^\]]*\])?([\t ]+as\b)?([\t =]+("[^"]*"|\w+))/i);
+        return (m && m[4]) || true;
+    }
 
     const chunk = (value, prm = 0) => {
         if (typeof prm === 'number') prm = [prm];           if (typeof value !== 'string') value = value.join(', ');
@@ -256,6 +261,12 @@ async function PreprocessorJS() {
         return (typeof r === 'string' || !s) ? r : chunk(r, prm);
     }
 
+    const popup = (value) => {
+        const enm = {info: 'showInformationMessage', warn: 'showWarningMessage', err: 'showErrorMessage' };
+        const obj = Object.assign({msg:'', type:'info'}, typeof value === 'object' ? value : {msg: value});
+        vscode.window[enm[obj.type.toLowerCase()] || obj.type](obj.msg);        return '';
+    }
+
     const pick = async (items, opt, def) => {
         items = items.map(v => typeof v === 'number' ? ''+v : Array.isArray(v) ? { label: v[0], description: v[1], detail: v[2], value: v[3] } : v ?? { kind: -1 });
         if ((typeof opt === 'string' && (opt = [opt])) || Array.isArray(opt)) opt = { title: opt[0], placeHolder: opt[1] };
@@ -269,86 +280,99 @@ async function PreprocessorJS() {
     }
 
     //------------------------------------------------------------
-    const runPJS = async (v) => {
-        const arrEdit = [],  fmtEdit = new vscode.WorkspaceEdit(),  items = parsePJS(doc = v);
-        for (let item of items) {
-            if (!('name' in item)) { eval.apply(null, [item.text]);   continue; }
-            let result = eval(item.text);
-            if (typeof result === 'function') result = await result();
-            if (result != null) arrEdit.push(new vscode.TextEdit(item.range, item.add + result));
+    const evalPJS = async (v) => { let evalRet = await eval(v);    return typeof evalRet === 'function' ? await evalRet() : evalRet; }
+
+    const parsePJS = async () => {
+        const items = [],  text = doc.getText() + '\r\n';       if (!/[';]\u00A7{1,2}preprocessorjs\b/i.test(text)) return items;
+        
+        const rxp = /"([^"]*)"|\(\*\u00A7{1,2}([\s\S]*?)\*\)|[';](\u00A7{1,2})([=~\w]*)(.*)$/igm;
+        
+        let mts, old, name, enable = true, rif, sif = [], IF = {};
+    
+        const findPos = (v,p) => {
+            const mt = (new RegExp('(' + v + ')(?<E>.*?)[\t ]*$', 'i')).exec(doc.lineAt(p.line).text.substring(0, p.character)); 
+            if (!mt) return [p.character, p.character];         let i = mt.index;
+            if ('R' in mt.groups) return [i += mt.groups.B?.length || 0, i + mt.groups.R.length];
+            return [i += mt[1].length, i + mt.groups.E.length];
         }
-        if (arrEdit.length) { fmtEdit.set(doc.uri, arrEdit);   vscode.workspace.applyEdit(fmtEdit); }
+    
+        while ((mts = rxp.exec(text)) !== null) {
+            if      (mts[2] != null) {  if (enable && !IF.skip) items.push({ text: mts[2] });  }
+            else if (mts[3] != null)
+            {
+                switch (name = mts[4]) {
+                    case 'if'       :   rif = !IF.skip && await evalPJS(mts[5]);     sif.push(IF = { skip: !rif,  act: !IF.skip && !rif });     continue;
+                    case 'elseif'   :   rif = (IF.act  && await evalPJS(mts[5]));    IF.skip = !rif;    IF.act &&= !rif;                        continue;
+                    case 'else'     :   IF.skip = !IF.act;    IF.act = 0;            continue;
+                    case 'endif'    :   sif.pop();    IF = sif.at(-1) || {};         continue;
+                    default         :   if (IF.skip)                                 continue;
+                }
+
+                switch (name) {
+                    case 'exit'     :   return items;
+                    case 'enable'   :   enable = true;              continue;
+                    case 'disable'  :   enable = false;             continue;
+                    default         :   if (!enable)                continue;
+                }
+
+                switch (name) {
+                    case 'eval'     :   await evalPJS(mts[5]);      continue;
+                }
+
+                let pos = doc.positionAt(mts.index),   char = [0, pos.character],   item = Object.assign({name, add:''}, parseBrace(mts[5]));
+    
+                if (item.code != null) char = eval(item.code);
+    
+                if      (item.name === 'region' ) { pos = doc.lineAt(pos.line + 1).range.end;      old = item; }
+                else if (item.name === 'end'    ) { old.range = new vscode.Range(old.range.start, doc.lineAt(pos.line - 1).range.end);   continue; }
+                else if (item.name === '='      ) { item.add  = ' ';   char = '='; }
+                else if (item.name              ) { continue; }
+
+                if      (typeof char === 'undefined') item.range = doc.lineAt(pos.line).range;
+                else if (typeof char === 'number'   ) if (char >= 0) char = [char, 0];  else  item.range = doc.lineAt(pos.line - char).range;
+                else if (typeof char === 'string'   ) char = findPos(char, pos);
+    
+                if (!item.range) {
+                    if (char[1] <= 0) char[1] = pos.character + char[1];
+                    item.range = new vscode.Range(pos.line, char[0], pos.line, char[1] <= 0 ? 0 : char[1]);
+                }
+    
+                items.push(item);
+            }
+        }
+        
+        return items;
     }
 
     //------------------------------------------------------------
     for (const fName of common.getDocs(main)) {
-        const iDoc = await vscode.workspace.openTextDocument(vscode.Uri.file(fName));       if (iDoc) await runPJS(iDoc);
-    }
-}
-
-
-function parsePJS(doc) {
-    const rxp = /"([^"]*)"|\(\*\u00A7{1,2}([\s\S]*?)\*\)|[';](\u00A7{1,2})([=~\w]*)(.*)$/igm;
-    const items = [],  text = doc.getText() + '\r\n';            let mts, old, enable = false;
-
-    const findPos = (v,p) => {
-        const mt = (new RegExp('(' + v + ')(?<E>.*?)[\t ]*$', 'i')).exec(doc.lineAt(p.line).text.substring(0, p.character)); 
-        if (!mt) return [p.character, p.character];         let i = mt.index;
-        if ('R' in mt.groups) return [i += mt.groups.B?.length || 0, i + mt.groups.R.length];
-        return [i += mt[1].length, i + mt.groups.E.length];
-    }
-
-    while ((mts = rxp.exec(text)) !== null) {
-        if      (mts[2] != null) { if (enable) items.push({ text: mts[2] }); }
-        else if (mts[3] != null)
-        {
-            switch (mts[4]) {
-                case 'exit'     :   return items;
-                case 'enable'   :   enable = true;      continue;
-                case 'disable'  :   enable = false;     continue;
-                default         :   if (!enable)        continue;
-            }
-
-            let pos = doc.positionAt(mts.index),   char = [0, pos.character],   item = Object.assign({name:mts[4], add:''}, parseBrace(mts[5]));
-
-            if (item.code != null) char = eval(item.code);
-
-            if      (item.name === 'region' ) { pos = doc.lineAt(pos.line + 1).range.end;      old = item; }
-            else if (item.name === 'end'    ) { old.range = new vscode.Range(old.range.start, doc.lineAt(pos.line - 1).range.end);   continue; }
-            else if (item.name === '='      ) { item.add  = ' ';   char = '='; }
-            else if (item.name === '~'      ) { item.text = 'async () => ' + item.text; }
-            else if (item.name === '=~'     ) { item.text = 'async () => ' + item.text;   item.add = ' ';   char = '='; }
-
-            if      (typeof char === 'undefined') item.range = doc.lineAt(pos.line).range;
-            else if (typeof char === 'number'   ) if (char >= 0) char = [char, 0];  else  item.range = doc.lineAt(pos.line - char).range;
-            else if (typeof char === 'string'   ) char = findPos(char, pos);
-
-            if (!item.range) {
-                if (char[1] <= 0) char[1] = pos.character + char[1];
-                item.range = new vscode.Range(pos.line, char[0], pos.line, char[1] <= 0 ? 0 : char[1]);
-            }
-
-            items.push(item);
+        doc = await vscode.workspace.openTextDocument(vscode.Uri.file(fName));       if (!doc) continue;
+        
+        const arrEdit = [],  fmtEdit = new vscode.WorkspaceEdit(),  items = await parsePJS();
+        
+        for (const item of items) {
+            if (!('name' in item)) { eval.call(null, item.text);   continue; }
+            const result = await evalPJS(item.text);        if (result != null) arrEdit.push(new vscode.TextEdit(item.range, item.add + result));
         }
+
+        if (arrEdit.length) { fmtEdit.set(doc.uri, arrEdit);   vscode.workspace.applyEdit(fmtEdit); }
     }
-    
-    return items;
 }
 
 
 exports.register = () => {
     vscode.commands.registerCommand("pos.save",         () => {    vscode.window.activeTextEditor.document.save();  });
     vscode.commands.registerCommand("pos.save_all",     () => {    vscode.workspace.saveAll();                      });
-    vscode.commands.registerCommand("pos.runCompile",   () => {    runWait(runCompile);             });
-    vscode.commands.registerCommand("pos.runProgram",   () => {    runWait(runProgram);             });
-    vscode.commands.registerCommand("pos.runCombine",   () => {    runWait(runCombine);             });
-    vscode.commands.registerCommand("pos.stopCompile",  () => {    stopCompile();                   });
-    vscode.commands.registerCommand("pos.showSettings", () => {    showSettings();                  });
-    vscode.commands.registerCommand("pos.viewAsm",      () => {    viewFile(".asm");                });
-    vscode.commands.registerCommand("pos.viewLst",      () => {    viewFile(".lst");                });
-    vscode.commands.registerCommand("pos.helpPJS",      () => {    HELP("PreprocessorJS.pdf");      });
-    vscode.commands.registerCommand("pos.helpPos8",     () => {    HELP(/^.*positron8.*\.pdf$/i);   });
-    vscode.commands.registerCommand("pos.helpPos16",    () => {    HELP(/^.*positron16.*\.pdf$/i);  });
+    vscode.commands.registerCommand("pos.runCompile",   () => {    runWait(runCompile);                             });
+    vscode.commands.registerCommand("pos.runProgram",   () => {    runWait(runProgram);                             });
+    vscode.commands.registerCommand("pos.runCombine",   () => {    runWait(runCombine);                             });
+    vscode.commands.registerCommand("pos.stopCompile",  () => {    stopCompile();                                   });
+    vscode.commands.registerCommand("pos.showSettings", () => {    showSettings();                                  });
+    vscode.commands.registerCommand("pos.viewAsm",      () => {    viewFile(".asm");                                });
+    vscode.commands.registerCommand("pos.viewLst",      () => {    viewFile(".lst");                                });
+    vscode.commands.registerCommand("pos.helpPJS",      () => {    HELP("PreprocessorJS.pdf");                      });
+    vscode.commands.registerCommand("pos.helpPos8",     () => {    HELP(/^.*positron8.*\.pdf$/i);                   });
+    vscode.commands.registerCommand("pos.helpPos16",    () => {    HELP(/^.*positron16.*\.pdf$/i);                  });
 };
 
 
