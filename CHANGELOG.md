@@ -1,4 +1,8 @@
 
+## 1.8.6 - 2022-08-20
+- Added new setting of the editor ("Line Numbers", "Scroll LastLine", "Select Suggestions").
+- Small improvements.
+
 ## 1.8.5 - 2022-08-14
 - Added new setting of the editor ("Vertical Rulers").
 - Improved work and added new operators in PreprocessorJS.

@@ -82,11 +82,20 @@ const def_Editor = {
     "rulers": {
         name: 'Vertical Rulers',            enum: [[80], [120], [80, 120], [{"column":80,"color":"#FF00FF"},100,{"column":120,"color":"#FF0000"}]]
     },
+    "lineNumbers": {
+        name: 'Line Numbers',               enum: ['on', 'off', 'interval', 'relative']
+    },
     "guides.indentation": {
         name: 'Line Indentation',           enum: [true, false]
     },
+    "scrollBeyondLastLine": {
+        name: 'Scroll LastLine',            enum: [true, false]
+    },
     "quickSuggestions": {
         name: 'Quick Suggestions',          enum: [false]
+    },
+    "suggestSelection": {
+        name: 'Select Suggestions',         enum: ['first', 'recentlyUsed', 'recentlyUsedByPrefix']
     },
     "snippetSuggestions": {
         name: 'Snippet Suggestions',        enum: ['top', 'bottom', 'inline', 'none']

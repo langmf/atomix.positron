@@ -87,7 +87,7 @@ function JsonToFile(value, fName, fnErr) {
 exports.JsonToFile = JsonToFile;
 
 
-function limitText(txt, count = 140) {
+function limitText(txt, count = 130) {
 	return txt.slice(0, count) + (txt.length > count ? " ... SIZE = " + txt.length : "");
 }
 exports.limitText = limitText;

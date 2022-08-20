@@ -355,7 +355,7 @@ async function PreprocessorJS(doc) {
             const result = await evalPJS(item.text);        if (result != null) arrEdit.push(new vscode.TextEdit(item.range, item.add + result));
         }
 
-        if (arrEdit.length) { fmtEdit.set(doc.uri, arrEdit);   vscode.workspace.applyEdit(fmtEdit); }
+        if (arrEdit.length) { fmtEdit.set(doc.uri, arrEdit);   await vscode.workspace.applyEdit(fmtEdit); }
     }
 }
 
