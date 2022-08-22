@@ -1,4 +1,9 @@
 
+## 1.8.7 - 2022-08-22
+- The work with the highlighting database file ("database.json") has been changed, now it is two files:
+  "main.json" - to highlight files (*.bas, *.inc)
+  "asm.json"  - to highlight files (*.asm, *.lst)
+
 ## 1.8.6 - 2022-08-20
 - Added new setting of the editor ("Line Numbers", "Scroll LastLine", "Select Suggestions").
 - Small improvements.

@@ -40,7 +40,7 @@ exports.Types   = Types;
 exports.Tokens  = Tokens;
 exports.Enums   = Enums;
 
-exports.legend  = () => new vscode.SemanticTokensLegend([...Object.values(Tokens),  ...DTB.Tokens]);
+exports.legend  = () => new vscode.SemanticTokensLegend([...Object.values(Tokens),  ...DTB.main.Tokens]);
 
 
 exports.activate = () => {
@@ -146,12 +146,6 @@ function failRange(doc, position) {
 exports.failRange = failRange;
 
 
-function getCore(doc, isAll = false) {
-    const dev = cache.get(doc).symbols.device.$;        return isAll ? dev : dev.$info?.core;
-}
-exports.getCore = getCore;
-
-
 function getSFR(doc) {
     const res = [],   dev = cache.get(doc).symbols.$.device || {};
     for (const k of Types._.sfr) if (k in dev) res.push(dev[k]);
@@ -169,7 +163,7 @@ exports.getWords = getWords;
 
 
 function getCompletions(doc) {
-    const res = [...DTB.comps(getCore(doc))];
+    const res = [...DTB.comps(doc)];
     for (const v of getSFR(doc)) res.push(...v.comps);
     return res;
 }
@@ -329,7 +323,7 @@ function parseDevice(doc, list, old) {
 
     if (devs.length) { dev = devs.pop();    name = dev.value.name;     if (dev.isLocal) { local = dev.value;   r = dev.value.range; } }
 
-    name = "\u03A1" + (name || DTB.db.default.device);
+    name = "\u03A1" + (name || DTB.$(doc).db.default.device);
 
     SYM.local  = local;
     
@@ -462,7 +456,7 @@ function codeHTML(text, doc, mark) {
         return m;
     });
 
-    text = text.replace(PAT.ALL(DTB.words(getCore(doc))),       function (m) {
+    text = text.replace(PAT.ALL(DTB.words(doc)),                function (m) {
         const i = DTB.find(m);                          return !i ? m : makeStyle(i.token, m);
     });
 

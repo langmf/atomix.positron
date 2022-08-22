@@ -36,7 +36,7 @@ function provideHover(doc, position) {
     }
 
 
-    const word2 = common.getWordRange(doc, position, /[-+*$#\w\d_]+/i),   i = DTB.find(word2, common.getCore(doc))
+    const word2 = common.getWordRange(doc, position, /[-+*$#\w\d_]+/i),   i = DTB.find(word2, doc)
     
     if (i && i.hint) return new vscode.Hover(getMarkdown(i.hint));
 

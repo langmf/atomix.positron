@@ -223,7 +223,7 @@ async function viewFile(ext = "") {
 
 
 async function PreprocessorJS(doc) {
-    const main = vscode.window.activeTextEditor.document,   dev  = common.getCore(main, true),   words = common.getWords(main);           
+    const main = vscode.window.activeTextEditor.document,   dev  = root.getCore(main, true),   words = common.getWords(main);           
     const ver  = common.getVersion(main, false),  Major = ver.Major,  Minor = ver.Minor,  Release = ver.Release,  Build = ver.Build;
 
     //------------------------- Helpers --------------------------

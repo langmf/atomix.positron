@@ -4,6 +4,7 @@ const vscode = require('vscode');
 const fs     = require("fs");
 const os     = require("os");
 const path   = require('path');
+const cache  = require("./cache");
 
 
 exports.activate = (context) => {
@@ -39,8 +40,13 @@ function onDidChangeConfiguration() {
 }
 
 
+exports.getCore = (doc, isAll = false) => {
+    if (doc) { const dev = cache.get(doc).symbols.device.$;     return isAll ? dev : dev.$info?.core; }
+}
+
+
 exports.IsAsmLst = (fName) => {
-    if (typeof fName === 'object') fName = fName.fileName;          return ['.asm', '.lst'].includes(path.extname(fName).toLowerCase());
+    if (typeof fName === 'object') fName = fName.fileName;      return ['.asm', '.lst'].includes(path.extname(fName || '').toLowerCase());
 }
 
 

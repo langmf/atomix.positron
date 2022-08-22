@@ -1,0 +1,125 @@
+{
+	"types": {
+		"Keyword": [
+			{
+				"name": "__config, config, config1, config2, config1h, config1l, config2h, config2l, config3h, config3l"
+			},
+			{
+				"name": "config4h, config4l, config5h, config5l, config6h, config6l, config7h, config7l"
+			},
+			{
+				"name": "de, dt, db, dw, equ, org, high, low, upper, set"
+			},
+			{
+				"name": "variable, include, #define, define, local, macro, fast, jump, global, section"
+			},
+			{
+				"name": "exitm, endm, end, def, if, ifdef, ifndef, else, endif"
+			},
+			{
+				"name": "ram_bank, pagesel, _set_cpage, _set_rbank, _reset_rbank, _mjump, _mcall"
+			},
+			{
+				"name": "val, scl, space, size, line, endef, file, type, text"
+			}
+		],
+		"KeywordASM": [
+			{
+				"name": "addlw, addwf, addwfc, addfsr, andlw, andwf, aslf, asrf"
+			},
+			{
+				"name": "bc, bcf, bdc, bk, bn, bnc, bnn, bnov, bnz, bov, bra, brw, bsf, btfsc, btfss, btg, bz"
+			},
+			{
+				"name": "call, callw, clrc, clrdc, clrf, clrw, clrwdt, clrz, comf, cpfseq, cpfsgt, cpfslt"
+			},
+			{
+				"name": "daw, dcfsnz, decf, decfsz"
+			},
+			{
+				"name": "goto"
+			},
+			{
+				"name": "incf, incfsz, infsnz, iorlw, iorwf"
+			},
+			{
+				"name": "lfsr, lslf, lsrf"
+			},
+			{
+				"name": "movf, movff, movffl, moviw, movlb, movlp, movlw, movwf, movwi, mullw, mulwf"
+			},
+			{
+				"name": "negf, negw, nop"
+			},
+			{
+				"name": "rcall, reset, return, retfie, retlw, rlcf, rlf, rlncf, rol, ror, rrcf, rrf, rrncf"
+			},
+			{
+				"name": "setc, setdc, setf, setz, skpc, skpdc, skpnc, skpndc, skpnz, skpz, subcf, subdcf, subfwb, sublw, subwf, subwfb, swapf"
+			},
+			{
+				"name": "tblrd+*, tblrd*+, tblrd*-, tblrd*, tblrd"
+			},
+			{
+				"name": "tblwt+*, tblwt*+, tblwt*-, tblwt*, tblwt"
+			},
+			{
+				"name": "tris, tstf, tstfsz"
+			},
+			{
+				"name": "xorlw, xorwf"
+			},
+			{
+				"name": "add, addc, and, asr"
+			},
+			{
+				"name": "bclr, bset, bsw, btsc, btss, btst, btsts"
+			},
+			{
+				"name": "clr, com, cp, cp0, cpb, cpseq, cpsgt, cpslt, cpsne"
+			},
+			{
+				"name": "dec, dec2, disi, div"
+			},
+			{
+				"name": "exch"
+			},
+			{
+				"name": "fbcl, ff1l, ff1r, fbcl"
+			},
+			{
+				"name": "inc, inc2, ior"
+			},
+			{
+				"name": "lnk, lsr"
+			},
+			{
+				"name": "mov, mul"
+			},
+			{
+				"name": "neg"
+			},
+			{
+				"name": "pop, pbyte, pword, push, pwrsav"
+			},
+			{
+				"name": "repeat, rlc, rlnc, rrc, rrnc"
+			},
+			{
+				"name": "se, setm, sl, sub, subb, subr, subbr"
+			},
+			{
+				"name": "tblrdh, tblrdl, tblwth, tblwtl"
+			},
+			{
+				"name": "ulnk"
+			},
+			{
+				"name": "xor"
+			},
+			{
+				"name": "ze"
+			}
+		]
+	}
+}

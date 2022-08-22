@@ -130,7 +130,7 @@ function repColors(obj, rep) {
 
 
 function parseThemes(themes) {
-    const db_themes = DTB.db.default.themes,   db_types = DTB.db.types;
+    const db_themes = DTB.main.db.default.themes,   db_types = DTB.main.db.types;
     
     const tmp_Theme = Object.keys(db_types).reduce((a,v) => (a[v] = {}) && a, {});
 

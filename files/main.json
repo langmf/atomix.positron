@@ -3,7 +3,7 @@
 		These types are used by the built-in extension types, do not use them to define new words!
 		Reseved types:
 			Comment_Line, Comment_Block, String, Number, Number_Binary, Number_Hex, Operator, Operator_Math, Operator_Logic,
-			Bracket_Round, Bracket_Square, Bracket_Curly, Device, Define, Symbol, Label, Procedure, Variable, SFR, SFR_Bitname
+			Bracket_Round, Bracket_Square, Bracket_Curly, Device, Define, Symbol, Macro, Label, Procedure, Variable, SFR, SFR_Bitname
 	*/
 	
 	"default": {
@@ -72,10 +72,7 @@
 				"hint": "<i>Variable = </i><b>AddressOf</b><i> (Variable or Label)</i>"
 			},
 			{
-				"name": "And"
-			},
-			{
-				"name": "Or"
+				"name": "And,Or"
 			},
 			{
 				"name": "Abs",
@@ -121,40 +118,18 @@
 				"hint": "<b>Bin..Bin31</b><i> Constant Value or Variable or Expression</i>"
 			},
 			{
-				"name": "Bit,Byte,Word"
-			},
-			{
 				"name": "Bit0...31",
 				"hint": "Variable = Variable.<b>Bit0</b><i> to </i><b>Bit31</b><br>Variable = Constant.<b>Bit0</b><i> to </i><b>Bit31</b><br>Variable.<b>Bit0</b><i> to </i><b>Bit31</b> = Constant or Variable or Expression"
 			},
 			{
-				"name": "Byte0"
+				"name": "Bit,Byte,Word,Byte0,Byte1"
 			},
 			{
-				"name": "Byte1"
-			},
-			{
-				"name": "Byte2",
+				"name": "Byte2,Byte3",
 				"core": [14,16,24,33]
 			},
 			{
-				"name": "Byte3",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Byte4",
-				"core": [24,33]
-			},
-			{
-				"name": "Byte5",
-				"core": [24,33]
-			},
-			{
-				"name": "Byte6",
-				"core": [24,33]
-			},
-			{
-				"name": "Byte7",
+				"name": "Byte4,Byte5,Byte6,Byte7",
 				"core": [24,33]
 			},
 			{
@@ -173,43 +148,15 @@
 				"hint": "Parameter holds the contents in RAM"
 			},
 			{
-				"name": "Long",
+				"name": "Long,Dword,Double,Word0,Word1,Float,String",
 				"core": [14,16,24,33]
 			},
 			{
-				"name": "Word0",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Word1",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Word2",
+				"name": "Word2,Word3",
 				"core": [24,33]
-			},
-			{
-				"name": "Word3",
-				"core": [24,33]
-			},
-			{
-				"name": "Dword",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Double",
-				"core": [14,16,24,33]
 			},
 			{
 				"name": "Do"
-			},
-			{
-				"name": "Float",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "String",
-				"core": [14,16,24,33]
 			},
 			{
 				"name": "Static",
@@ -366,33 +313,13 @@
 			},
 			{
 				"name": "Config",
-				"core": [12,14,24,33],
+				"core": [12,14,16,24,33],
 				"hint": "<b>Config</b> <i>FuseSetting {, FuseSetting}</i>"
 			},
 			{
-				"name": "Config1",
+				"name": "Config1...5",
 				"core": [12,14,24,33],
-				"hint": "<b>Config1</b> <i>FuseSetting {, FuseSetting}</i>"
-			},
-			{
-				"name": "Config2",
-				"core": [12,14,24,33],
-				"hint": "<b>Config2</b> <i>FuseSetting {, FuseSetting}</i>"
-			},
-			{
-				"name": "Config3",
-				"core": [12,14,24,33],
-				"hint": "<b>Config3</b> <i>FuseSetting {, FuseSetting}</i>"
-			},
-			{
-				"name": "Config4",
-				"core": [12,14,24,33],
-				"hint": "<b>Config4</b> <i>FuseSetting {, FuseSetting}</i>"
-			},
-			{
-				"name": "Config5",
-				"core": [12,14,24,33],
-				"hint": "<b>Config5</b> <i>FuseSetting {, FuseSetting}</i>"
+				"hint": "<b>ConfigX</b> <i>FuseSetting {, FuseSetting}</i>"
 			},
 			{
 				"name": "Context",
@@ -1890,7 +1817,7 @@
 				"hint": "<b>TrimLeft(</b> <i>String Variable</i><b>)</b>"
 			},
 			{
-				"name": "db, equ"
+				"name": "de, dt, db, dw, equ"
 			}
 		],
 		"KeywordImportant": [
@@ -2027,160 +1954,13 @@
 				"hint": "<b>Available_RAM</b> = <i>0 to n</i>"
 			},
 			{
-				"name": "Bank0_End",
-				"hint": "<b>Bank0_End</b> = <i>0 to n</i>"
+				"name": "Bank0...15_Start",
+				"hint": "<b>BankX_Start</b> = <i>0 to n</i>"
 			},
 			{
-				"name": "Bank0_Start",
-				"hint": "<b>Bank0_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank10_End",
+				"name": "Bank0...15_End",
 				"core": [14,16,24,33],
-				"hint": "<b>Bank10_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank10_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank10_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank11_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank11_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank11_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank11_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank12_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank12_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank12_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank12_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank13_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank13_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank13_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank13_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank14_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank14_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank14_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank14_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank15_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank15_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank15_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank15_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank1_End",
-				"hint": "<b>Bank1_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank1_Start",
-				"hint": "<b>Bank1_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank2_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank2_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank2_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank2_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank3_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank3_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank3_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank3_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank4_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank4_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank4_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank4_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank5_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank5_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank5_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank5_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank6_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank6_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank6_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank6_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank7_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank7_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank7_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank7_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank8_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank8_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank8_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank8_Start</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank9_End",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank9_End</b> = <i>0 to n</i>"
-			},
-			{
-				"name": "Bank9_Start",
-				"core": [14,16,24,33],
-				"hint": "<b>Bank9_Start</b> = <i>0 to n</i>"
+				"hint": "<b>BankX_End</b> = <i>0 to n</i>"
 			},
 			{
 				"name": "Bank_Select_Switch",
@@ -2190,12 +1970,12 @@
 			{
 				"name": "BankA_End",
 				"core": [16],
-				"hint": "<b>Banka_End</b> = <i>0 to n</i>"
+				"hint": "<b>BankA_End</b> = <i>0 to n</i>"
 			},
 			{
 				"name": "BankA_Start",
 				"core": [16],
-				"hint": "<b>Banka_Start</b> = <i>0 to n</i>"
+				"hint": "<b>BankA_Start</b> = <i>0 to n</i>"
 			},
 			{
 				"name": "Bootloader",
@@ -2212,54 +1992,9 @@
 				"hint": "<b>Byte_Math</b> = <i>True or False</i><br><b>Byte_Math</b> = <i>Yes or No</i><br><b>Byte_Math</b> = <i>1 or 0</i>"
 			},
 			{
-				"name": "CCP1_Pin",
+				"name": "CCP1...10_Pin",
 				"core": [14,16,24,33],
-				"hint": "<b>CCP1_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "CCP2_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>CCP2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "CCP3_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>CCP3_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "CCP4_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>CCP4_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "CCP5_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>CCP5_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "CCP6_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>CCP6_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "CCP7_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>CCP7_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "CCP8_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>CCP8_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "CCP9_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>CCP9_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "CCP10_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>CCP10_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"hint": "<b>CCPX_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
 			},
 			{
 				"name": "Core",
@@ -2318,11 +2053,7 @@
 				"hint": "<b>GLCD_Fast_Strobe</b> = <i>True or False</i><br><b>GLCD_Fast_Strobe</b> = <i>Yes or No</i><br><b>GLCD_Fast_Strobe</b> = <i>1 or 0</i>"
 			},
 			{
-				"name": "GLCD_Strobe_Delay",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "GLCD_Read_Delay",
+				"name": "GLCD_Strobe_Delay, GLCD_Read_Delay",
 				"core": [14,16,24,33]
 			},
 			{
@@ -3372,59 +3103,7 @@
 				"core": [12,14,16]
 			},
 			{
-				"name": "Config1H",
-				"core": [16]
-			},
-			{
-				"name": "Config1L",
-				"core": [16]
-			},
-			{
-				"name": "Config2H",
-				"core": [16]
-			},
-			{
-				"name": "Config2L",
-				"core": [16]
-			},
-			{
-				"name": "Config3H",
-				"core": [16]
-			},
-			{
-				"name": "Config3L",
-				"core": [16]
-			},
-			{
-				"name": "Config4H",
-				"core": [16]
-			},
-			{
-				"name": "Config4L",
-				"core": [16]
-			},
-			{
-				"name": "Config5H",
-				"core": [16]
-			},
-			{
-				"name": "Config5L",
-				"core": [16]
-			},
-			{
-				"name": "Config6H",
-				"core": [16]
-			},
-			{
-				"name": "Config6L",
-				"core": [16]
-			},
-			{
-				"name": "Config7H",
-				"core": [16]
-			},
-			{
-				"name": "Config7L",
+				"name": "Config1H,Config1L,Config2H,Config2L,Config3H,Config3L,Config4H,Config4L,Config5H,Config5L,Config6H,Config6L,Config7H,Config7L",
 				"core": [16]
 			},
 			{

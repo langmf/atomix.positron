@@ -1,6 +1,5 @@
 "use strict";
 
-const vscode     = require("vscode");
 const root       = require("./root");
 const common     = require("./common");
 const symbols    = require("./symbols");

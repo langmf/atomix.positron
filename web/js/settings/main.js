@@ -71,7 +71,7 @@ function HLT_input(el) {
 }
 
 async function HLT_update() {
-	let out,   titles = await vscode_Eval().DTB.db.default.titles.$;
+	let out,   titles = await vscode_Eval().DTB.main.db.default.titles.$;
 
 	for (const [theme, data] of Object.entries(STS.themes)) {
 		out = '';

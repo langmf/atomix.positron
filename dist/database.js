@@ -6,19 +6,32 @@ const path    = require("path");
 const root    = require("./root");
 
 
-let items, cache;
+exports.prefix = "pdb_";
 
-const prefix  = "pdb_";
-exports.prefix = prefix;
+exports.Init = () => {
+    exports.main  = LoadDB('main.json');
+    exports.asm   = LoadDB('asm.json', true);
+    exports.files = getPPI() || {};
+}
 
 
-exports.Init = (fName = 'database.json') => {
+function $(doc) {
+    return exports.asm && root.IsAsmLst(doc) ? exports.asm : exports.main;
+}
+exports.$ = $;
+
+
+function getPPI() {
     try {
-        exports.files = fs.readdirSync(root.path.include.main + "PPI").reduce((a,v) => { 
+        return fs.readdirSync(root.path.include.main + "PPI").reduce((a,v) => { 
             const m = v.match(/^P?([^.]+)\.ppi$/i);     if (m) a[m[1].toLowerCase()] = 1;     return a;
         },{});
-    }
-    catch (e) { vscode.window.showErrorMessage(`Scan devices -> ${e}`); }
+    } catch (e) { vscode.window.showErrorMessage(`Scan devices -> ${e}`); }
+}
+
+
+function LoadDB(fName, fExit) {
+    const obj = {},  prefix = exports.prefix;
 
     try {
         let      fn = root.checkFile(root.path.pds + fName);
@@ -26,63 +39,71 @@ exports.Init = (fName = 'database.json') => {
         if (!fn) throw `Can't be opened!`;
         
         const text = fs.readFileSync(fn, 'utf-8').replace(/\/\*[\s\S]*?\*\//g, '');
-        exports.db = JSON.parse(text);
-
+        obj.db = JSON.parse(text);
     }
-    catch (e) { vscode.window.showErrorMessage(`"${fName}" -> ${e}`); }
+    catch (e) { vscode.window.showErrorMessage(`"${fName}" -> ${e}`);    if (fExit) return; }
 
-    exports.db         = Object.assign({ default:{}, types:{} },    exports.db);
-    exports.db.default = Object.assign({ device:"18F25K20", titles:{}, themes:{} },     exports.db.default);
-    exports.files      = exports.files || {};
+    obj.db         = Object.assign({ default:{}, types:{} },    obj.db);
+    obj.db.default = Object.assign({ device:"18F25K20", titles:{}, themes:{} },     obj.db.default);
+    obj.cache      = { comps:{},  words:{} };
+    obj.items      = {};
 
-    items = {};     cache = { comps:{},  words:{} };
-
-    for (const [type, arr] of Object.entries(exports.db.types)) {
+    for (const [type, arr] of Object.entries(obj.db.types)) {
         const token = prefix + type.toLowerCase();
         
         for (const x of arr) {
             const core = x.core,  hint = x.hint,  comp = x.comp,  sign = x.sign;
             
-            for (const name of x.name.split(',').map(v => v.trim())) {
+            for (const name of x.name.split(',').map(v => v.trim()).filter(v => v)) {
                 const m = name.match(/^(\w+?)(\d*)\.\.\.(\d+)(\w*)$/i);
                 
                 if (!m) {
                     const word = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    items[name.toLowerCase()] = { name,  word,  token,  core,  hint,  comp,  sign };
+                    obj.items[name.toLowerCase()] = { name,  word,  token,  core,  hint,  comp,  sign };
                 } else {
                     for (let b = parseInt(m[2] || 0), e = parseInt(m[3]); b <= e; b++ ) {
                         const word = m[1] + (m[2] || b ? b : '') + m[4]; 
-                        items[word.toLowerCase()] = { name:word,  word,  token,  core,  hint,  comp,  sign };
+                        obj.items[word.toLowerCase()] = { name:word,  word,  token,  core,  hint,  comp,  sign };
                     }
                 }
             }
         }
     }
 
-    exports.Tokens = Object.keys(exports.db.types).map(v => prefix + v.toLowerCase());
+    obj.Tokens = Object.keys(obj.db.types).map(v => prefix + v.toLowerCase());          return obj;
 }
 
 
-exports.find = (word, core) => {
+exports.proto_find = (doc) => {
+    const core = root.getCore(doc),  db = $(doc);
+    return function (word) {
+        if (!word) return;
+        const i = db.items[word.toLowerCase()];    if (i && (!core || !i.core || i.core.includes(core))) return i;
+    }
+}
+
+
+exports.find = (word, doc) => {
+    const core = root.getCore(doc),  db = $(doc);
     if (!word) return;
-    const i = items[word.toLowerCase()];    if (i && (!core || !i.core || i.core.includes(core))) return i;
+    const i = db.items[word.toLowerCase()];    if (i && (!core || !i.core || i.core.includes(core))) return i;
 }
 
 
-exports.comps = (core) => {
-    if (core in cache.comps) return cache.comps[core];
-    const res = [],  kind  = vscode.CompletionItemKind.Module;
-    for (const i of Object.values(items)) if (!core || !i.core || i.core.includes(core)) {
+exports.comps = (doc) => {
+    const core = root.getCore(doc),  db = $(doc),  res = [];        if (core in db.cache.comps) return db.cache.comps[core];
+    const kind = vscode.CompletionItemKind.Module;
+    for (const i of Object.values(db.items)) if (!core || !i.core || i.core.includes(core)) {
         res.push(new vscode.CompletionItem({label: i.name,  description: i.comp}, kind));
     }
-    return cache.comps[core] = res;
+    return db.cache.comps[core] = res;
 }
 
 
-exports.words = (core) => {
-    if (core in cache.words) return cache.words[core];
-    const res = [];     for (const i of Object.values(items)) if (!core || !i.core || i.core.includes(core)) res.push(i.word);
-    return cache.words[core] = res.join('|');
+exports.words = (doc) => {
+    const core = root.getCore(doc),  db = $(doc),  res = [];        if (core in db.cache.words) return db.cache.words[core];
+    for (const i of Object.values(db.items)) if (!core || !i.core || i.core.includes(core)) res.push(i.word);
+    return db.cache.words[core] = res.join('|');
 }
 
 
@@ -116,7 +137,8 @@ if (0) {
             types };
 
         const res = JSON.stringify(obj, null, '\t').replace(/^([\t ]+"core":[\t ]+)"([^"]+)"/igm,'$1[$2]');
-        try{  text = fs.writeFileSync(__dirname + '\\Database.json', res);  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
+        try{  text = fs.writeFileSync(__dirname + '\\' + path.parse(fName).name + '.json', res);  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
     }
+
     exportMCD(path.resolve(vscode.workspace.getConfiguration("pos").main.compiler, "..\\..\\") + "\\database.mcd");
 }

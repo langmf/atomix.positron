@@ -63,11 +63,11 @@ function parseALL(doc, tokens, formats) {
         Object.assign(items, sfr.items);    words.push(sfr.words);
     }
 
-    SEM.items.dev = items;          for (const m of PAT.WORDS(text, words.join('|')))  addToken(m);
+    SEM.items.dev = items;              for (const m of PAT.WORDS(text, words.join('|')))  addToken(m);
 
 
     // -------------------------- parse DTB --------------------------
-    for (const m of PAT.WORDS(text, DTB.words(common.getCore(doc))))  addToken(m, DTB.find(m[1]));
+    const f = DTB.proto_find(doc);      for (const m of PAT.WORDS(text, DTB.words(doc)))   addToken(m, f(m[1]));
 }
 
 
