@@ -40,6 +40,14 @@ function onDidChangeConfiguration() {
 }
 
 
+exports.getMain = (doc) => {
+    let v,  main = typeof doc === 'object'? doc.fileName : doc;
+    if (!exports.config.smartParentIncludes || path.extname(main).toLowerCase() === '.bas') return main;
+    while (v = (cache.get(main).$.parent)) main = v;
+    return main;
+}
+
+    
 exports.getCore = (doc, isAll = false) => {
     if (doc) { const dev = cache.get(doc).symbols.device.$;     return isAll ? dev : dev.$info?.core; }
 }

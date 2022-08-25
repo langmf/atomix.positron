@@ -1,4 +1,7 @@
 
+## 1.8.9 - 2022-08-25
+- Added the ability to call compilation and view assembler from included files.
+  
 ## 1.8.7 - 2022-08-22
 - The work with the highlighting database file ("database.json") has been changed, now it is two files:
   "main.json" - to highlight files (*.bas, *.inc)

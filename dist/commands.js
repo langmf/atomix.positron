@@ -113,7 +113,7 @@ async function run(exe, arg = "", workDir, time, fmt) {
     _process.on("exit", code => {
         const endTime = new Date(),  elapsedTime = (endTime.getTime() - startTime.getTime()) / 1000;
         if (fmt) output.append(outputCompiler(buf));
-        output.appendLine("[Done] exited with code=" + code + " in " + elapsedTime + " seconds");
+        output.appendLine("[Done] exited with code=" + code + " in " + elapsedTime.toFixed(1) + " seconds");
         _statbar.dispose();
         _isRunning = false;
     });
@@ -134,7 +134,7 @@ async function runCompile(nFile) {
 
     if (!(await saveFiles(doc))) return;
     
-    const file = nFile || doc.fileName,  dir = path.dirname(file);
+    const file = root.getMain(nFile || doc.fileName),  dir = path.dirname(file);
     
     const data = { action: 'compile',  one,  file,  dir,  exe,  arg: `"${file}"` };
     
@@ -154,7 +154,7 @@ async function runProgram(nFile) {
     const one = (nFile == null);        if (!runInit(one)) return;
     
     const exe = root.config.main.programmer,   doc = vscode.window.activeTextEditor.document;
-    const fn   = getFName(nFile || doc.fileName);
+    const fn   = getFName(root.getMain(nFile || doc.fileName));
     
     if (!checkFileOut(fn + ".pbe") || !checkFileOut(fn + ".hex")) return;
     
@@ -209,7 +209,7 @@ async function viewFile(ext = "") {
     let doc    = editor.document;
     let text   = (editor.selection && !editor.selection.isEmpty) ? doc.getText(editor.selection) : doc.lineAt(editor.selection.active.line).text.trim();
 
-    const file = getFName(doc.fileName) + ext;        if (!checkFileMsg(file)) return;
+    const file = getFName(root.getMain(doc)) + ext;         if (!checkFileMsg(file)) return;
 
     doc    = await vscode.workspace.openTextDocument(vscode.Uri.file(file));
     editor = await vscode.window.showTextDocument(doc, {viewColumn: vscode.ViewColumn[root.config.viewColumnASM] });
