@@ -45,7 +45,7 @@ function getInfo(doc, pos) {
 
 
 function parseHelp(help, res = {}) {
-    if (!help || !root.config.showHelpSignature) return res;             if (typeof help === 'object') return help;
+    if (!help || !root.config.showHelperSignature) return res;             if (typeof help === 'object') return help;
     
     if (typeof help === 'string') {
         if (help[0] === '*') try {  return JSON.parse('{' + help.slice(1) + '}');  }catch{};

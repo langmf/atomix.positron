@@ -1,4 +1,8 @@
 
+## 1.9.0 - 2022-08-26
+- Fixed the error of highlighting the main blocks.
+- Some changes in the settings.
+
 ## 1.8.9 - 2022-08-25
 - Added the ability to call compilation and view assembler from included files.
   

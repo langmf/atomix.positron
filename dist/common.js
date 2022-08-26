@@ -221,10 +221,17 @@ exports.filterSymbols = filterSymbols;
 
 
 function getSymbols(input) {
-    const r = /"([^"]*)"|[';](.*)$|\(\*([\s\S]*?)\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s';]|$)|(endproc|endsub)(?=[\s';]|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+(\w+)[^:]*?(?=$|:)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(\w+)[\t ]+macro\b.*?(?=$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
+    const r = /"([^"]*)"|[';](.*)$|\(\*([\s\S]*?)\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s';]|$)|(endproc|endsub)(?=[\s';]|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+(\w+)(.*?)(?=$)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(\w+)[\t ]+macro\b.*?(?=$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
 
     const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
     
+    const parseLast = () => {
+        for (let v = m[11], q = 0, i = 0;  i < v.length;  i++) {
+            if (v[i] === '"') q = !q;           if (q) continue;            if (v[i] === '\'' || v[i] === ';') return;
+            if (v[i] === ':') { i = v.length - i;    r.lastIndex -= i;    m[5] = m[5].slice(0,-i);    return i; }
+        }
+    }
+
     let d,  m,  v = [],  help = null,  text = input + '\r\n';
 
     while ((m = r.exec(text)) !== null) {
@@ -237,10 +244,10 @@ function getSymbols(input) {
         else if (m[6])  d = { name: m[6],   id: "label"   }
         else if (m[7])  d = { name: m[7],   id: "end"     }
         else if (m[8])  d = { name: m[8],   id: "include",  ofs: 1   }            
-        else if (m[9])  d = { name: m[10],  id: m[9].toLowerCase().replace(/static[\t ]+/g,'') }
-        else if (m[11]) d = { name: m[12],  id: m[11].toLowerCase()  }
-        else if (m[14]) d = { name: m[14],  id: "macro"  }
-        else if (m[15]) d = { name: m[16],  id: "device"  }
+        else if (m[9])  d = { name: m[10],  id: m[9].toLowerCase().replace(/static[\t ]+/g,''),   last: parseLast()  }
+        else if (m[12]) d = { name: m[13],  id: m[12].toLowerCase()  }
+        else if (m[15]) d = { name: m[15],  id: "macro"   }
+        else if (m[16]) d = { name: m[17],  id: "device"  }
         else continue;
 
         if (/^\d+$/.test(d.name)) continue;

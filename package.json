@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.8.9",
+	"version": "1.9.0",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -144,59 +144,59 @@
 		"menus": {
 			"editor/context": [
 				{
-					"when": "resourceLangId == pos && config.pos.showCompileInContextMenu",
+					"when": "resourceLangId == pos && config.pos.show.CompileInContextMenu",
 					"command": "pos.runCompile",
 					"group": "navigation"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.showCompileInContextMenu",
+					"when": "resourceLangId == pos && config.pos.show.CompileInContextMenu",
 					"command": "pos.runCombine",
 					"group": "navigation"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.showCompileInContextMenu",
+					"when": "resourceLangId == pos && config.pos.show.CompileInContextMenu",
 					"command": "pos.runProgram",
 					"group": "navigation"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.showViewInContextMenu",
+					"when": "resourceLangId == pos && config.pos.show.ViewInContextMenu",
 					"command": "pos.viewAsm",
 					"group": "navigation"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.showViewInContextMenu",
+					"when": "resourceLangId == pos && config.pos.show.ViewInContextMenu",
 					"command": "pos.viewLst",
 					"group": "navigation"
 				}
 			],
 			"editor/title": [
 				{
-					"when": "resourceLangId == pos && config.pos.showSaveIconsInTitleMenu",
+					"when": "resourceLangId == pos && config.pos.show.SaveIconsInTitleMenu",
 					"command": "pos.save",
 					"group": "navigation@1"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.showSaveIconsInTitleMenu",
+					"when": "resourceLangId == pos && config.pos.show.SaveIconsInTitleMenu",
 					"command": "pos.save_all",
 					"group": "navigation@1"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.showMainIconsInTitleMenu",
+					"when": "resourceLangId == pos",
 					"command": "pos.runCompile",
 					"group": "navigation@2"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.showMainIconsInTitleMenu",
+					"when": "resourceLangId == pos",
 					"command": "pos.runCombine",
 					"group": "navigation@2"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.showMainIconsInTitleMenu",
+					"when": "resourceLangId == pos",
 					"command": "pos.runProgram",
 					"group": "navigation@2"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.showMainIconsInTitleMenu",
+					"when": "resourceLangId == pos",
 					"submenu": "pos.positron",
 					"group": "navigation@3"
 				}
@@ -290,28 +290,22 @@
 					"default": 800,
 					"description": "How long to wait (ms.) before auto-formatting text. (The value 0 disables this feature)"
 				},
-				"pos.showCompileInContextMenu": {
+				"pos.show.CompileInContextMenu": {
 					"type": "boolean",
-					"default": true,
+					"default": false,
 					"description": "Whether to show items (Compile, Program) in editor context menu.",
 					"scope": "resource"
 				},
-				"pos.showViewInContextMenu": {
+				"pos.show.ViewInContextMenu": {
 					"type": "boolean",
 					"default": true,
 					"description": "Whether to show items (View Asm, View Lst) in editor context menu.",
 					"scope": "resource"
 				},
-				"pos.showSaveIconsInTitleMenu": {
+				"pos.show.SaveIconsInTitleMenu": {
 					"type": "boolean",
 					"default": false,
 					"description": "Whether to show save icons in editor title menu.",
-					"scope": "resource"
-				},
-				"pos.showMainIconsInTitleMenu": {
-					"type": "boolean",
-					"default": true,
-					"description": "Whether to show main icons in editor title menu.",
 					"scope": "resource"
 				},
 				"pos.saveAllFilesBeforeRun": {
@@ -338,7 +332,7 @@
 					"description": "Whether to allow file processing using a PreprocessorJS based on the JavaScript engine.",
 					"scope": "resource"
 				},
-				"pos.showHelpSignature": {
+				"pos.showHelperSignature": {
 					"type": "boolean",
 					"default": true,
 					"description": "Whether to show help the signature procedures (from the comment from above).",
