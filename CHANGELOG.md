@@ -1,4 +1,8 @@
 
+## 1.9.1 - 2022-08-29
+- Added highlighting of the label before the keyword "EData".
+- Fixed an error when showing Hover block.
+
 ## 1.9.0 - 2022-08-26
 - Fixed the error of highlighting the main blocks.
 - Some changes in the settings.

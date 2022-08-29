@@ -221,20 +221,34 @@ exports.filterSymbols = filterSymbols;
 
 
 function getSymbols(input) {
-    const r = /"([^"]*)"|[';](.*)$|\(\*([\s\S]*?)\*\)|((?:^|:)[\t ]*)((\w+):(?=[\s';]|$)|(endproc|endsub)(?=[\s';]|$)|include[\t ]+"([^"]+)"|(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+(\w+)(.*?)(?=$)|(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)|(\w+)[\t ]+macro\b.*?(?=$)|(device|\d* *LIST +P)[\t =]+(\w+))/igm;
-
     const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
     
     const parseLast = () => {
         for (let v = m[11], q = 0, i = 0;  i < v.length;  i++) {
             if (v[i] === '"') q = !q;           if (q) continue;            if (v[i] === '\'' || v[i] === ';') return;
-            if (v[i] === ':') { i = v.length - i;    r.lastIndex -= i;    m[5] = m[5].slice(0,-i);    return i; }
+            if (v[i] === ':') { i = v.length - i;    rxp.lastIndex -= i;    m[5] = m[5].slice(0,-i);    return i; }
         }
     }
 
+    const rxp = root.regex([
+        /"([^"]*)"/,                                                                    // string
+        /[';](.*)$/,                                                                    // comment line
+        /\(\*([\s\S]*?)\*\)/,                                                           // comment block
+        /((?:^|:)[\t ]*)/,                                                              // begin only newline or symbol :
+        [
+            /(\w+)(?::|[\t ]+edata\b.*)(?=[\s';]|$)/,                                   // label
+            /(endproc|endsub)(?=[\s';]|$)/,                                             // use only in parseSymbols
+            /include[\t ]+"([^"]+)"/,                                                   // include
+            /(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+(\w+)(.*?)(?=$)/,       // main block
+            /(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)/,        // define
+            /(\w+)[\t ]+macro\b.*?(?=$)/,                                               // macro
+            /(device|\d* *LIST +P)[\t =]+(\w+)/                                         // device
+        ]
+    ]);
+    
     let d,  m,  v = [],  help = null,  text = input + '\r\n';
 
-    while ((m = r.exec(text)) !== null) {
+    while ((m = rxp.exec(text)) !== null) {
         
         if (m[2]) {  if (m[2].indexOf('----') === 0) help = [];  else if (help) help.push(m[2]);  }
         
@@ -487,7 +501,7 @@ function codeHTML(text, doc, mark) {
     if (mark) text =  !esc ?  '<pre>' + text + '</pre>'  :  text.replace(/\t/g,    ()  => '&nbsp;'.repeat(6))
                                                                 .replace(/ {2,}/g, (m) => '&nbsp;'.repeat(m.length));
     
-    return text.replace(/\0(\d+)\0/g, (m,v) => res[v]);
+    return text.replace(/[\\]/g, '\\$&').replace(/\0(\d+)\0/g, (m,v) => res[v]);
 }
 exports.codeHTML = codeHTML;
 

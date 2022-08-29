@@ -101,6 +101,15 @@ function JsonToFile(value, fName, fnErr) {
 exports.JsonToFile = JsonToFile;
 
 
+function regex(value, flags = 'igm', sym = '|') {
+    const A = (v) => v.reduce((a,i) => a + (typeof i === 'string' ? L(i) : (Array.isArray(i) ? '(' + A(i) + ')' : (a && sym) + i.source)), '');
+    const L = (v) => v.replace(/^[\t ]*\/\/.*$/gm, '').replace(/^[\t ]*(.*?)[\t ]*$/gm, '$1').replace(/[\r\n]/g, '');
+    const P = value?.raw ? L(value.raw.join('')) : Array.isArray(value) ? A(value) : L(value);
+    return flags == null ? P : new RegExp(P, flags);
+}
+exports.regex = regex;
+
+
 function limitText(txt, count = 130) {
 	return txt.slice(0, count) + (txt.length > count ? " ... SIZE = " + txt.length : "");
 }

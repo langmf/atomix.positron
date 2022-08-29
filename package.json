@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.9.0",
+	"version": "1.9.1",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -404,7 +404,9 @@
 				"language": "pos",
 				"scopeName": "source.pos",
 				"path": "./syntaxes/pos.tmLanguage.json",
-				"embeddedLanguages": { "source.js": "javascript" }
+				"embeddedLanguages": {
+					"source.js": "javascript"
+				}
 			},
 			{
 				"language": "pos-output",
