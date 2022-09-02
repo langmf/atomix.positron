@@ -105,6 +105,9 @@ const def_Editor = {
     },
     "occurrencesHighlight": {
         name: 'Occurrences Highlight',      enum: [true, false]
+    },
+    "stickyScroll.enabled": {
+        name: 'Sticky Scroll',              enum: [true, false]
     }
 }
 

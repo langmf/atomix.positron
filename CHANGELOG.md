@@ -1,4 +1,7 @@
 
+## 1.9.2 - 2022-09-02
+- Added new setting of the editor ("Sticky Scroll") and added support for this option.
+
 ## 1.9.1 - 2022-08-29
 - Added highlighting of the label before the keyword "EData".
 - Fixed an error when showing Hover block.

@@ -313,8 +313,8 @@ async function parseIncludes(doc, list, timeout = 5000) {
 
 async function parseSymbols(doc) {
     const Blocks = [],  list = listSymbols(),  SYM = cache.get(doc).symbols,  old = SYM.list;
-
-    const newSymbol = function(item) {
+        
+    const newSymbol = (item) => {
         const obj = list[item.type],  name = item.name.toLowerCase();
         
         if (name in obj.$items) return;  else  obj.$items[name] = item;
@@ -326,9 +326,12 @@ async function parseSymbols(doc) {
         if (obj.kind === vscode.SymbolKind.Function) Blocks.push(sym);
     }
     
-    for (const x of getSymbols(doc.getText())) if (x.id === "end") Blocks.pop();  else  newSymbol(x);
+    for (const x of getSymbols(doc.getText())) {
+        if (x.id === "end") { const b = Blocks.pop();     if (b) b.range = new vscode.Range(b.range.start, doc.positionAt(x.start)); }
+        else newSymbol(x);
+    }
 
-    for (const [k,v] of Object.entries(list)) if (v.$items && !Object.keys(v.$items).length) delete list[k];
+    for (const [k,v] of Object.entries(list))  if (v.$items && !Object.keys(v.$items).length) delete list[k];
 
     SYM.list = list;        await parseIncludes(doc, list);         parseDevice(doc, list, old);         SYM.list = list;
     
