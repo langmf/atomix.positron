@@ -184,7 +184,7 @@ function newTypes(value) {
 function findInclude(name, value) {
     if (path.isAbsolute(name)) return root.checkFile(name);
 
-    let result,  arr = [path.dirname(vscode.window.activeTextEditor.document.fileName) + "\\"];
+    let result,  edt = vscode.window.activeTextEditor,  arr = [edt ? path.dirname(edt.document.fileName) + "\\" : ''];
 
     if (value) { value = value.endsWith("\\") ? value : value + "\\";    if (value !== arr[0]) arr.unshift(value); }
 
