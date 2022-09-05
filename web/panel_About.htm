@@ -76,7 +76,7 @@
 		$('#card_version').html('');
 
 		for (const file of list.filter(v => v.stat)) {
-			const i = file.info,   ver = i.FileVersion.replace(/(?<=\.)((0)0+(?=\.|$)|0{2,}(?=[^0]|$))/g, '$2');
+			const i = file.info,   ver = i.FileVersion.replace(/(?<=\.)((0)0+(?=\.|$)|0{2,}(?=[^0]|$))/g, '$2'),   path = URI.file(file.name.match(/^(.+?)\\[^\\]+$/)[1]);
 			const icon = file.icon ? `<img src="${URI.parse(file.icon)}" class="icon-32 mx-1 my-auto">` : '';
 			
 			$('#card_version').append(
@@ -85,8 +85,8 @@
 						<div class="fw-bold fg-lnk">${i.FileDescription || i.ProductName}</div>
 						<div style="font-size: 0.8rem;">${i.CompanyName}</div>
 					</div>
-					<span class="badge bg-lnk rounded-pill fs-6 my-auto" data-bs-toggle="tooltip"
-					data-bs-placement="right" title="${file.date}">${ver}</span>
+					<span class="badge bg-lnk rounded-pill fs-6 my-auto" data-bs-toggle="tooltip" data-bs-placement="right" title="${file.date}"
+					style="cursor:pointer" onclick="vscode_Eval().openURL('${path}')">${ver}</span>
 				</li>`
 			);
 		}

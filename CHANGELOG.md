@@ -1,4 +1,9 @@
 
+## 1.9.4 - 2022-09-05
+- Changed extension settings ("pos.show.SaveIconsInTitleMenu", "pos.show.ViewInContextMenu", "pos.show.CompileInContextMenu").
+- Added links in elements ("Positron Samples", "Positron About").
+- Various minor fixes.
+
 ## 1.9.2 - 2022-09-02
 - Added new setting of the editor ("Sticky Scroll") and added support for this option.
 

@@ -124,7 +124,7 @@ exports.messageHTML = messageHTML;
 
 
 function openURL(url) {
-    url = url.replace(/%3A/ig, ':').replace(/'/g, '\\\'');          return child.exec(`start ${url}`);
+    return child.exec(`start "" "${url}"`);
 }
 exports.openURL = openURL;
 

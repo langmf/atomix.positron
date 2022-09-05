@@ -33,15 +33,19 @@
 
 
 <div class="card mt-3">
-	<div class="card-header bg-hdr text-center">Samples</div>
-	<div class="card-body"><ul id="samples"></ul></div>
+	<div class="card-header bg-hdr text-center"></div>
+	<div class="card-body">
+        <ul id="samples"></ul>
+    </div>
 </div>
 
 <br />
 
 <div class="card mt-5 mb-3">
-	<div class="card-header bg-hdr text-center">Samples24</div>
-	<div class="card-body"><ul id="samples24"></ul></div>
+	<div class="card-header bg-hdr text-center"></div>
+	<div class="card-body">
+        <ul id="samples24"></ul>
+    </div>
 </div>
 
 
@@ -79,6 +83,8 @@
         el.html('');
         el.append(getSamples(res));
         el.treed();
+        el.parent().parent().children().first().html(`<span style="cursor:pointer" onclick="vscode_Eval().openURL('${URI.file(URI.path.user + value)}')">${value}</span>`);
+        
     }
 
     $(async () => {
