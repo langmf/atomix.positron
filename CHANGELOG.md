@@ -1,4 +1,8 @@
 
+## 1.9.5 - 2022-09-10
+- Much improved work smart mode highlight for the included files from the parent file.
+- Updated file "database.json".
+
 ## 1.9.4 - 2022-09-05
 - Changed extension settings ("pos.show.SaveIconsInTitleMenu", "pos.show.ViewInContextMenu", "pos.show.CompileInContextMenu").
 - Added links in elements ("Positron Samples", "Positron About").
@@ -83,84 +87,84 @@
 - Fixed adding separator when showing Hover block.
 
 ## 1.4.9 - 2022-02-23
-- Added help with Procedure and Define Signatures (from the comment above)
-- Various minor fixes
+- Added help with Procedure and Define Signatures (from the comment above).
+- Various minor fixes.
 
 ## 1.4.7 - 2022-02-20
-- Added some elements in the settings editor
-- Improved device type detection
-- Various minor fixes
+- Added some elements in the settings editor.
+- Improved device type detection.
+- Various minor fixes.
 
 ## 1.4.5 - 2022-02-18
-- Added help with Procedure and Define Signatures
-- Slightly corrected colors by default
-- Improved display hover block
-- Various minor fixes
+- Added help with Procedure and Define Signatures.
+- Slightly corrected colors by default.
+- Improved display hover block.
+- Various minor fixes.
 
 ## 1.4.0 - 2022-02-13
-- Added enable header
-- Added saving active tab on the settings page
-- Added file processing "Positron.js" in the current folder
-- Added file processing "Programmer.cmd" in the current folder
-- Added version display and editing in the file (*.mci)
+- Added enable header.
+- Added saving active tab on the settings page.
+- Added file processing "Positron.js" in the current folder.
+- Added file processing "Programmer.cmd" in the current folder.
+- Added version display and editing in the file (*.mci).
 
 ## 1.2.5 - 2022-02-09
-- Added highlight for hover action
-- Various minor fixes
+- Added highlight for hover action.
+- Various minor fixes.
 
 ## 1.2.4 - 2022-02-06
-- Added highlight editor, general settings editor and editor header for a new file
-- Added about page and page with programs
-- Added auto format
+- Added highlight editor, general settings editor and editor header for a new file.
+- Added about page and page with programs.
+- Added auto format.
 
 ## 1.2.0 - 2022-01-09
-- Added searching for the first definition of the device and its highlight for other files
-- Added smart mode highlight for the included files from the parent file
-- Added auto completion
+- Added searching for the first definition of the device and its highlight for other files.
+- Added smart mode highlight for the included files from the parent file.
+- Added auto completion.
 
 ## 1.1.7 - 2022-01-07
-- Various minor fixes
-- Added go to definition
+- Various minor fixes.
+- Added go to definition.
 
 ## 1.1.5 - 2022-01-06
-- Added hovers show information about the symbol/object that's below the mouse cursor
+- Added hovers show information about the symbol/object that's below the mouse cursor.
 
 ## 1.0.9 - 2022-01-03
-- Added highlight names (procedure, define, label) in full text
+- Added highlight names (procedure, define, label) in full text.
 
 ## 1.0.8 - 2022-01-03
-- Added parse all files (by includes)
+- Added parse all files (by includes).
 
 ## 1.0.7 - 2022-01-01
-- Improved analysis of the main designs of the compiler
-- Added when you click on the item in the Includes group, the corresponding file is opening
+- Improved analysis of the main designs of the compiler.
+- Added when you click on the item in the Includes group, the corresponding file is opening.
 - Added setting "outline.showInRoot" that allows you to show the specified groups of elements 
   in the root of the Outline panel. This will allow you when setting up "Outline -> Follow Cursor" 
-  move the selected item in the Outline panel
+  move the selected item in the Outline panel.
 
 ## 1.0.4 - 2021-12-26
 - Added registers and alias bits for device by finding files *.ppi and *.def
-- Added highlight name procedures in full text
+- Added highlight name procedures in full text.
 
 ## 1.0.2 - 2021-12-20
-- Added labels and removed duplicate items from outline
+- Added labels and removed duplicate items from outline.
 
 ## 1.0.1 - 2021-12-19
-- Added outline tree view
+- Added outline tree view.
 
 ## 1.0.0 - 2021-12-07
-- Added settings delay time and mouse click for auto hide output window
+- Added settings delay time and mouse click for auto hide output window.
 
 ## 0.9.9 - 2021-12-06
-- Added view assembler with find by current line or selection
+- Added view assembler with find by current line or selection.
 
 ## 0.9.8 - 2021-12-05
-- Fix args command line
-- Added view assembler and listing
+- Fix args command line.
+- Added view assembler and listing.
 
 ## 0.9.7 - 2021-12-04
-- Many improvements
+- Many improvements.
 
 ## 0.0.2 - 2021-11-27
-- Initial release
+- Initial release.
 

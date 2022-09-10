@@ -8,8 +8,7 @@ const common  = require("./common");
 function provideCompletionItems(doc, position) {
     if (common.failRange(doc, position)) return [];
 
-    const tid = "com_" + doc.uri.fsPath.split("\\").pop();
-    if (root.debug) console.time(tid);
+    const dtm = root.debugTime("com", doc).begin();
 
     const result = common.getCompletions(doc);
     const files  = common.parseDoc(doc);
@@ -24,7 +23,7 @@ function provideCompletionItems(doc, position) {
         }
     }
 
-    if (root.debug) console.timeEnd(tid);
+    dtm.end();
     
     return result;
 }

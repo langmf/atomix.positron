@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.9.4",
+	"version": "1.9.5",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -321,8 +321,8 @@
 					"default": "None",
 					"enum": [
 						"Save + SaveAll",
-						"Save",
 						"SaveAll",
+						"Save",
 						"None"
 					],
 					"description": "Whether to show save icons in editor title menu.",

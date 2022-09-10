@@ -1,6 +1,7 @@
 'use strict';
 
 const vscode = require('vscode');
+const child  = require("child_process");
 const fs     = require("fs");
 const os     = require("os");
 const path   = require('path');
@@ -40,14 +41,32 @@ function onDidChangeConfiguration() {
 }
 
 
+exports.debugTime = (name, doc) => {
+    return !exports.debug ? { begin(){return this;}, end(){}, start(){}, stop(){} } : {
+        N:       name + (doc ? '  ' + doc.fileName.split("\\").pop() : ''),
+        begin()  { console.time(this.N);     return this;   },
+        end()    { console.timeEnd(this.N);                 },
+        start()  { this.t0 = performance.now();             },
+        stop(v)  { let t1  = performance.now();   console.log(this.N, v, (t1 - this.t0).toFixed(3) + "ms");  }
+    }
+}
+
+
 exports.getMain = (doc) => {
-    let v,  main = typeof doc === 'object'? doc.fileName : doc;
-    if (!exports.config.smartParentIncludes || path.extname(main).toLowerCase() === '.bas') return main;
-    while (v = (cache.get(main).$.parent)) main = v;
+    let prt;    if (typeof doc === 'object') doc = doc.fileName;
+    if (!exports.config.smartParentIncludes || path.extname(doc).toLowerCase() === '.bas') return doc;
+    while (prt = (cache.get(doc).$.parent)) doc = prt;
+    return doc;
+}
+
+
+exports.getParent = (doc, main) => {
+    let prt;    if (typeof doc === 'object') doc = doc.fileName;
+    while (prt = (cache.get(doc).$.parent)) main = doc = prt;
     return main;
 }
 
-    
+   
 exports.getCore = (doc, isAll = false) => {
     if (doc) { const dev = cache.get(doc).symbols.device.$;     return isAll ? dev : dev.$info?.core; }
 }
@@ -114,6 +133,18 @@ function limitText(txt, count = 130) {
 	return txt.slice(0, count) + (txt.length > count ? " ... SIZE = " + txt.length : "");
 }
 exports.limitText = limitText;
+
+
+function openURL(url) {
+    return child.exec(`start "" "${url}"`);
+}
+exports.openURL = openURL;
+
+
+function sleep(ms) {
+    return new Promise(r => setTimeout(r, ms));
+}
+exports.sleep = sleep;
 
 
 function generateUUID() {
@@ -202,3 +233,29 @@ function searchDirs(dirPath, mask = '', deep = true) {
 	return [...dirs, ...files];
 }
 exports.searchDirs = searchDirs;
+
+
+function PS(_opts) {
+    const opt = Object.assign({cwd: exports.path.ext, time: 10000}, _opts);
+
+    this.run = (value, time = opt.time) => {
+        const cmd = 'powershell.exe -NoProfile -Command ' + value,   proc = child.spawn(cmd, [], {cwd: opt.cwd, shell: true});
+        if (opt.debug) {
+            console.log('PS:', opt, cmd);
+            proc.stdout.on("data", (v) => console.log(v.toString()) );
+            proc.stderr.on("data", (v) => console.log(v.toString()) );
+        }
+        return new Promise( (resolve) => {
+            const tmr = (time || 0) <= 0 ? 0 : setTimeout(() => resolve(proc.exitCode), time);
+            proc.on('close', () => { clearTimeout(tmr);         resolve(proc.exitCode); });
+        });
+    }
+   
+    this.play  = (value)        => this.run(`"&{$P=New-Object System.Media.SoundPlayer; $P.SoundLocation='${value}'; $P.playsync()}"`);
+    this.speak = (value)        => this.run(`"&{$V=New-Object -ComObject Sapi.spvoice; $V.volume=100; $V.rate=0; $V.speak('${value}')}"`);
+    this.beep  = (freq, time)   => this.run(`[console]::beep(${freq || 1000},${time || 300})`);
+    this.media = (value)        => this.run(`[System.Media.SystemSounds]::${value || 'Beep'}.Play()`);
+
+    return this;
+}
+exports.PS = PS;

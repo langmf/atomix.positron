@@ -3671,7 +3671,7 @@
 				"hint": "<i>Crystal frequency used</i>"
 			},
 			{
-				"name": "_PIC24E, _PIC24F, _PIC24H, _dsPIC33E, _dsPIC33F",
+				"name": "_PIC24E, _PIC24F, _PIC24H, _dsPIC33CK, _dsPIC33CH, _dsPIC33E, _dsPIC33F",
 				"hint": "<i>Microcontroller type</i>"
 			},
 			{

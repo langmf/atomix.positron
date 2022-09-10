@@ -4,14 +4,17 @@ const vscode  = require("vscode");
 const root    = require("./root");
 const common  = require("./common");
 
+const $cache = {};
+
 
 async function provideDocumentSymbols(doc) {
-    const tid = "sym_" + doc.uri.fsPath.split("\\").pop();
-    if (root.debug) console.time(tid);
+    const name = doc.fileName;                      if ($cache[name]) return $cache[name];
 
-    const result = await common.parseSymbols(doc);
+    const dtm = root.debugTime("sym", doc).begin();
 
-    if (root.debug) console.timeEnd(tid);
+    $cache[name] = common.parseSymbols(doc);        const result = await $cache[name];          $cache[name] = false;
+
+    dtm.end();
 
     return result;
 }

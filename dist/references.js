@@ -2,7 +2,6 @@
 
 const vscode  = require("vscode");
 const root    = require("./root");
-const cache   = require("./cache");
 const common  = require("./common");
 
 
@@ -12,7 +11,7 @@ async function provideReferences(doc, position, context) {
     
     if (!word) return null;
 
-    const main = (root.config.smartParentIncludes ? cache.get(doc).$.parent : 0) || doc.fileName;
+    const main = (root.config.smartParentIncludes ? root.getMain(doc) : 0) || doc.fileName;
 
     for (const name of common.getDocs(main)) {
         const iDoc = await vscode.workspace.openTextDocument(vscode.Uri.file(name));

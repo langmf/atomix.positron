@@ -13,6 +13,13 @@ exports.require = (value) => require(__dirname + '\\' + value);
 exports.file    = (value) => path.dirname(value) + '\\positron.js';
 
 
+exports.activate = () => {
+    for (const p of root.searchFiles(root.path.pds + 'Plugin\\VSCode', '\\bindex\\.pjs$', 1)) {
+        exports.load(p);
+    }
+}
+
+
 exports.load = (file) => {
     if (!root.checkFile(file) || (file in items)) return;
 
@@ -20,7 +27,7 @@ exports.load = (file) => {
         const code = items[file] = require(file);
         return !code.activate ? true : code.activate({ root,  require: exports.require });
     }
-    catch (e) { vscode.window.showErrorMessage(`PLUG_Load => "${file}" -> ${e}`); }
+    catch (e) { vscode.window.showErrorMessage(`Plugin_Load => "${file}" -> ${e}`); }
 }
 
 
@@ -30,7 +37,7 @@ exports.unload = async (file) => {
     try { 
         Object.values(items).map(async v => (v.deactivate && await v.deactivate()));
     }
-    catch (e) { vscode.window.showErrorMessage(`PLUG_Unload -> ${e}`); }
+    catch (e) { vscode.window.showErrorMessage(`Plugin_Unload -> ${e}`); }
 }
 
 
@@ -41,5 +48,5 @@ exports.command = async (data, state) => {
         const code = items[file];
         return !code.command ? false : await code.command(data, state);
     }
-    catch (e) { vscode.window.showErrorMessage(`PLUG_Command => "${file}" -> ${e}`); }
+    catch (e) { vscode.window.showErrorMessage(`Plugin_Command => "${file}" -> ${e}`); }
 }

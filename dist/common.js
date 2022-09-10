@@ -59,6 +59,8 @@ exports.activate = () => {
 
     onDidChangeActiveTextEditor(vscode.window.activeTextEditor);
     onDidOpenTextDocument(vscode.window.activeTextEditor?.document);
+
+    setTimeout(PLG.activate, 200);
 }
 
 
@@ -313,7 +315,7 @@ async function parseIncludes(doc, list, timeout = 5000) {
 
 async function parseSymbols(doc) {
     const Blocks = [],  list = listSymbols(),  SYM = cache.get(doc).symbols,  old = SYM.list;
-        
+
     const newSymbol = (item) => {
         const obj = list[item.type],  name = item.name.toLowerCase();
         
@@ -325,7 +327,7 @@ async function parseSymbols(doc) {
         if (Blocks.length === 0)  obj.children.push(sym);  else  Blocks[Blocks.length - 1].children.push(sym);
         if (obj.kind === vscode.SymbolKind.Function) Blocks.push(sym);
     }
-    
+
     for (const x of getSymbols(doc.getText())) {
         if (x.id === "end") { const b = Blocks.pop();     if (b) b.range = new vscode.Range(b.range.start, doc.positionAt(x.start)); }
         else newSymbol(x);
@@ -334,7 +336,7 @@ async function parseSymbols(doc) {
     for (const [k,v] of Object.entries(list))  if (v.$items && !Object.keys(v.$items).length) delete list[k];
 
     SYM.list = list;        await parseIncludes(doc, list);         parseDevice(doc, list, old);         SYM.list = list;
-    
+
     return filterSymbols(list);
 }
 exports.parseSymbols = parseSymbols;
@@ -387,7 +389,7 @@ function getDevice(doc, skip = {}, result = []) {
     for (const item of Object.values(INC.$)) if (item?.fsPath) getDevice(item.fsPath, skip, result);
 
     if (!result.length && isLocal && root.config.smartParentIncludes) {
-        const prt = cache.get(doc).$.parent;      if (prt) getDevice(prt, skip, result);
+        const prt = root.getParent(doc);      if (prt && !skip[prt]) getDevice(prt, skip, result);
     }
 
     return result;
@@ -440,7 +442,7 @@ function parseDoc(doc, mask = Types._.main, skip = {}, result = {}) {
     for (const item of Object.values(INC.$)) if (item?.fsPath) parseDoc(item.fsPath, mask, skip, result);
 
     if (isLocal && root.config.smartParentIncludes) {
-        const prt = cache.get(doc).$.parent;      if (prt) parseDoc(prt, mask, skip, result);
+        const prt = root.getParent(doc);      if (prt && !skip[prt]) parseDoc(prt, mask, skip, result);
     }
 
     return result;

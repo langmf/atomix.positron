@@ -27,7 +27,7 @@ function autoFormat(doc, formats) {
             
             for (const v of formats) if (v.word !== v.name) edits.push(new vscode.TextEdit(v.range, v.name));
             
-            fmtEdit.set(doc.uri, edits);        vscode.workspace.applyEdit(fmtEdit);
+            if (edits.length) { fmtEdit.set(doc.uri, edits);    vscode.workspace.applyEdit(fmtEdit); }
         },
         root.config.timeout.AutoFormat
     );
@@ -75,12 +75,10 @@ async function provideDocumentSemanticTokens(doc) {
     await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', doc.uri);
     
     if (root.config.smartParentIncludes) {
-        const prt = cache.get(doc).$.parent;
-        if (prt) await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', vscode.Uri.file(prt));
+        const prt = root.getParent(doc);      if (prt) await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', vscode.Uri.file(prt));
     }
 
-    const tid = "sem_" + doc.uri.fsPath.split("\\").pop();
-    if (root.debug) console.time(tid);
+    const dtm = root.debugTime("sem", doc).begin();
 
     const formats = initFormat(doc),   tokens = new vscode.SemanticTokensBuilder(legend),   SYM = cache.get(doc).symbols;
 
@@ -92,7 +90,7 @@ async function provideDocumentSemanticTokens(doc) {
 
     const result = tokens.build();
     
-    if (root.debug) console.timeEnd(tid);
+    dtm.end();
 
     return result;
 }
