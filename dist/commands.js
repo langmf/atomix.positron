@@ -154,7 +154,7 @@ async function runProgram(nFile) {
     const one = (nFile == null);        if (!runInit(one)) return;
     
     const exe = root.config.main.programmer,   doc = vscode.window.activeTextEditor.document;
-    const fn   = getFName(root.getMain(nFile || doc.fileName));
+    const file = root.getMain(nFile || doc.fileName),   fn = getFName(file);
     
     if (!checkFileOut(fn + ".pbe") || !checkFileOut(fn + ".hex")) return;
     
@@ -165,7 +165,7 @@ async function runProgram(nFile) {
                     .replace(/\$target-device\$/ig,     dev)
                     .replace(/\$exe-path\$/ig,          path.dirname(exe));
     
-    const file = nFile || doc.fileName,  dir = path.dirname(file),  cmd = cmdFile(file);
+    const dir = path.dirname(file),  cmd = cmdFile(file);
     
     const data = { action: 'program',  one,  file,  dir,  exe,  arg,  dev,  hex };
 

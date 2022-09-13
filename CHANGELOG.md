@@ -1,4 +1,7 @@
 
+## 1.9.6 - 2022-09-13
+- Fixed call "programmer.cmd" from included files.
+
 ## 1.9.5 - 2022-09-10
 - Much improved work smart mode highlight for the included files from the parent file.
 - Updated file "database.json".
