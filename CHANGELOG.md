@@ -1,4 +1,7 @@
 
+## 1.9.7 - 2022-09-14
+- Improved auto format function.
+
 ## 1.9.6 - 2022-09-13
 - Fixed call "programmer.cmd" from included files.
 

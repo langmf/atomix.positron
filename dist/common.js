@@ -77,10 +77,16 @@ function onDidOpenTextDocument(doc) {
 
 
 function onDidChangeTextEditorSelection(sel) {
-    const kind = vscode.TextEditorSelectionChangeKind;
-    if (sel.kind == kind.Keyboard || sel.textEditor.document.languageId !== "pos") return;
-    if (sel.kind == kind.Mouse    && root.config.output.ClickHide) OutputHide(1);
+    if (sel.textEditor.document.languageId !== "pos") return;
+    const kind = vscode.TextEditorSelectionChangeKind;          setActive();
+    if (sel.kind == kind.Keyboard) return;
+    if (sel.kind == kind.Mouse && root.config.output.ClickHide) OutputHide(1);
     if (sel.kind == null) openInclude(sel);
+}
+
+function setActive() {
+    const tmo = Math.min(800, root.config.timeout.AutoFormat) * 0.9;        if (tmo <= 0) return;
+    clearTimeout(setActive.tmr);            exports.active = true;          setActive.tmr = setTimeout(() => exports.active = false,  tmo);
 }
 
 

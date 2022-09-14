@@ -22,7 +22,9 @@ function initFormat(doc) {
 function autoFormat(doc, formats) {
     if (!formats) return;  else  clearTimeout(tmr[doc.fileName]);
     
-    tmr[doc.fileName] = setTimeout(() => {
+    tmr[doc.fileName] = setTimeout(() => {   
+            if (common.active) { autoFormat(doc, formats);   return; }
+            
             const edits = [],   fmtEdit = new vscode.WorkspaceEdit();
             
             for (const v of formats) if (v.word !== v.name) edits.push(new vscode.TextEdit(v.range, v.name));
