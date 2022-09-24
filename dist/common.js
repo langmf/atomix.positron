@@ -239,18 +239,18 @@ function getSymbols(input) {
     }
 
     const rxp = root.regex([
-        /"([^"]*)"/,                                                                    // string
-        /[';](.*)$/,                                                                    // comment line
-        /\(\*([\s\S]*?)\*\)/,                                                           // comment block
-        /((?:^|:)[\t ]*)/,                                                              // begin only newline or symbol :
+        /"([^"]*)"/,                                                                            // string   (for escape => /"([^"\\]*(?:\\.)?)*"/)
+        /[';](.*)$/,                                                                            // comment line
+        /\(\*([\s\S]*?)\*\)/,                                                                   // comment block
+        /((?:^|:)[\t ]*)/,                                                                      // begin only newline or symbol :
         [
-            /(\w+)(?::|[\t ]+edata\b.*)(?=[\s';]|$)/,                                   // label
-            /(endproc|endsub)(?=[\s';]|$)/,                                             // use only in parseSymbols
-            /include[\t ]+"([^"]+)"/,                                                   // include
-            /(proc|sub|static[\t ]+dim|dim|declare|symbol)[\t ]+(\w+)(.*?)(?=$)/,       // main block
-            /(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)/,        // define
-            /(\w+)[\t ]+macro\b.*?(?=$)/,                                               // macro
-            /(device|\d* *LIST +P)[\t =]+(\w+)/                                         // device
+            /(\w+)(?::|[\t ]+edata\b.*)(?=[\s';]|$)/,                                           // label
+            /(endproc|endsub)(?=[\s';]|$)/,                                                     // use only in parseSymbols
+            /include[\t ]+"([^"]+)"/,                                                           // include
+            /(proc|sub|declare|(?:[a-z]{6}[\t ]+)?(?:dim|symbol))[\t ]+(\w+)(.*?)(?=$)/,        // keywords
+            /(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)/,                // define
+            /(\w+)[\t ]+macro\b.*?(?=$)/,                                                       // macro
+            /(device|\d* *LIST +P)[\t =]+(\w+)/                                                 // device
         ]
     ]);
     
@@ -266,7 +266,7 @@ function getSymbols(input) {
         else if (m[6])  d = { name: m[6],   id: "label"   }
         else if (m[7])  d = { name: m[7],   id: "end"     }
         else if (m[8])  d = { name: m[8],   id: "include",  ofs: 1   }            
-        else if (m[9])  d = { name: m[10],  id: m[9].toLowerCase().replace(/static[\t ]+/g,''),   last: parseLast()  }
+        else if (m[9])  d = { name: m[10],  id: m[9].toLowerCase().replace(/^\w+[\t ]+/ig,''),   last: parseLast()  }
         else if (m[12]) d = { name: m[13],  id: m[12].toLowerCase()  }
         else if (m[15]) d = { name: m[15],  id: "macro"   }
         else if (m[16]) d = { name: m[17],  id: "device"  }
@@ -335,7 +335,7 @@ async function parseSymbols(doc) {
     }
 
     for (const x of getSymbols(doc.getText())) {
-        if (x.id === "end") { const b = Blocks.pop();     if (b) b.range = new vscode.Range(b.range.start, doc.positionAt(x.start)); }
+        if (x.id === "end") { const b = Blocks.pop();     if (b) b.range = new vscode.Range(b.range.start, doc.positionAt(x.end)); }
         else newSymbol(x);
     }
 
@@ -581,12 +581,16 @@ exports.setVersion = setVersion;
 
 
 function updateVersion(doc, change) {
+    const fName = typeof doc === 'object' ? doc.fileName : doc,   fAct = vscode.window.activeTextEditor?.document?.fileName;
+
+    if (fName !== fAct) return;
+    
     if (change) {
         statusVer.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
         setTimeout(() => { statusVer.backgroundColor = undefined; },  600);
     }
     
-    statusVer.text = 'Ver ' + getVersion(doc);
-    statusVer.tooltip = doc.fileName;
+    statusVer.text = 'Ver ' + getVersion(fName);
+    statusVer.tooltip = fName;
 }
 exports.updateVersion = updateVersion;

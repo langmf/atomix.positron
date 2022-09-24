@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "1.9.7",
+	"version": "1.9.8",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -76,11 +76,19 @@
 			},
 			{
 				"command": "pos.viewAsm",
-				"title": "View Assembler"
+				"title": "View Assembler",
+				"icon": {
+					"light": "./images/light/asm.svg",
+					"dark": "./images/dark/asm.svg"
+				}
 			},
 			{
 				"command": "pos.viewLst",
-				"title": "View Listing"
+				"title": "View Listing",
+				"icon": {
+					"light": "./images/light/lst.svg",
+					"dark": "./images/dark/lst.svg"
+				}
 			},
 			{
 				"command": "pos.stopCompile",
@@ -171,34 +179,44 @@
 			],
 			"editor/title": [
 				{
-					"when": "resourceLangId == pos && config.pos.show.SaveIconsInTitleMenu =~ /\\bsave\\b/i",
+					"when": "resourceLangId == pos && config.pos.show.SaveInTitleMenu =~ /\\bsave\\b/i",
 					"command": "pos.save",
 					"group": "navigation@1"
 				},
 				{
-					"when": "resourceLangId == pos && config.pos.show.SaveIconsInTitleMenu =~ /\\bsaveall\\b/i",
+					"when": "resourceLangId == pos && config.pos.show.SaveInTitleMenu =~ /\\bsaveall\\b/i",
 					"command": "pos.save_all",
 					"group": "navigation@1"
 				},
 				{
+					"when": "resourceLangId == pos && config.pos.show.ViewInTitleMenu =~ /asm/i",
+					"command": "pos.viewAsm",
+					"group": "navigation@2"
+				},
+				{
+					"when": "resourceLangId == pos && config.pos.show.ViewInTitleMenu =~ /lst/i",
+					"command": "pos.viewLst",
+					"group": "navigation@2"
+				},
+				{
 					"when": "resourceLangId == pos",
 					"command": "pos.runCompile",
-					"group": "navigation@2"
+					"group": "navigation@3"
 				},
 				{
 					"when": "resourceLangId == pos",
 					"command": "pos.runCombine",
-					"group": "navigation@2"
+					"group": "navigation@3"
 				},
 				{
 					"when": "resourceLangId == pos",
 					"command": "pos.runProgram",
-					"group": "navigation@2"
+					"group": "navigation@3"
 				},
 				{
 					"when": "resourceLangId == pos",
 					"submenu": "pos.positron",
-					"group": "navigation@3"
+					"group": "navigation@4"
 				}
 			],
 			"pos.positron": [
@@ -316,7 +334,19 @@
 					"description": "Whether to show items (View Asm, View Lst) in editor context menu.",
 					"scope": "resource"
 				},
-				"pos.show.SaveIconsInTitleMenu": {
+				"pos.show.ViewInTitleMenu": {
+					"type": "string",
+					"default": "None",
+					"enum": [
+						"Asm + Lst",
+						"Asm",
+						"Lst",
+						"None"
+					],
+					"description": "Whether to show view icons in editor title menu.",
+					"scope": "resource"
+				},
+				"pos.show.SaveInTitleMenu": {
 					"type": "string",
 					"default": "None",
 					"enum": [
@@ -366,7 +396,7 @@
 				},
 				"pos.outline.showInRoot": {
 					"type": "string",
-					"default": "",
+					"default": "Procedures",
 					"description": "Whether to show elements at the root of the tree. (example 'Procedures, Variables')",
 					"scope": "resource"
 				},

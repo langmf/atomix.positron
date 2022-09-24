@@ -64,12 +64,14 @@ function parseACP(data) {
 }
 
 
-function outputCompiler(data) {
-    let res = parseACP(data);
+function outputCompiler(data, arg) {
+    let res = parseACP(data),  a = getFName(arg.replace(/^\s*"(.+?)"\s*$/, "$1")) + '.asm';
     try {
+        if (root.checkFile(a))
+        res = res.replace(/^(error\[\d+\][\t ]+).+?\\a\.s[\t ]+(\d+)[\t ]+:/ig,                   function(v,p,e)  {  return p + ' [file:///' + a.replace(/ /g, '%20') + '#' + e + '] :';    });
         res = res.replace(/([\t ]+line[\t ]+\[(\d+)\][\t ]+in[\t ]+)file[\t ]+\[([^\]]+)\]/ig,    function(v,p,e,f){  return p + ' [file:///' + f.replace(/ /g, '%20') + '#' + e + ']';      });
-        res = res.replace(/(\d+)[\t ]+bytes[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,       function(v,c,a)  {  return v + " (" + ((Number(c) / Number(a)) * 100).toFixed(2) + " %)";  });
-        res = res.replace(/(\d+)[\t ]+variables[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,   function(v,c,a)  {  return v + " (" + ((Number(c) / Number(a)) * 100).toFixed(2) + " %)";  });
+        res = res.replace(/(\d+)[\t ]+bytes[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,       function(v,c,t)  {  return v + " (" + ((Number(c) / Number(t)) * 100).toFixed(2) + " %)";  });
+        res = res.replace(/(\d+)[\t ]+variables[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,   function(v,c,t)  {  return v + " (" + ((Number(c) / Number(t)) * 100).toFixed(2) + " %)";  });
     } catch(e) { console.error(e) }
     return res;
 }
@@ -112,7 +114,7 @@ async function run(exe, arg = "", workDir, time, fmt) {
 
     _process.on("exit", code => {
         const endTime = new Date(),  elapsedTime = (endTime.getTime() - startTime.getTime()) / 1000;
-        if (fmt) output.append(outputCompiler(buf));
+        if (fmt) output.append(outputCompiler(buf, arg));
         output.appendLine("[Done] exited with code=" + code + " in " + elapsedTime.toFixed(1) + " seconds");
         _statbar.dispose();
         _isRunning = false;
@@ -142,7 +144,7 @@ async function runCompile(nFile) {
 
     res     = await plugins.command(data, true)  || res;
 
-    if (/^ +Program +Compiled +OK\./im.test(root.readFile(file, '', '.pbe'))) common.setVersion(doc);
+    if (/^ +Program +Compiled +OK\./im.test(root.readFile(file, '', '.pbe'))) common.setVersion(file);
 
     if (root.config.smartPreprocessorJS) saveFiles(doc);
 

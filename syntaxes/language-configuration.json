@@ -25,18 +25,18 @@
     ],
     "indentationRules": {
         "increaseIndentPattern": {
-            "pattern":  "^\\s*((else|elseif|for|do|until|while|select|case|sub|proc)\\b|if\\b.*then\\s*$)",
+            "pattern":  "^\\s*((else|elseif|for|do|while|repeat|select|case|sub|proc)\\b|if\\b.*\\bthen\\s*$)",
             "flags":    "i"
         },
         "decreaseIndentPattern": {
-            "pattern":  "^\\s*(else|elseif|case|end|endif|endsub|endproc|endselect)\\b",
+            "pattern":  "^\\s*(else|elseif|next|until|wend|end|endif|endsub|endproc|endselect)\\b",
             "flags":    "i"
         }
     },
     "folding": {
         "markers": {
-            "start": "^\\s*'\\s*#?region\\b",
-            "end": "^\\s*'\\s*#?endregion\\b"
+            "start": "^\\s*[';]\\s*#?region\\b",
+            "end": "^\\s*[';]\\s*#?endregion\\b"
         }
     }
 }

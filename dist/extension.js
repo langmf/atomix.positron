@@ -10,6 +10,7 @@ const completion = require("./completion");
 const signature  = require("./signature");
 const references = require("./references");
 const commands   = require("./commands");
+const format     = require("./format");
 const webview    = require("./webview");
 const plugins    = require("./plugins");
 
@@ -24,6 +25,7 @@ function activate(context)
     context.subscriptions.push(
         symbols.default(),
         semantic.default(),
+        ...format.default(),
         hovers.default(),
         definition.default(),
         completion.default(),

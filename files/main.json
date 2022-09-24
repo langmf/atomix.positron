@@ -2974,13 +2974,10 @@
 				"hint": "<b>Auto_Context_Save</b> <i> On or Off</i>"
 			},
 			{
-				"name": "Auto_Variable_Bank_Cross, Access_Upper_64K"
+				"name": "Auto_Variable_Bank_Cross, Access_Upper_64K, Proc_Enable"
 			},
 			{
-				"name": "FSR_CONTEXT_SAVE"
-			},
-			{
-				"name": "LABEL_BANK_RESET"
+				"name": "FSR_CONTEXT_SAVE, LABEL_BANK_RESET"
 			},
 			{
 				"name": "MemWrite_Int_Control, Compiler_Start_Address"

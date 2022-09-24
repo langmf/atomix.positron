@@ -31,9 +31,10 @@ function onDidChangeConfiguration() {
         user,
         loader,
         include: {
+            loader,
+            user:   user + "Includes\\",
             main:   loader + "Includes\\",
-            src:    loader + "Includes\\Sources\\",
-            user:   user + "Includes\\"
+            src:    loader + "Includes\\Sources\\"
         },
         web:    ext + "web\\",
         docs:   pds + "PDS\\Docs\\"

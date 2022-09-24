@@ -1,4 +1,15 @@
 
+## 1.9.8 - 2022-09-24
+- Fixed the order of scanning the directories of included files.
+- Fixed update of compiled file version when compiling from included files.
+- Added navigation by errors in "Output" window for file "c:\path_to_project\A.S"
+- Added new settings of the editor ("Format On Type", "Format On Save").
+- Four code formatting modes are now available:
+  1) Context Menu  -> "Format Document"                         - formats the code when clicking on this menu item.
+  2) Positron Menu -> "Settings" -> "pos.timeout.AutoFormat"    - formats the code on the fly with the specified timeout.
+  3) Positron Menu -> "Editor"   -> "Format On Type"            - formats the code when the user presses the "Enter" key in the code.
+  4) Positron Menu -> "Editor"   -> "Format On Save"            - formats the code when the user saves the file.
+
 ## 1.9.7 - 2022-09-14
 - Improved auto format function.
 
