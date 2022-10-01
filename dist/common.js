@@ -15,24 +15,27 @@ const cache_dev = {},   statusVer = createVersion();
 
 
 const [Types, Tokens] = newTypes({
-    main  : [ "variable", "procedure", "symbol", "define", "label", "macro" ],
+    main  : [ "variable", "procedure", "subroutine", "symbol", "define", "label", "macro" ],
     other : [ "declare"             ],
     lang  : [ "device",  "include"  ],
-    sfr   : [ "devregs", "devbits"  ]
+    sfr   : [ "devregs", "devbits"  ],
+    prm   : [ "parameter"           ]
 });
 
 const Enums = {
-    [Types.variable]  :  { id: ["dim"],                  title: "Variables",     sym: vscode.SymbolKind.Variable,     com: vscode.CompletionItemKind.Variable   },
-    [Types.procedure] :  { id: ["proc","sub"],           title: "Procedures",    sym: vscode.SymbolKind.Function,     com: vscode.CompletionItemKind.Function   },
-    [Types.symbol]    :  { id: ["symbol"],               title: "Constants",     sym: vscode.SymbolKind.Constant,     com: vscode.CompletionItemKind.Constant   },
-    [Types.declare]   :  { id: ["declare"],              title: "Declares",      sym: vscode.SymbolKind.String,       com: vscode.CompletionItemKind.Text       },
-    [Types.device]    :  { id: ["device"],               title: "Devices",       sym: vscode.SymbolKind.EnumMember,   com: vscode.CompletionItemKind.EnumMember },
-    [Types.include]   :  { id: ["include"],              title: "Includes",      sym: vscode.SymbolKind.File,         com: vscode.CompletionItemKind.File       },
-    [Types.label]     :  { id: ["label"],                title: "Labels",        sym: vscode.SymbolKind.Field,        com: vscode.CompletionItemKind.Field      },
-    [Types.macro]     :  { id: ["macro"],                title: "Macro",         sym: vscode.SymbolKind.Event,        com: vscode.CompletionItemKind.Event      },
-    [Types.define]    :  { id: ["$define","$defeval"],   title: "Defines",       sym: vscode.SymbolKind.Enum,         com: vscode.CompletionItemKind.Enum       },
-    [Types.devregs]   :  { id: [],                       title: "",              sym: vscode.SymbolKind.EnumMember,   com: vscode.CompletionItemKind.EnumMember },
-    [Types.devbits]   :  { id: [],                       title: "",              sym: vscode.SymbolKind.EnumMember,   com: vscode.CompletionItemKind.EnumMember }
+    [Types.variable]    :  { id: ["dim"],                  title: "Variables",     sym: vscode.SymbolKind.Variable,         com: vscode.CompletionItemKind.Variable      },
+    [Types.parameter]   :  { id: ["prm"],                  title: "Parameters",    sym: vscode.SymbolKind.TypeParameter,    com: vscode.CompletionItemKind.TypeParameter },
+    [Types.procedure]   :  { id: ["proc"],                 title: "Procedures",    sym: vscode.SymbolKind.Function,         com: vscode.CompletionItemKind.Function      },
+    [Types.subroutine]  :  { id: ["sub"],                  title: "Subroutines",   sym: vscode.SymbolKind.Method,           com: vscode.CompletionItemKind.Method        },
+    [Types.symbol]      :  { id: ["symbol"],               title: "Constants",     sym: vscode.SymbolKind.Constant,         com: vscode.CompletionItemKind.Constant      },
+    [Types.declare]     :  { id: ["declare"],              title: "Declares",      sym: vscode.SymbolKind.String,           com: vscode.CompletionItemKind.Text          },
+    [Types.device]      :  { id: ["device"],               title: "Devices",       sym: vscode.SymbolKind.EnumMember,       com: vscode.CompletionItemKind.EnumMember    },
+    [Types.include]     :  { id: ["include"],              title: "Includes",      sym: vscode.SymbolKind.File,             com: vscode.CompletionItemKind.File          },
+    [Types.label]       :  { id: ["label"],                title: "Labels",        sym: vscode.SymbolKind.Field,            com: vscode.CompletionItemKind.Field         },
+    [Types.macro]       :  { id: ["macro"],                title: "Macro",         sym: vscode.SymbolKind.Event,            com: vscode.CompletionItemKind.Event         },
+    [Types.define]      :  { id: ["$define","$defeval"],   title: "Defines",       sym: vscode.SymbolKind.Enum,             com: vscode.CompletionItemKind.Enum          },
+    [Types.devregs]     :  { id: [],                       title: "",              sym: vscode.SymbolKind.EnumMember,       com: vscode.CompletionItemKind.EnumMember    },
+    [Types.devbits]     :  { id: [],                       title: "",              sym: vscode.SymbolKind.EnumMember,       com: vscode.CompletionItemKind.EnumMember    }
 }
 
 
@@ -154,6 +157,16 @@ function failRange(doc, position) {
 exports.failRange = failRange;
 
 
+function getProc(doc, position) {
+    const list = cache.get(doc).symbols.list.$,  items = list[Types.procedure]?.$items;
+    if (!items || !position) return items;
+    for (const item of Object.values(items)) {
+        if (item.range.contains(position)) return item;
+    }
+}
+exports.getProc = getProc;
+
+
 function getSFR(doc) {
     const res = [],   dev = cache.get(doc).symbols.$.device || {};
     for (const k of Types._.sfr) if (k in dev) res.push(dev[k]);
@@ -231,30 +244,32 @@ exports.filterSymbols = filterSymbols;
 function getSymbols(input) {
     const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
     
-    const parseLast = () => {
-        for (let v = m[11], q = 0, i = 0;  i < v.length;  i++) {
+    const parseLast = (v) => {
+        for (let q = 0, i = 0;  i < v.length;  i++) {
             if (v[i] === '"') q = !q;           if (q) continue;            if (v[i] === '\'' || v[i] === ';') return;
             if (v[i] === ':') { i = v.length - i;    rxp.lastIndex -= i;    m[5] = m[5].slice(0,-i);    return i; }
         }
     }
 
     const rxp = root.regex([
-        /"([^"]*)"/,                                                                            // string   (for escape => /"([^"\\]*(?:\\.)?)*"/)
-        /[';](.*)$/,                                                                            // comment line
-        /\(\*([\s\S]*?)\*\)/,                                                                   // comment block
-        /((?:^|:)[\t ]*)/,                                                                      // begin only newline or symbol :
+        /"([^"]*)"/,                                                                        // string   (for escape => /"([^"\\]*(?:\\.)?)*"/)
+        /[';](.*)$/,                                                                        // comment line
+        /\(\*([\s\S]*?)\*\)/,                                                               // comment block
+        /((?:^|:)[\t ]*)/,                                                                  // begin only newline or symbol :
         [
-            /(\w+)(?::|[\t ]+edata\b.*)(?=[\s';]|$)/,                                           // label
-            /(endproc|endsub)(?=[\s';]|$)/,                                                     // use only in parseSymbols
-            /include[\t ]+"([^"]+)"/,                                                           // include
-            /(proc|sub|declare|(?:[a-z]{6}[\t ]+)?(?:dim|symbol))[\t ]+(\w+)(.*?)(?=$)/,        // keywords
-            /(\$define|\$defeval)[\t ]+(\w+)([\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)/,                // define
-            /(\w+)[\t ]+macro\b.*?(?=$)/,                                                       // macro
-            /(device|\d* *LIST +P)[\t =]+(\w+)/                                                 // device
+            /(\w+)(?::|[\t ]+edata\b.*)(?=[\s';]|$)/,                                       // label
+            /(endproc|endsub)(?=[\s';]|$)/,                                                 // use only in parseSymbols
+            /include[\t ]+"([^"]+)"/,                                                       // include
+            /proc[\t ]+(\w+)[\t ]*\((.*?)\).*?(?=$)/,                                       // proc
+            /((?:static[\t ]+)?dim|symbol)[\t ]+(\w+)(.*?)(?=$)/,                           // local
+            /(sub|declare|(?:global[\t ]+)(?:dim|symbol))[\t ]+(\w+)(.*?)(?=$)/,            // keywords
+            /(\$define|\$defeval)[\t ]+(\w+)(?:[\t ]*$|[\s\S]*?[^'\r\t ][\t ]*$)/,          // define
+            /(\w+)[\t ]+macro\b.*?(?=$)/,                                                   // macro
+            /(?:device|\d* *LIST +P)[\t =]+(\w+)/                                           // device
         ]
     ]);
     
-    let d,  m,  v = [],  help = null,  text = input + '\r\n';
+    let d,  m,  v,  res = [],  help = null,  text = input + '\r\n';
 
     while ((m = rxp.exec(text)) !== null) {
         
@@ -263,13 +278,15 @@ function getSymbols(input) {
         if (m[3] && m[3][0] === '*') help = [m[3]];
 
         if      (m[4] == null) continue;
-        else if (m[6])  d = { name: m[6],   id: "label"   }
-        else if (m[7])  d = { name: m[7],   id: "end"     }
-        else if (m[8])  d = { name: m[8],   id: "include",  ofs: 1   }            
-        else if (m[9])  d = { name: m[10],  id: m[9].toLowerCase().replace(/^\w+[\t ]+/ig,''),   last: parseLast()  }
-        else if (m[12]) d = { name: m[13],  id: m[12].toLowerCase()  }
-        else if (m[15]) d = { name: m[15],  id: "macro"   }
-        else if (m[16]) d = { name: m[17],  id: "device"  }
+        else if (m[6])  d = { name: m[6],   id: "label",      local: 1  }
+        else if (m[7])  d = { name: m[7],   id: "end"                   }
+        else if (m[8])  d = { name: m[8],   id: "include",      ofs: 1  }            
+        else if (m[9])  d = { name: m[9],   id: "proc",     members: {} }
+        else if (m[11]) d = { name: m[12],  id: m[11].toLowerCase().replace(/^\w+[\t ]+/ig,''),   last: parseLast(m[13]),   local: 1  }
+        else if (m[14]) d = { name: m[15],  id: m[14].toLowerCase().replace(/^\w+[\t ]+/ig,''),   last: parseLast(m[16])  }
+        else if (m[17]) d = { name: m[18],  id: m[17].toLowerCase()  }
+        else if (m[19]) d = { name: m[19],  id: "macro"   }
+        else if (m[20]) d = { name: m[20],  id: "device"  }
         else continue;
 
         if (/^\d+$/.test(d.name)) continue;
@@ -282,11 +299,61 @@ function getSymbols(input) {
         
         if (help && help.length) d.help = help.join('\n');
         
-        v.push(d);          help = null;
+        res.push(d);          help = null;
+
+        if (d.members) {
+            const id = 'prm',  type = getTypeFromID[id],  token = Tokens[type],  ofs = d.start + m[5].indexOf('(') + 1;
+            const r = /(?:\b(byval|byc?ref)[\t ]+)?(\w+)(?:[\t ]+as[\t ]+([^\,\t ]+))?/ig;
+
+            while ((v = r.exec(m[10])) !== null) {
+                const start = ofs + v.index,   end = start + v[0].length;
+                res.push({ name:v[2],  id,  local:1,  start,  end,  type,  token,  code:v[0] });
+            }
+        }
     }
     
-    return v;
+    return res;
 }
+
+
+async function parseSymbols(doc) {
+    const Blocks = [],  list = listSymbols(),  SYM = cache.get(doc).symbols,  old = SYM.list;
+
+    const newSymbol = (item) => {
+        const obj = list[item.type],  name = item.name.toLowerCase(),  prc = item.local && Blocks.length && Blocks.proc;
+
+        if (prc) {
+            if (name in prc.members) return;  else  prc.members[name] = item;
+        } else {
+            if (name in obj.$items)  return;  else  obj.$items[name]  = item;
+        }
+        
+        const r = item.range = new vscode.Range(doc.positionAt(item.start + (item.ofs || 0)), doc.positionAt(item.end));
+        const sym = new vscode.DocumentSymbol(item.name, "", obj.kind, r, r);
+        
+        if (prc)  Blocks[Blocks.length - 1].children.push(sym);  else  obj.children.push(sym);
+
+        if (obj.kind === vscode.SymbolKind.Function || obj.kind === vscode.SymbolKind.Method) {
+            Blocks.push(sym);    Blocks.proc = item.members && item;
+        }
+    }
+
+    for (const x of getSymbols(doc.getText())) {
+        if (x.id === "end") {
+            const b = Blocks.pop();         if (b) (Blocks.proc || {}).range = b.range = new vscode.Range(b.range.start, doc.positionAt(x.end));
+            Blocks.proc = 0;
+        } else {
+            newSymbol(x);
+        }
+    }
+
+    for (const [k,v] of Object.entries(list))  if (v.$items && !Object.keys(v.$items).length) delete list[k];
+
+    SYM.list = list;        await parseIncludes(doc, list);         parseDevice(doc, list, old);         SYM.list = list;
+
+    return filterSymbols(list);
+}
+exports.parseSymbols = parseSymbols;
 
 
 async function parseIncludes(doc, list, timeout = 5000) {
@@ -317,35 +384,6 @@ async function parseIncludes(doc, list, timeout = 5000) {
 
     return INC.$;
 }
-
-
-async function parseSymbols(doc) {
-    const Blocks = [],  list = listSymbols(),  SYM = cache.get(doc).symbols,  old = SYM.list;
-
-    const newSymbol = (item) => {
-        const obj = list[item.type],  name = item.name.toLowerCase();
-        
-        if (name in obj.$items) return;  else  obj.$items[name] = item;
-        
-        const r = item.range = new vscode.Range(doc.positionAt(item.start + (item.ofs || 0)), doc.positionAt(item.end));
-        const sym = new vscode.DocumentSymbol(item.name, "", obj.kind, r, r);
-        
-        if (Blocks.length === 0)  obj.children.push(sym);  else  Blocks[Blocks.length - 1].children.push(sym);
-        if (obj.kind === vscode.SymbolKind.Function) Blocks.push(sym);
-    }
-
-    for (const x of getSymbols(doc.getText())) {
-        if (x.id === "end") { const b = Blocks.pop();     if (b) b.range = new vscode.Range(b.range.start, doc.positionAt(x.end)); }
-        else newSymbol(x);
-    }
-
-    for (const [k,v] of Object.entries(list))  if (v.$items && !Object.keys(v.$items).length) delete list[k];
-
-    SYM.list = list;        await parseIncludes(doc, list);         parseDevice(doc, list, old);         SYM.list = list;
-
-    return filterSymbols(list);
-}
-exports.parseSymbols = parseSymbols;
 
 
 function parseDevice(doc, list, old) {
@@ -466,8 +504,9 @@ function getDocs(doc, skip = {}, result = []) {
 exports.getDocs = getDocs;
 
 
-function codeHTML(text, doc, mark) {
+function codeHTML(text, doc, mark, rep) {
     const res = [],   keys = {},   esc = !/\n/.test(text),   styles = STS.getThemeStyle(keys),   items = cache.get(doc).semantic.items.$;
+    const dev = items?.dev,   wrd = !rep ? items?.doc : Object.assign({}, items?.doc, rep);
 
     Object.entries(PAT.RXP.types).map(([k,v]) => keys[v.id] = k);
 
@@ -483,28 +522,28 @@ function codeHTML(text, doc, mark) {
         return '\0' + (res.push(out) - 1) + '\0';
     }
 
-    text = text.replace(PAT.ALL(null,'^[SCNB]'), function (m) {
+    text = text.replace(PAT.ALL(null,'^[SCNB]'),            function (m) {
         for (const [k,v] of Object.entries(arguments[arguments.length - 1])) if (v) return makeStyle(k, v);
         return m;
     });
 
-    text = text.replace(PAT.ALL(DTB.words(doc)),                function (m) {
-        const i = DTB.find(m);                          return !i ? m : makeStyle(i.token, m);
+    text = text.replace(PAT.ALL(DTB.words(doc)),            function (m) {
+        const i = DTB.find(m);                              return !i ? m : makeStyle(i.token, m);
     });
 
-    if (items?.dev) {
-        text = text.replace(PAT.ALL(Object.keys(items.dev)),    function(m){
-            const i = items.dev[m.toLowerCase()];       return !i ? m : makeStyle(i.token, m);
+    if (dev) {
+        text = text.replace(PAT.ALL(Object.keys(dev)),      function(m){
+            const i = dev[m.toLowerCase()];                 return !i ? m : makeStyle(i.token, m);
         });
     }
 
-    if (items?.doc) {
-        text = text.replace(PAT.ALL(Object.keys(items.doc)),    function(m){
-            const i = items.doc[m.toLowerCase()];       return !i ? m : makeStyle(i.token, m);
+    if (wrd) {
+        text = text.replace(PAT.ALL(Object.keys(wrd)),      function(m){
+            const i = wrd[m.toLowerCase()];                 return !i ? m : makeStyle(i.token, m);
         });
     }
 
-    text = text.replace(PAT.ALL(null,'^[O]'),                   function(m){
+    text = text.replace(PAT.ALL(null,'^[O]'),               function(m){
         for (const [k,v] of Object.entries(arguments[arguments.length - 1])) if (v) return makeStyle(k, v);
         return m;
     });

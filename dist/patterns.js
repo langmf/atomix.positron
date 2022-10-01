@@ -42,6 +42,7 @@ function newRXP(rxp) {
 function parseWords(words) {
     return (Array.isArray(words) ? words.join("|") : typeof words === 'object' ? Object.keys(words).join("|") : words) || '';
 }
+exports.parseWords = parseWords;
 
 
 exports.RXP     = RXP;
@@ -62,6 +63,15 @@ exports.WORDS   = (input, words, pre = RXP.prefix, post = RXP.postfix) =>
     words = parseWords(words);         if (!words) return [];
     let m,  v = [],  rxp = new RegExp(RXP.patterns('^[SC]') + `|${pre}(${words})${post}`, 'igm');
     while ((m = rxp.exec(input)) !== null) if (m[1]) v.push(m);
+    return v;
+}
+
+
+exports.FORMAT  = (input, words) =>
+{
+    words = parseWords(words);         if (!words) return [];
+    let m,  v = [],  rxp = new RegExp(RXP.prefix + '(' + words + ')' + RXP.postfix, 'igm');
+    while ((m = rxp.exec(input)) !== null) v.push(m);
     return v;
 }
 

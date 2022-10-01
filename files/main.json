@@ -1,28 +1,15 @@
-{
-	/*
-		These types are used by the built-in extension types, do not use them to define new words!
-		Reseved types:
-			Comment_Line, Comment_Block, String, Number, Number_Binary, Number_Hex, Operator, Operator_Math, Operator_Logic,
-			Bracket_Round, Bracket_Square, Bracket_Curly, Device, Define, Symbol, Macro, Label, Procedure, Variable, SFR, SFR_Bitname
-	*/
-	
+{	
 	"default": {
 		"device": 	"18F25K20",
-		
-		"titles": {
-			"Keyword":              	"",
-			"KeywordImportant":     	"",
-			"KeywordMacro":         	"",
-			"KeywordDeclare":       	"",
-			"KeywordASM":           	"",
-			"KeywordUser":          	"",
-			"KeywordPreprocessor":		""
-		},
 		
 		"themes": {
 			"light":
 			{
 				"Keyword":              {  "foreground": "#000000",   "fontStyle": "bold"  },
+				"KeywordMain":          {  "foreground": "#000000",   "fontStyle": "bold"  },
+				"KeywordType":          {  "foreground": "#000000",   "fontStyle": "bold"  },
+				"KeywordModifier":      {  "foreground": "#000000",   "fontStyle": "bold"  },
+				"KeywordCommand":       {  "foreground": "#000000",   "fontStyle": "bold"  },												
 				"KeywordImportant":     {  "foreground": "#FF0000",   "fontStyle": "bold"  },
 				"KeywordMacro":         {  "foreground": "#000000"                         },
 				"KeywordDeclare":       {  "foreground": "#900000",   "fontStyle": "bold"  },
@@ -32,7 +19,11 @@
 			},
 			"dark":
 			{
-				"Keyword":              {  "foreground": "#D0D0D0",   "fontStyle": "bold"  },
+				"Keyword":              {  "foreground": "#C678DD"                         },
+				"KeywordMain":          {  "foreground": "#D0D0D0",   "fontStyle": "bold"  },
+				"KeywordType":          {  "foreground": "#DDA0DD"                         },
+				"KeywordModifier":      {  "foreground": "#E9D3AB"                         },
+				"KeywordCommand":       {  "foreground": "#D0D0D0",   "fontStyle": "bold"  },
 				"KeywordImportant":     {  "foreground": "#FF0000",   "fontStyle": "bold"  },
 				"KeywordMacro":         {  "foreground": "#D0D0D0"                         },
 				"KeywordDeclare":       {  "foreground": "#BC4F4F",   "fontStyle": "bold"  },
@@ -46,91 +37,20 @@
 	"types": {
 		"Keyword": [
 			{
-				"name": "Include",
-				"hint": "<b>Include</b> <i>&quot;Filename&quot;</i>"
+				"name": "Global",
+				"hint": "<b>Global <i>Dim</b></i> or <b>Global <i>Symbol</b></i>"
 			},
 			{
-				"name": "Isr-,Isr",
-				"core": [14,16,24,33],
-				"hint": "<b>Isr</b> <i>Interrupt Name {, UnHandled}</i>"
+				"name": "Static",
+				"hint": "<b>Static Dim</b> Variable Name <b>As</b> Variable Type <i>(with an optional assignment)</i>"
 			},
 			{
-				"name": "EndIsr-,EndIsr",
-				"core": [14,16,24,33],
-				"hint": "<b>EndIsr</b>"
+				"name": "Symbol",
+				"hint": "<b>Symbol</b> <i>Name {=} Value</i>"
 			},
 			{
-				"name": "Alphanumeric",
-				"hint": "<i>Choose an alphanumeric LCD based upon the Hitachi HD44780 chipset </i>"
-			},
-			{
-				"name": "Auto",
-				"core": [16]
-			},
-			{
-				"name": "AddressOf",
-				"hint": "<i>Variable = </i><b>AddressOf</b><i> (Variable or Label)</i>"
-			},
-			{
-				"name": "And,Or"
-			},
-			{
-				"name": "Abs",
-				"hint": "<i>Variable = </i><b>Abs</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "ACos",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>ACos</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "ADIn",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>ADIn</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "As",
-				"hint": "<b>As</b><i> Bit or Byte or SByte or Word or SWord or Dword or SDword or Float or String or Code</i><br><b>As</b> <i>Constant Expression</i><br><b>As</b><i> Alias Name</i>"
-			},
-			{
-				"name": "ASin",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>ASin(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "ATan",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>ATan(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "ATan2",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>ATan2(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i> , <i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "At",
-				"core": [14,16,24,33],
-				"hint": "<b>At</b> <i>Ypos, Xpos</i><br><b>At</b> <i>Variable Name or Address</i>"
-			},
-			{
-				"name": "Bin...32",
-				"core": [14,16,24,33],
-				"hint": "<b>Bin..Bin31</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "Bit0...31",
-				"hint": "Variable = Variable.<b>Bit0</b><i> to </i><b>Bit31</b><br>Variable = Constant.<b>Bit0</b><i> to </i><b>Bit31</b><br>Variable.<b>Bit0</b><i> to </i><b>Bit31</b> = Constant or Variable or Expression"
-			},
-			{
-				"name": "Bit,Byte,Word,Byte0,Byte1"
-			},
-			{
-				"name": "Byte2,Byte3",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Byte4,Byte5,Byte6,Byte7",
-				"core": [24,33]
+				"name": "Dim",
+				"hint": "<b>Dim</b> <i>VariableName</i>"
 			},
 			{
 				"name": "ByRef",
@@ -148,19 +68,446 @@
 				"hint": "Parameter holds the contents in RAM"
 			},
 			{
-				"name": "Long,Dword,Double,Word0,Word1,Float,String",
-				"core": [14,16,24,33]
+				"name": "As",
+				"hint": "<b>As</b><i> Bit or Byte or SByte or Word or SWord or Dword or SDword or Float or String or Code</i><br><b>As</b> <i>Constant Expression</i><br><b>As</b><i> Alias Name</i>"
 			},
 			{
-				"name": "Word2,Word3",
-				"core": [24,33]
+				"name": "At",
+				"core": [14,16,24,33],
+				"hint": "<b>At</b> <i>Ypos, Xpos</i><br><b>At</b> <i>Variable Name or Address</i>"
+			},
+			{
+				"name": "Let",
+				"hint": "<b>Let</b> <i>Variable = Constant Value or Variable or Expression or Procedure</i>"
+			},
+			{
+				"name": "Shared",
+				"hint": "<b>Shared</b><br><br><i><span style='color:#008000;'>Enable sharing of a variable name</span></i>"
+			},
+			{
+				"name": "Call",
+				"hint": "<b>Call</b> <i>Label</i><br><b>Call</b> <i>Procedure Name</i>"
+			},
+			{
+				"name": "GoSub",
+				"hint": "<b>GoSub</b> <i>Label</i>"
+			},
+			{
+				"name": "GoTo",
+				"hint": "<b>GoTo</b><i> Label</i><br><b><span style='color:#808080;'>On</b><i> Index Variable </i></span><b>Goto</b><i> Label {, Label}</i>"
+			},
+			{
+				"name": "GoToL",
+				"hint": "<b>GoToL</b><i> Label</i><br><b><span style='color:#808080;'>On</b><i> Index Variable </i></span><b>GoToL</b><i> Label {, Label}</i>"
+			},
+			{
+				"name": "End,EndSelect,EndIf"
+			},
+			{
+				"name": "ExitProc",
+				"hint": "Exit a Procedure"
+			},
+			{
+				"name": "ExitSub",
+				"hint": "Exit a Sub"
+			},
+			{
+				"name": "For",
+				"hint": "<b>For</b> <i>Variable = Startcount</i> <b><span style='color:#808080;'>TO</span></b> <i>Endcount [</i><b><span style='color:#808080;'>STEP</span></b> <i>{StepValue}]</i>"
+			},
+			{
+				"name": "To",
+				"hint": "<b>To</b> <i>Endcount</i>"
+			},
+			{
+				"name": "DownTo",
+				"hint": "<b>DownTo</b> <i>Endcount</i>"
+			},
+			{
+				"name": "UpTo",
+				"hint": "<b>UpTo</b> <i>Endcount</i>"
+			},
+			{
+				"name": "Step"
+			},
+			{
+				"name": "Next"
 			},
 			{
 				"name": "Do"
 			},
 			{
-				"name": "Static",
-				"hint": "<b>Static Dim</b> Variable Name <b>As</b> Variable Type <i>(with an optional assignment)</i>"
+				"name": "Loop",
+				"hint": "<b>Loop</b> <i>No Expression for Infinite Loop</i><br><b>Loop Until</b> <i>Expression</i><br><b>Loop While</b> <i>Expression</i>"
+			},
+			{
+				"name": "Repeat"
+			},
+			{
+				"name": "Until",
+				"hint": "<b>Until</b> <i>No Expression for Infinite Loop</i><br><b>Until</b> <i>Expression</i>"
+			},
+			{
+				"name": "While",
+				"hint": "<b>While</b> <i>No Expression for infinite loop</i><br><b>While</b> <i>Expression</i>"
+			},
+			{
+				"name": "Wend"
+			},
+			{
+				"name": "Continue"
+			},
+			{
+				"name": "Break",
+				"hint": "<b>Break</b><br><br><i><span style='color:#008000;'>Exit a <b>For, While</b> or <b>Repeat</b> loop</span></i>"
+			},
+			{
+				"name": "Select",
+				"hint": "<b>Select</b> <i>Constant Value or Variable or Constant Expression</i>"
+			},
+			{
+				"name": "Case",
+				"hint": "<b>Case</b> <i>Constant or Variable or Expression</i>"
+			},
+			{
+				"name": "If",
+				"hint": "<b>If</b> <i>Expression</i>"
+			},
+			{
+				"name": "Then",
+				"hint": "<b><span style='color:#808080;'>IF</b> <i>Expression </i></span><b>Then</b><i> {Instructions} </i>"
+			},
+			{
+				"name": "Else",
+				"hint": "<b>Else</b> <i> {Instructions}</i>"
+			},
+			{
+				"name": "ElseIf",
+				"hint": "<b>ElseIf</b> <i>Expression</i>"
+			},
+			{
+				"name": "And,Or"
+			},
+			{
+				"name": "Org",
+				"hint": "<b>Org</b> <i>Constant Program Address</i>"
+			},
+			{
+				"name": "EData",
+				"core": [14,16,24,33],
+				"hint": "<b>EData</b> <i>Comma delimited Constant Values or Constant Expressions that are stored in on-board EEPROM</i>"
+			},
+			{
+				"name": "LData",
+				"core": [14,16],
+				"hint": "<b>LData</b> <i>Constant Value or Constant Expression</i>"
+			},
+			{
+				"name": "CData",
+				"core": [14,16,24,33],
+				"hint": "<b>CData</b> <i>Constant Value or Constant Expression</i>"
+			},
+			{
+				"name": "Context",
+				"core": [14,16,24,33],
+				"hint": "<b>Context <span style='color:#808080;'>Save</span></b><br><b>Context <span style='color:#808080;'>Restore</span></b>"
+			},
+			{
+				"name": "Save-,Save,Restore",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Result",
+				"core": [14,16,24,33],
+				"hint": "<i>Return a result from a Procedure"
+			},
+			{
+				"name": "Resume",
+				"core": [14,16,24,33],
+				"hint": "<b>Resume</b><br><br><i><span style='color:#008000;'>Re-enables and returns from a software interrupt</span></i>"
+			},
+			{
+				"name": "Return",
+				"hint": "Returns from a Subroutine"
+			},
+			{
+				"name": "On",
+				"core": [14,16,24,33],
+				"hint": "<b>On <span style='color:#808080;'>Interrupt Goto</span></b> <i>Software Interrupt Label</i><br><b>On <span style='color:#808080;'>Debug Goto</span></b> <i>Software Debug Label</i>"
+			},
+			{
+				"name": "Interrupt",
+				"core": [14,16,24,33],
+				"hint": "<b><span style='color:#808080;'>On</span> Interrupt <span style='color:#808080;'>Goto</span></b> <i>Software Interrupt Label</i>"
+			},
+			{
+				"name": "Disable",
+				"core": [14,16,24,33],
+				"hint": "<b>Disable <span style='color:#808080;'>Interrupt</span></b><br><b>Disable <span style='color:#808080;'>Debug</span></b>"
+			},
+			{
+				"name": "Enable",
+				"core": [14,16,24,33],
+				"hint": "<b>Enable <span style='color:#808080;'>Interrupt</span></b><br><b>Enable <span style='color:#808080;'>Debug</span></b>"
+			},
+			{
+				"name": "ISR_Start",
+				"hint": "<b>ISR_Start</b> <i>Interrupt Name</i>"
+			},
+			{
+				"name": "ISR_End"
+			},
+			{
+				"name": "Isr-,Isr",
+				"core": [14,16,24,33],
+				"hint": "<b>Isr</b> <i>Interrupt Name {, UnHandled}</i>"
+			},
+			{
+				"name": "EndIsr-,EndIsr",
+				"core": [14,16,24,33],
+				"hint": "<b>EndIsr</b>"
+			},
+			{
+				"name": "Num8,Num16,Num32,SNum8,SNum16,SNum32"
+			},
+			{
+				"name": "Label,Char,Code,Byte_Array_Ptr,Word_Array_Ptr,Dword_Array_Ptr,Flash,SByte_Array_Ptr,SWord_Array_Ptr,SDword_Array_Ptr"
+			}
+		],
+
+		"KeywordMain": [
+			{
+				"name": "Include",
+				"hint": "<b>Include</b> <i>&quot;Filename&quot;</i>"
+			},
+			{
+				"name": "Debug",
+				"core": [14,16,24,33],
+				"hint": "<b><span style='color:#808080;'>On</span> Debug <span style='color:#808080;'>Goto</span></b> <i>Software Debug Label</i>"
+			},
+			{
+				"name": "Declare",
+				"hint": "<b>Declare</b> <i>code modifying directive = modifying value</i>"
+			},
+			{
+				"name": "Device",
+				"hint": "<b>Device</b> <i>= PIC Microcontroller Name</i>"
+			},
+			{
+				"name": "Proc",
+				"hint": "<i>Proc </i><b>Name</b> <i>(pParam as Variable Type {,pParam as Variable Type})</i>"
+			},
+			{
+				"name": "EndProc",
+				"hint": "End a Procedure"
+			},
+			{
+				"name": "Sub",
+				"hint": "<i>Sub </i><b>Name</b>"
+			},
+			{
+				"name": "EndSub",
+				"hint": "End a Sub"
+			}
+		],
+
+		"KeywordType": [
+			{
+				"name": "Pin",
+				"hint": "When used as Parameter's type directive, it holds the Pin value. The same method as used for Pin_A0, Pin_A1, Pin_B0 etc..."
+			},
+			{
+				"name": "Bit,Byte,Word"
+			},
+			{
+				"name": "Long,Dword,Double,Float,String,SByte,SWord,SDword",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Code8",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code8</b> = <i>Comma Delimited 8-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Code16",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code16</b> = <i>Comma Delimited 16-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Code24",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code24</b> = <i>Comma Delimited 24-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Code32",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code32</b> = <i>Comma Delimited 32-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "CodeF",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As CodeF</b> = <i>Comma Delimited 32-bit Floating Point Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "CodeD",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As CodeD</b> = <i>Comma Delimited 64-bit Floating Point Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Flash8",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash8</b> = <i>Comma Delimited 8-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Flash16",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash16</b> = <i>Comma Delimited 16-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Flash24",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash24</b> = <i>Comma Delimited 24-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Flash32",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash32</b> = <i>Comma Delimited 32-bit Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "FlashF",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As FlashF</b> = <i>Comma Delimited 32-bit Floating Point Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "FlashD",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As FlashD</b> = <i>Comma Delimited 64-bit Floating Point Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "Pin_A0...15, Pin_B0...15, Pin_C0...15, Pin_D0...15, Pin_E0...15, Pin_F0...15, Pin_G0...15, Pin_H0...15, Pin_J0...15",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Pin_K0...7, Pin_L0...7",
+				"core": [14,16]
+			}
+		],
+
+		"KeywordModifier": [
+			{
+				"name": "Bit0...31",
+				"hint": "Variable = Variable.<b>Bit0</b><i> to </i><b>Bit31</b><br>Variable = Constant.<b>Bit0</b><i> to </i><b>Bit31</b><br>Variable.<b>Bit0</b><i> to </i><b>Bit31</b> = Constant or Variable or Expression"
+			},
+			{
+				"name": "Byte0,Byte1,LowByte,HighByte"
+			},
+			{
+				"name": "Byte2,Byte3,Word0,Word1",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Byte4,Byte5,Byte6,Byte7,Word2,Word3",
+				"core": [24,33]
+			},
+			{
+				"name": "SByte0,SByte1,SByte2,SByte3,SWord0,SWord1",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "LowWord,HighWord,LowSByte,LowSWord,HighSByte,HighSWord",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Bin...32",
+				"core": [14,16,24,33],
+				"hint": "<b>Bin..Bin31</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "IBin...31",
+				"core": [14,16,24,33],
+				"hint": "<b>IBin..IBin31</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "SBin...32",
+				"core": [14,16,24,33],
+				"hint": "<b>SBin..SBin31</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "ISBin...31",
+				"core": [14,16,24,33],
+				"hint": "<b>ISBin..ISBin31</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "Dec,Dec0...10",
+				"core": [14,16,24,33],
+				"hint": "<b>Dec</b> <i>Variable</i> or <b>Dec..Dec10</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "IDec,IDec0...10",
+				"core": [14,16,24,33],
+				"hint": "<b>IDec..IDec10</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "SDec,SDec0...10",
+				"core": [14,16,24,33],
+				"hint": "<b>SDec..SDec10</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "ISDec,ISDec0...10",
+				"core": [14,16,24,33],
+				"hint": "<b>ISDec..ISDec10</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "Hex...8",
+				"core": [14,16,24,33],
+				"hint": "<b>Hex..Hex8</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "IHex...8",
+				"core": [14,16,24,33],
+				"hint": "<b>IHex..IHex8</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "SHex...8",
+				"core": [14,16,24,33],
+				"hint": "<b>SHex..SHex8</b> <i>Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "ISHex...8",
+				"core": [14,16,24,33],
+				"hint": "<b>ISHex..ISHex8</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "Rep"
+			},
+			{
+				"name": "EStr,CStr",
+				"core": [14,16,24,33]
+			},
+			{
+				"name": "Str",
+				"core": [14,16,24,33],
+				"hint": "<b>Str</b> <i>ByteArray</i>"
+			},
+			{
+				"name": "Inc",
+				"hint": "<b>Inc</b> <i>Variable</i>"
+			}
+		],
+
+		"KeywordCommand": [
+			{
+				"name": "Abs",
+				"hint": "<i>Variable = </i><b>Abs</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "AddressOf",
+				"hint": "<i>Variable = </i><b>AddressOf</b><i> (Variable or Label)</i>"
+			},
+			{
+				"name": "ADIn",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ADIn</b><i> Constant Value or Variable or Expression</i>"
 			},
 			{
 				"name": "Bound",
@@ -178,10 +525,6 @@
 			{
 				"name": "BranchL",
 				"hint": "<b>BranchL</b> <i>Constant Value or Variable or Expression, [Label {,Label}]</i>"
-			},
-			{
-				"name": "Break",
-				"hint": "<b>Break</b><br><br><i><span style='color:#008000;'>Exit a <b>For, While</b> or <b>Repeat</b> loop</span></i>"
 			},
 			{
 				"name": "BReStart",
@@ -217,27 +560,9 @@
 				"hint": "<b>Button</b> = <i>Port, DownState, Delay, Rate, WorkspaceVariable, TargetState, BranchLabel</i>"
 			},
 			{
-				"name": "Call",
-				"hint": "<b>Call</b> <i>Label</i><br><b>Call</b> <i>Procedure Name</i>"
-			},
-			{
-				"name": "Case",
-				"hint": "<b>Case</b> <i>Constant or Variable or Expression</i>"
-			},
-			{
-				"name": "CData",
-				"core": [14,16,24,33],
-				"hint": "<b>CData</b> <i>Constant Value or Constant Expression</i>"
-			},
-			{
 				"name": "CErase",
 				"core": [14,16,24,33],
 				"hint": "<b>CErase</b> <i>Variable or Constant Address</i>"
-			},
-			{
-				"name": "Ceil",
-				"core": [24,33],
-				"hint": "<i>Variable = </i><b>Ceil(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
 			},
 			{
 				"name": "CF_Init",
@@ -282,63 +607,8 @@
 				"hint": "<b>Cls</b><br><br><i><span style='color:#008000;'>Clears the alphanumeric or graphic LCD</span></i>"
 			},
 			{
-				"name": "Code8",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code8</b> = <i>Comma Delimited 8-bit Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "Code16",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code16</b> = <i>Comma Delimited 16-bit Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "Code24",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code24</b> = <i>Comma Delimited 24-bit Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "Code32",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code32</b> = <i>Comma Delimited 32-bit Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "CodeF",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As CodeF</b> = <i>Comma Delimited 32-bit Floating Point Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "CodeD",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As CodeD</b> = <i>Comma Delimited 64-bit Floating Point Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "Config",
-				"core": [12,14,16,24,33],
-				"hint": "<b>Config</b> <i>FuseSetting {, FuseSetting}</i>"
-			},
-			{
-				"name": "Config1...5",
-				"core": [12,14,24,33],
-				"hint": "<b>ConfigX</b> <i>FuseSetting {, FuseSetting}</i>"
-			},
-			{
-				"name": "Context",
-				"core": [14,16,24,33],
-				"hint": "<b>Context <span style='color:#808080;'>Save</span></b><br><b>Context <span style='color:#808080;'>Restore</span></b>"
-			},
-			{
-				"name": "Continue"
-			},
-			{
-				"name": "Cos",
-				"hint": "<i>Variable = </i><b>Cos(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
 				"name": "Counter",
 				"hint": "<i>Variable = </i><b>Counter</b> = <i>Port.Pin, Period</i>"
-			},
-			{
-				"name": "CR,CRLF,LFCR"
 			},
 			{
 				"name": "cPtr8",
@@ -396,10 +666,6 @@
 				"hint": "<i>Variable = </i><b>CRead64</b> <i>Label</i> [<i>Offset Constant Value or Variable or Expression</i>]"
 			},
 			{
-				"name": "CStr",
-				"core": [14,16,24,33]
-			},
-			{
 				"name": "Cursor",
 				"core": [14,16,24,33],
 				"hint": "<b>Cursor</b> <i>Line, Position</i>"
@@ -408,17 +674,6 @@
 				"name": "CWrite",
 				"core": [14,16,24,33],
 				"hint": "<b>CWrite</b> <i>Address, [Variable {, Variable}]</i>"
-			},
-			{
-				"name": "Debug",
-				"core": [14,16,24,33],
-				"hint": "<b><span style='color:#808080;'>On</span> Debug <span style='color:#808080;'>Goto</span></b> <i>Software Debug Label</i>"
-			},
-			{
-				"name": "Dec,Dec0...10"
-			},
-			{
-				"name": "Declare"
 			},
 			{
 				"name": "DelayMS",
@@ -434,25 +689,12 @@
 				"hint": "<b>DelayCs</b> <i>Constant Value from 0 to 1000</i>"
 			},
 			{
-				"name": "Device",
-				"hint": "<b>Device</b> <i>= PIC Microcontroller Name</i>"
-			},
-			{
 				"name": "Dig",
 				"hint": "<i>Variable = </i><b>Dig</b> <i>Value, Digit Number</i><br><i>Variable = </i><b>Dig</b> <i>Digit Number <span style='color:#808080;'>(Stamp Version)</span></i>"
 			},
 			{
 				"name": "Dcd",
 				"hint": "<i>Variable = </i><b>Dcd</b> <i>Value</i>"
-			},
-			{
-				"name": "Dim",
-				"hint": "<b>Dim</b> <i>VariableName</i>"
-			},
-			{
-				"name": "Disable",
-				"core": [14,16,24,33],
-				"hint": "<b>Disable <span style='color:#808080;'>Interrupt</span></b><br><b>Disable <span style='color:#808080;'>Debug</span></b>"
 			},
 			{
 				"name": "Div32",
@@ -465,131 +707,9 @@
 				"hint": "<b>DTMFOut</b> = <i>Port.Pin, {OnTime}, {OffTime,} [Tone{, Tone}]</i>"
 			},
 			{
-				"name": "dAbs",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>dAbs(</b><i>64-bit Floating Point Constant Value or Variable or Expression</i><b>)</b>"
-			},
-			{
-				"name": "dRound",
-				"hint": "<i>Variable = </i><b>dRound(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dAsin",
-				"hint": "<i>Variable = </i><b>dAsin(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dAcos",
-				"hint": "<i>Variable = </i><b>dAcos(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dSin",
-				"hint": "<i>Variable = </i><b>dSin(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dCos",
-				"hint": "<i>Variable = </i><b>dCos(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dTan",
-				"hint": "<i>Variable = </i><b>dTan(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dAtan",
-				"hint": "<i>Variable = </i><b>dAtan(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dATan2",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>dATan2(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i> , <i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dSqr",
-				"hint": "<i>Variable = </i><b>dSqr(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dLog",
-				"hint": "<i>Variable = </i><b>dLog(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dLog10",
-				"hint": "<i>Variable = </i><b>dLog10(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dExp",
-				"hint": "<i>Variable = </i><b>dExp(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dCeil",
-				"hint": "<i>Variable = </i><b>dCeil(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "dFloor",
-				"hint": "<i>Variable = </i><b>dFloor(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "DigitalRead",
-				"hint": "<i>Variable = </i><b>DigitalRead</b> <i>Pin Value</i>"
-			},
-			{
-				"name": "DigitalWrite",
-				"hint": "<b>DigitalWrite</b> <i>Pin Value</i>, <i>High or Low</i>"
-			},
-			{
-				"name": "dPow",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>dPow(</b><i>64-bit Floating Point Value, PowValue</i><b>)</b>"
-			},
-			{
-				"name": "EData",
-				"core": [14,16,24,33],
-				"hint": "<b>EData</b> <i>Comma delimited Constant Values or Constant Expressions that are stored in on-board EEPROM</i>"
-			},
-			{
-				"name": "Else",
-				"hint": "<b>Else</b> <i> {Instructions}</i>"
-			},
-			{
-				"name": "ElseIf",
-				"hint": "<b>ElseIf</b> <i>Expression</i>"
-			},
-			{
-				"name": "Enable",
-				"core": [14,16,24,33],
-				"hint": "<b>Enable <span style='color:#808080;'>Interrupt</span></b><br><b>Enable <span style='color:#808080;'>Debug</span></b>"
-			},
-			{
-				"name": "End"
-			},
-			{
-				"name": "EndSelect"
-			},
-			{
-				"name": "EndIf"
-			},
-			{
-				"name": "EndProc",
-				"hint": "End a Procedure"
-			},
-			{
-				"name": "ExitProc",
-				"hint": "Exit a Procedure"
-			},
-			{
-				"name": "EndSub",
-				"hint": "End a Sub"
-			},
-			{
-				"name": "ExitSub",
-				"hint": "Exit a Sub"
-			},
-			{
 				"name": "ERead",
 				"core": [14,16,24,33],
 				"hint": "<i>Variable = </i><b>ERead</b> <i>Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "EStr",
-				"core": [14,16,24,33]
 			},
 			{
 				"name": "EWrite",
@@ -608,68 +728,9 @@
 				}
 			},
 			{
-				"name": "Exp",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>Exp(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "Flash8",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash8</b> = <i>Comma Delimited 8-bit Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "Flash16",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash16</b> = <i>Comma Delimited 16-bit Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "Flash24",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash24</b> = <i>Comma Delimited 24-bit Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "Flash32",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash32</b> = <i>Comma Delimited 32-bit Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "FlashF",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As FlashF</b> = <i>Comma Delimited 32-bit Floating Point Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "FlashD",
-				"core": [14,16,24,33],
-				"hint": "<b>Dim</b> <i>Table Name</i> <b>As FlashD</b> = <i>Comma Delimited 64-bit Floating Point Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "Floor",
-				"core": [24,33],
-				"hint": "<i>Variable = </i><b>Floor(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "Font",
-				"core": [14,16,24,33],
-				"hint": "<b>Font</b> <i>Constant Value or Variable <span style='color:#808080;'>(Used only in Print)</span></i>"
-			},
-			{
-				"name": "For",
-				"hint": "<b>For</b> <i>Variable = Startcount</i> <b><span style='color:#808080;'>TO</span></b> <i>Endcount [</i><b><span style='color:#808080;'>STEP</span></b> <i>{StepValue}]</i>"
-			},
-			{
 				"name": "FreqOut",
 				"core": [14,16,24,33],
 				"hint": "<b>FreqOut</b> = <i>Port.Pin, Period, Freq1 {,Freq2}</i>"
-			},
-			{
-				"name": "fRound",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>fRound(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "fAbs",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>fAbs(</b><i>Floating Point Constant Value or Variable or Expression</i><b>)</b>"
 			},
 			{
 				"name": "GetBit",
@@ -678,22 +739,6 @@
 			{
 				"name": "GetPin",
 				"hint": "<i>Variable = </i><b>GetPin</b> <i>Pin Value</i>"
-			},
-			{
-				"name": "Global",
-				"hint": "<b>Global <i>Dim</b></i> or <b>Global <i>Symbol</b></i>"
-			},
-			{
-				"name": "GoSub",
-				"hint": "<b>GoSub</b> <i>Label</i>"
-			},
-			{
-				"name": "GoTo",
-				"hint": "<b>GoTo</b><i> Label</i><br><b><span style='color:#808080;'>On</b><i> Index Variable </i></span><b>Goto</b><i> Label {, Label}</i>"
-			},
-			{
-				"name": "GoToL",
-				"hint": "<b>GoToL</b><i> Label</i><br><b><span style='color:#808080;'>On</b><i> Index Variable </i></span><b>GoToL</b><i> Label {, Label}</i>"
 			},
 			{
 				"name": "HBReStart",
@@ -816,20 +861,8 @@
 				"hint": "<b>HEData</b> <i>Comma delimited Constant Values or Constant Expressions that are stored in High Endurance Flash memory</i>"
 			},
 			{
-				"name": "Hex...8",
-				"core": [14,16,24,33],
-				"hint": "<b>Hex..Hex8</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
 				"name": "High",
 				"hint": "<b>High</b> = <i>Port</i><br><b>High</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "HighByte"
-			},
-			{
-				"name": "HighWord",
-				"core": [14,16,24,33]
 			},
 			{
 				"name": "HPWM",
@@ -1020,49 +1053,8 @@
 				"hint": "<b>I2COut</b> <i> SDA_pin, SCL_pin, Control, {Address,} [Data {, Data}]</i>"
 			},
 			{
-				"name": "IBin...31",
-				"core": [14,16,24,33],
-				"hint": "<b>IBin..IBin31</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "ICos",
-				"hint": "<i>Variable</i> = <b>ICos</b> <i>Variable</i>"
-			},
-			{
-				"name": "ISin",
-				"hint": "<i>Variable</i> = <b>ISin</b> <i>Variable</i>"
-			},
-			{
-				"name": "ISqr",
-				"hint": "<i>Variable</i> = <b>ISqr</b> <i>Variable</i>"
-			},
-			{
-				"name": "ISR_Start",
-				"hint": "<b>ISR_Start</b> <i>Interrupt Name</i>"
-			},
-			{
-				"name": "ISR_End"
-			},
-			{
-				"name": "If",
-				"hint": "<b>If</b> <i>Expression</i>"
-			},
-			{
 				"name": "Tern",
 				"hint": "<i>Variable</i> = <b>Tern</b> <i> Constant Value or Variable</i> <b> Comparison Characters </b> <i> Constant Value or Variable</i> , <i> Constant Value or Variable</i> , <i> Constant Value or Variable</i>"
-			},
-			{
-				"name": "IHex...8",
-				"core": [14,16,24,33],
-				"hint": "<b>IHex..IHex8</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "Inc",
-				"hint": "<b>Inc</b> <i>Variable</i>"
-			},
-			{
-				"name": "Ink",
-				"core": [14,16,24,33]
 			},
 			{
 				"name": "InKey",
@@ -1071,34 +1063,6 @@
 			{
 				"name": "Input",
 				"hint": "<b>Input</b> = <i>Port</i><br><b>Input</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "Interrupt",
-				"core": [14,16,24,33],
-				"hint": "<b><span style='color:#808080;'>On</span> Interrupt <span style='color:#808080;'>Goto</span></b> <i>Software Interrupt Label</i>"
-			},
-			{
-				"name": "Inverse",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "ISBin...31",
-				"core": [14,16,24,33],
-				"hint": "<b>ISBin..ISBin31</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "ISDec...10",
-				"core": [14,16,24,33],
-				"hint": "<b>ISDec..ISDec10</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "ISHex...8",
-				"core": [14,16,24,33],
-				"hint": "<b>ISHex..ISHex8</b><i> Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "KS0108",
-				"core": [14,16,24,33]
 			},
 			{
 				"name": "LCDRead",
@@ -1111,11 +1075,6 @@
 				"hint": "<b>LCDWrite</b> <i>Line Number, Xpos, [Value {, Value}]</i>"
 			},
 			{
-				"name": "LData",
-				"core": [14,16],
-				"hint": "<b>LData</b> <i>Constant Value or Constant Expression</i>"
-			},
-			{
 				"name": "Left$",
 				"core": [14,16,24,33],
 				"hint": "<i>Destination String = </i><b>Left$</b> <i>(Source String, Number Of Characters)</i>"
@@ -1124,10 +1083,6 @@
 				"name": "Len",
 				"core": [14,16,24,33],
 				"hint": "<i>Variable = </i><b>Len</b> <i>(Source String)</i>"
-			},
-			{
-				"name": "Let",
-				"hint": "<b>Let</b> <i>Variable = Constant Value or Variable or Expression or Procedure</i>"
 			},
 			{
 				"name": "Line",
@@ -1142,16 +1097,6 @@
 			{
 				"name": "LoadBit",
 				"hint": "<b>LoadBit</b> <i>Variable, Index, Value</i>"
-			},
-			{
-				"name": "Log",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>Log(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "Log10",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>Log10(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
 			},
 			{
 				"name": "LookDown",
@@ -1170,19 +1115,8 @@
 				"hint": "<i>Variable = </i><b>LookUpL</b> <i>Index, [Value {, Value}]</i>"
 			},
 			{
-				"name": "Loop",
-				"hint": "<b>Loop</b> <i>No Expression for Infinite Loop</i><br><b>Loop Until</b> <i>Expression</i><br><b>Loop While</b> <i>Expression</i>"
-			},
-			{
 				"name": "Low",
 				"hint": "<b>Low</b> = <i>Port</i><br><b>Low</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "LowByte"
-			},
-			{
-				"name": "LowWord",
-				"core": [14,16,24,33]
 			},
 			{
 				"name": "LRead",
@@ -1210,48 +1144,12 @@
 				"hint": "<i>Destination String = </i><b>Mid$</b><i> (Source String, Position In String, Number Of Characters)</i>"
 			},
 			{
-				"name": "Modf",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>Modf</b>(<i>32-bit Floating Point Variable, Whole 32-bit Floating Point Variable</i><b>)</b><br>Split a 32-bit floating point variable into its fractional part and its whole part"
-			},
-			{
-				"name": "Modd",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>Modd</b>(<i>64-bit Double Variable, Whole 64-bit Double Variable</i><b>)</b><br>Split a 64-bit Double variable into its fractional part and its whole part"
-			},
-			{
 				"name": "Ncd"
-			},
-			{
-				"name": "Next"
-			},
-			{
-				"name": "Num8,Num16,Num32,SNum8,SNum16,SNum32"
-			},
-			{
-				"name": "Label,Char,Code,Byte_Array_Ptr,Word_Array_Ptr,Dword_Array_Ptr,Flash,SByte_Array_Ptr,SWord_Array_Ptr,SDword_Array_Ptr"
-			},
-			{
-				"name": "On",
-				"core": [14,16,24,33],
-				"hint": "<b>On <span style='color:#808080;'>Interrupt Goto</span></b> <i>Software Interrupt Label</i><br><b>On <span style='color:#808080;'>Debug Goto</span></b> <i>Software Debug Label</i>"
 			},
 			{
 				"name": "ORead",
 				"core": [14,16,24,33],
 				"hint": "<b>ORead</b> = <i>Port.Pin, Mode, [Input Data]</i>"
-			},
-			{
-				"name": "Org",
-				"hint": "<b>Org</b> <i>Constant Program Address</i>"
-			},
-			{
-				"name": "OtherWise",
-				"hint": "<b>OtherWise</b> <i> {Instructions}</i>"
-			},
-			{
-				"name": "OtherWiseIf",
-				"hint": "<b>OtherWiseIf</b> <i>Expression</i>"
 			},
 			{
 				"name": "Output",
@@ -1261,58 +1159,6 @@
 				"name": "OWrite",
 				"core": [14,16,24,33],
 				"hint": "<b>OWrite</b> = <i>Port.Pin, Mode, [Output Data]</i>"
-			},
-			{
-				"name": "Paper",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin",
-				"hint": "When used as Parameter's type directive, it holds the Pin value. The same method as used for Pin_A0, Pin_A1, Pin_B0 etc..."
-			},
-			{
-				"name": "Pin_A0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_B0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_C0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_D0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_E0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_F0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_G0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_H0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_J0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_K0...7",
-				"core": [14,16]
-			},
-			{
-				"name": "Pin_L0...7",
-				"core": [14,16]
 			},
 			{
 				"name": "PinHigh",
@@ -1365,46 +1211,6 @@
 				"hint": "<i>Variable = </i><b>Pot</b> = <i>Port.Pin, Scale</i>"
 			},
 			{
-				"name": "Proc",
-				"hint": "<i>Proc </i><b>Name</b> <i>(pParam as Variable Type {,pParam as Variable Type})</i>"
-			},
-			{
-				"name": "Sub",
-				"hint": "<i>Sub </i><b>Name</b>"
-			},
-			{
-				"name": "PSV_AddressOf",
-				"hint": "<i>Variable = </i><b>PSV_AddressOf</b><i>(Label)</i>"
-			},
-			{
-				"name": "PSV",
-				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the flash memory table PSV visibility</span></i>"
-			},
-			{
-				"name": "PSV8",
-				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 8-bit Formatted flash memory table PSV visibility</span></i>"
-			},
-			{
-				"name": "PSV16",
-				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 16-bit Formatted flash memory table PSV visibility</span></i>"
-			},
-			{
-				"name": "PSV24",
-				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 24-bit Formatted flash memory table PSV visibility</span></i>"
-			},
-			{
-				"name": "PSV32",
-				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 32-bit Formatted flash memory table PSV visibility</span></i>"
-			},
-			{
-				"name": "PSVF",
-				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the 32-bit Floating Point Formatted flash memory table PSV visibility</span></i>"
-			},
-			{
-				"name": "PSVD",
-				"hint": "<b>PSVD</b><br><i><span style='color:#008000;'>Give the 64-bit Double Formatted flash memory table PSV visibility</span></i>"
-			},
-			{
 				"name": "Ptr8",
 				"core": [14,16,24,33],
 				"hint": "<i>Variable = </i><b>Ptr8</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i><br><b>Ptr8</b> <i>(Var or ++Var or Var++ or --Var or Var-- or Expression)</i> = <i>Variable, Constant or Expression</i><br>Increments the address by 8-bits"
@@ -1440,11 +1246,6 @@
 				"hint": "<b>Pop</b> <i>Variable {, Variable}</i>"
 			},
 			{
-				"name": "Pow",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>Pow(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
 				"name": "Print",
 				"hint": "<b>Print</b> <i>Item {, Item}</i>"
 			},
@@ -1474,30 +1275,6 @@
 				"hint": "<i>Variable = </i><b>RCIn</b> = <i>Port.Pin, State</i>"
 			},
 			{
-				"name": "Rep"
-			},
-			{
-				"name": "Repeat"
-			},
-			{
-				"name": "Restore",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Result",
-				"core": [14,16,24,33],
-				"hint": "<i>Return a result from a Procedure"
-			},
-			{
-				"name": "Resume",
-				"core": [14,16,24,33],
-				"hint": "<b>Resume</b><br><br><i><span style='color:#008000;'>Re-enables and returns from a software interrupt</span></i>"
-			},
-			{
-				"name": "Return",
-				"hint": "Returns from a Subroutine"
-			},
-			{
 				"name": "Right$",
 				"core": [14,16,24,33],
 				"hint": "<i>Destination String = </i><b>Right$</b><i> (Source String, Number Of Characters)</i>"
@@ -1523,30 +1300,8 @@
 				"hint": "<b>RsOutLn</b> <i>Item {, Item}</i>"
 			},
 			{
-				"name": "Samsung",
-				"hint": "<i>Choose a graphic LCD based upon the Samsung KS0108 chipset</i>"
-			},
-			{
-				"name": "Save-,Save",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "SBin...32",
-				"core": [14,16,24,33],
-				"hint": "<b>SBin..SBin31</b> <i>Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "SDec,SDec0...10",
-				"core": [14,16,24,33],
-				"hint": "<b>SDec..SDec10</b> <i>Constant Value or Variable or Expression</i>"
-			},
-			{
 				"name": "Seed",
 				"hint": "<b>Seed</b> <i>Constant Value or Variable or Expression</i>"
-			},
-			{
-				"name": "Select",
-				"hint": "<b>Select</b> <i>Constant Value or Variable or Constant Expression</i>"
 			},
 			{
 				"name": "SerIn",
@@ -1581,25 +1336,12 @@
 				"hint": "<b>SetPin</b> <i>Variable</i>"
 			},
 			{
-				"name": "Shared",
-				"hint": "<b>Shared</b><br><br><i><span style='color:#008000;'>Enable sharing of a variable name</span></i>"
-			},
-			{
-				"name": "SHex...8",
-				"core": [14,16,24,33],
-				"hint": "<b>SHex..SHex8</b> <i>Constant Value or Variable or Expression</i>"
-			},
-			{
 				"name": "SHIn",
 				"hint": "<b>SHIn</b> <i>DataPort.Pin, ClockPort.Pin, Mode, [Result {\\Bits} {,Result{\\Bits}}]</i>"
 			},
 			{
 				"name": "SHOut",
 				"hint": "<b>SHOut</b> <i>DataPort.Pin, ClockPort.Pin, Mode, [Output Data {\\Bits} {,Output Data {\\Bits}}]</i>"
-			},
-			{
-				"name": "Sin",
-				"hint": "<i>Variable = </i><b>Sin(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
 			},
 			{
 				"name": "SizeOf",
@@ -1632,28 +1374,8 @@
 				"hint": "<b>Sound2</b> = <i>Port.Pin1, Port.Pin2, [Note1\\Note2\\Duration {,Note1\\Note2\\Duration}]</i>"
 			},
 			{
-				"name": "Sqr",
-				"hint": "<i>Variable = </i><b>Sqr(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "LowSByte,LowSWord,HighSByte,HighSWord",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "SByte,SWord,SDword,SByte0,SByte1,SByte2,SByte3,SWord0,SWord1",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Step"
-			},
-			{
 				"name": "Stop",
 				"hint": "<b>Stop</b><br><br><i><span style='color:#008000;'>Halts program execution by sending the<br>PIC microcontroller into an infinite loop</span></i>"
-			},
-			{
-				"name": "Str",
-				"core": [14,16,24,33],
-				"hint": "<b>Str</b> <i>ByteArray</i>"
 			},
 			{
 				"name": "StrN",
@@ -1670,42 +1392,12 @@
 				"hint": "<b>Swap</b> <i>Variable, Variable</i>"
 			},
 			{
-				"name": "Symbol",
-				"hint": "<b>Symbol</b> <i>Name {=} Value</i>"
-			},
-			{
-				"name": "Tan",
-				"core": [14,16,24,33],
-				"hint": "<i>Variable = </i><b>Tan(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
-			},
-			{
-				"name": "Then",
-				"hint": "<b><span style='color:#808080;'>IF</b> <i>Expression </i></span><b>Then</b><i> {Instructions} </i>"
-			},
-			{
-				"name": "To",
-				"hint": "<b>To</b> <i>Endcount</i>"
-			},
-			{
-				"name": "DownTo",
-				"hint": "<b>DownTo</b> <i>Endcount</i>"
-			},
-			{
-				"name": "UpTo",
-				"hint": "<b>UpTo</b> <i>Endcount</i>"
-			},
-			{
-				"name": "Toshiba",
-				"core": [14,16,24,33],
-				"hint": "<i>Choose a graphic LCD based upon the Toshiba T6963 chipset </i>"
-			},
-			{
 				"name": "Toshiba_Command",
 				"core": [14,16,24,33],
 				"hint": "<b>Toshiba_Command</b> , <i>Command</i> , <i>Parameter</i>"
 			},
 			{
-				"name": "Toshiba_Udg",
+				"name": "Toshiba_UDG",
 				"core": [14,16,24,33],
 				"hint": "<b>Toshiba_Udg</b> , <i>Character</i> , [<i>UDG data {,UDG data}</i>]"
 			},
@@ -1739,6 +1431,21 @@
 				"hint": "<i>Var = </i><b>Touch_HotSpot</b> <i>pXpos Start, pYpos Start, pXpos End, pYpos End</i><br>Var = 1 if the stylus is within the hotspot boundary"
 			},
 			{
+				"name": "Trim",
+				"core": [24,33],
+				"hint": "<b>Trim(</b> <i>String Variable</i><b>)</b>"
+			},
+			{
+				"name": "TrimLeft",
+				"core": [24,33],
+				"hint": "<b>TrimLeft(</b> <i>String Variable</i><b>)</b>"
+			},
+			{
+				"name": "TrimRight",
+				"core": [24,33],
+				"hint": "<b>TrimLeft(</b> <i>String Variable</i><b>)</b>"
+			},
+			{
 				"name": "Touch_HotSpotTable",
 				"core": [24,33],
 				"hint": "<i>Var = </i><b>Touch_HotSpotTable</b> <i>Code Memory Table Name</i><br>Var = 1 if the stylus is within the hotspot boundary"
@@ -1747,10 +1454,6 @@
 				"name": "UnPlot",
 				"core": [14,16,24,33],
 				"hint": "<b>UnPlot</b> <i>Ypos, Xpos</i>"
-			},
-			{
-				"name": "Until",
-				"hint": "<b>Until</b> <i>No Expression for Infinite Loop</i><br><b>Until</b> <i>Expression</i>"
 			},
 			{
 				"name": "USBInit",
@@ -1785,13 +1488,6 @@
 				"name": "Wait"
 			},
 			{
-				"name": "Wend"
-			},
-			{
-				"name": "While",
-				"hint": "<b>While</b> <i>No Expression for infinite loop</i><br><b>While</b> <i>Expression</i>"
-			},
-			{
 				"name": "XIn",
 				"core": [14,16],
 				"hint": "<b>XIn</b> <i>DataPort.Pin, ZeroPort.Pin, {Timeout, Timeout Label}, [Variable {, ...}]</i>"
@@ -1802,24 +1498,173 @@
 				"hint": "<b>XOut</b> <i>DataPort.Pin, ZeroPort.Pin, [HouseCode\\KeyCode {\\Repeat} {, ...}]</i>"
 			},
 			{
-				"name": "Trim",
+				"name": "Ceil",
 				"core": [24,33],
-				"hint": "<b>Trim(</b> <i>String Variable</i><b>)</b>"
+				"hint": "<i>Variable = </i><b>Ceil(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
 			},
 			{
-				"name": "TrimLeft",
+				"name": "Floor",
 				"core": [24,33],
-				"hint": "<b>TrimLeft(</b> <i>String Variable</i><b>)</b>"
+				"hint": "<i>Variable = </i><b>Floor(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
 			},
 			{
-				"name": "TrimRight",
-				"core": [24,33],
-				"hint": "<b>TrimLeft(</b> <i>String Variable</i><b>)</b>"
+				"name": "Exp",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Exp(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
 			},
 			{
-				"name": "de, dt, db, dw, equ"
+				"name": "Log",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Log(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Log10",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Log10(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Pow",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Pow(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Sqr",
+				"hint": "<i>Variable = </i><b>Sqr(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Cos",
+				"hint": "<i>Variable = </i><b>Cos(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Sin",
+				"hint": "<i>Variable = </i><b>Sin(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "Tan",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Tan(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "ACos",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ACos</b><i> Constant Value or Variable or Expression</i>"
+			},
+			{
+				"name": "ASin",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ASin(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "ATan",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ATan(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "ATan2",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>ATan2(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i> , <i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "ICos",
+				"hint": "<i>Variable</i> = <b>ICos</b> <i>Variable</i>"
+			},
+			{
+				"name": "ISin",
+				"hint": "<i>Variable</i> = <b>ISin</b> <i>Variable</i>"
+			},
+			{
+				"name": "ISqr",
+				"hint": "<i>Variable</i> = <b>ISqr</b> <i>Variable</i>"
+			},
+			{
+				"name": "dAbs",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>dAbs(</b><i>64-bit Floating Point Constant Value or Variable or Expression</i><b>)</b>"
+			},
+			{
+				"name": "dRound",
+				"hint": "<i>Variable = </i><b>dRound(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dAsin",
+				"hint": "<i>Variable = </i><b>dAsin(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dAcos",
+				"hint": "<i>Variable = </i><b>dAcos(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dSin",
+				"hint": "<i>Variable = </i><b>dSin(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dCos",
+				"hint": "<i>Variable = </i><b>dCos(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dTan",
+				"hint": "<i>Variable = </i><b>dTan(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dAtan",
+				"hint": "<i>Variable = </i><b>dAtan(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dATan2",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>dATan2(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i> , <i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dSqr",
+				"hint": "<i>Variable = </i><b>dSqr(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dLog",
+				"hint": "<i>Variable = </i><b>dLog(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dLog10",
+				"hint": "<i>Variable = </i><b>dLog10(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dExp",
+				"hint": "<i>Variable = </i><b>dExp(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dCeil",
+				"hint": "<i>Variable = </i><b>dCeil(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dFloor",
+				"hint": "<i>Variable = </i><b>dFloor(</b><i> 64-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "dPow",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>dPow(</b><i>64-bit Floating Point Value, PowValue</i><b>)</b>"
+			},
+			{
+				"name": "fRound",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>fRound(</b><i> 32-bit Floating Point Constant Value or Variable or Expression</i><b> )</b>"
+			},
+			{
+				"name": "fAbs",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>fAbs(</b><i>Floating Point Constant Value or Variable or Expression</i><b>)</b>"
+			},
+			{
+				"name": "Modf",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Modf</b>(<i>32-bit Floating Point Variable, Whole 32-bit Floating Point Variable</i><b>)</b><br>Split a 32-bit floating point variable into its fractional part and its whole part"
+			},
+			{
+				"name": "Modd",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>Modd</b>(<i>64-bit Double Variable, Whole 64-bit Double Variable</i><b>)</b><br>Split a 64-bit Double variable into its fractional part and its whole part"
 			}
 		],
+
 		"KeywordImportant": [
 			{
 				"name": "On_Hardware_Interrupt",
@@ -1837,6 +1682,7 @@
 				"hint": "<b>On_Low_Interrupt <span style='color:#808080;'>Goto</span></b> <i>Hardware Interrupt Label</i>"
 			}
 		],
+
 		"KeywordMacro": [
 			{
 				"name": "PLL_Setup",
@@ -1875,6 +1721,7 @@
 				"hint": "<b>Write_OSCCON</b>(<i>Value</i>)<br>Unlock and write to the OSCCON SFR for PIC24 devices"
 			}
 		],
+
 		"KeywordDeclare": [
 			{
 				"name": "Asm-",
@@ -1906,6 +1753,16 @@
 				"name": "Config_End",
 				"core": [16,24,33],
 				"hint": "<i>End of Configuration Fuse Block</i>"
+			},
+			{
+				"name": "Config",
+				"core": [12,14,16,24,33],
+				"hint": "<b>Config</b> <i>FuseSetting {, FuseSetting}</i>"
+			},
+			{
+				"name": "Config1...5",
+				"core": [12,14,24,33],
+				"hint": "<b>ConfigX</b> <i>FuseSetting {, FuseSetting}</i>"
 			},
 			{
 				"name": "EndAsm-,EndAsm"
@@ -2983,6 +2840,7 @@
 				"name": "MemWrite_Int_Control, Compiler_Start_Address"
 			}
 		],
+
 		"KeywordASM": [
 			{
 				"name": "Addfsr",
@@ -3645,9 +3503,33 @@
 			},
 			{
 				"name": "Float_Wreg, Float_Bit, Float_Byte, Float_Word, Float_Dword, Float_Float"
+			},
+			{
+				"name": "de, dt, db, dw, equ"
 			}
 		],
+
 		"KeywordUser": [
+			{
+				"name": "Auto",
+				"core": [16]
+			},
+			{
+				"name": "CR,CRLF,LFCR"
+			},
+			{
+				"name": "Alphanumeric",
+				"hint": "<i>Choose an alphanumeric LCD based upon the Hitachi HD44780 chipset </i>"
+			},
+			{
+				"name": "Font",
+				"core": [14,16,24,33],
+				"hint": "<b>Font</b> <i>Constant Value or Variable <span style='color:#808080;'>(Used only in Print)</span></i>"
+			},
+			{
+				"name": "Inverse, KS0108, Samsung, Toshiba",
+				"core": [14,16,24,33]
+			},
 			{
 				"name": "__USBIn_Buffer",
 				"core": [16],
@@ -3676,6 +3558,7 @@
 				"hint": "<i>ADC clock divisor</i>"
 			}
 		],
+
 		"KeywordPreprocessor": [
 			{
 				"name": "$SendMessage",

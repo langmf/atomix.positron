@@ -29,7 +29,9 @@ const newColors = (rep = {})  => {
     'Symbol':               {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_symbol"           },
     'Macro':                {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_macro"            },
     'Label':                {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_label"            },
+    'Subroutine':           {  enable:1,    foreground: "#000000",      fontStyle: "bold",          token:"pos_subroutine"       },
     'Procedure':            {  enable:1,    foreground: "#000000",      fontStyle: "bold",          token:"pos_procedure"        },
+    'Parameter':            {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_parameter"        },
     'Variable':             {  enable:1,    foreground: "#000000",      fontStyle: "",              token:"pos_variable"         },
     'SFR':                  {  enable:1,    foreground: "#009000",      fontStyle: "",              token:"pos_devregs"          },
     'SFR_Bitname':          {  enable:1,    foreground: "#009000",      fontStyle: "",              token:"pos_devbits"          },
@@ -52,9 +54,10 @@ const rep_Dark = {
     'String|SFR.*':         {  foreground: "#98c379"  },
     'Device':               {  foreground: "#87CEFA"  },
     'Label':                {  foreground: "#61AFEF"  },
-    'Macro':                {  foreground: "#F4A460"  },
     'Procedure':            {  foreground: "#00BFFF",  fontStyle: ""  },
+    'Subroutine':           {  foreground: "#00BFFF",  fontStyle: ""  },
     'Define':               {  foreground: "#DEB887",  fontStyle: ""  },
+    'Macro':                {  foreground: "#F4A460"  },
     '*black':               [  "#000000",  "#D0D0D0"  ]
 }
 

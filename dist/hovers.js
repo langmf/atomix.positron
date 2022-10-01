@@ -16,17 +16,27 @@ function getMarkdown(text, cb) {
 function provideHover(doc, position) {
     if (common.failRange(doc, position)) return null;
 
-    const word = common.getWordRange(doc, position),   files = common.parseDoc(doc);
+    const word = common.getWordRange(doc, position),   proc = common.getProc(doc, position);
 
-    for (const [name, file] of Object.entries(files)) {
+
+    if (proc && (word in proc.members)) {
+        let text = proc.members[word].code,   scope = "\t '&nbsp;[&nbsp;" + proc.name + "&nbsp;]";
+
+        if (/\n/.test(text)) text = text.replace(/[\r\n]+$/, '') + '\n\n';
+
+        return new vscode.Hover(getMarkdown(common.codeHTML(text + scope, doc, true, proc.members), true));
+    }
+
+
+    for (const [name, file] of Object.entries(common.parseDoc(doc))) {
         for (const type of Object.values(file.types)) {
-            if (!(word in type.$items)) continue;
+            if (!(word in type.$items)) continue;               const members = type.$items[word].members;
             
             let text = type.$items[word].code,   scope = "\t '&nbsp;[&nbsp;" + (file.isLocal ? "Local" : file.scope) + "&nbsp;]";
 
             if (/\n/.test(text)) text = text.replace(/[\r\n]+$/, '') + '\n\n';
 
-            return new vscode.Hover(getMarkdown(common.codeHTML(text + scope, name, true), true));
+            return new vscode.Hover(getMarkdown(common.codeHTML(text + scope, name, true, members), true));
         }
     }
 

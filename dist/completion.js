@@ -12,6 +12,14 @@ function provideCompletionItems(doc, position) {
 
     const result = common.getCompletions(doc);
     const files  = common.parseDoc(doc);
+    const proc   = common.getProc(doc, position);
+
+    if (proc) {
+        for (const v of Object.values(proc.members)) {
+            const kind  = common.Enums[v.type].com || 0,    description = `[ ${proc.name} ]`;
+            result.push(new vscode.CompletionItem({ label: v.name,  description }, kind));
+        }        
+    }
     
     for (const file of Object.values(files)) {
         for (const type of Object.values(file.types)) {

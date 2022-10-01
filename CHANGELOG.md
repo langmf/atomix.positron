@@ -1,4 +1,16 @@
 
+## 2.0.0 - 2022-10-01
+- Improved the "Find All References" function, when the text is not selected, the whole word search is used.
+- Added parsing of variables, symbols and labels in the "Procedure" structure and separate highlighting for procedure parameters.
+- Added separate highlight for "Subroutine", "Parameter".
+- Changed the default highlight for dark themes.
+- The group of keywords "Keyword" was divided into groups:
+  "Keyword"         - basic syntax and language constructs
+  "KeywordMain"     - the main keywords of the language
+  "KeywordType"     - types of declared variables or pins
+  "KeywordModifier" - modifiers for variables and built-in language commands
+  "KeywordCommand"  - built-in commands and language functions
+
 ## 1.9.8 - 2022-09-24
 - Fixed the order of scanning the directories of included files.
 - Fixed update of compiled file version when compiling from included files.

@@ -42,8 +42,8 @@ function onDidChangeConfiguration() {
 }
 
 
-exports.debugTime = (name, doc) => {
-    return !exports.debug ? { begin(){return this;}, end(){}, start(){}, stop(){} } : {
+exports.debugTime = (name, doc, force) => {
+    return !exports.debug && !force ? { begin(){return this;}, end(){}, start(){}, stop(){} } : {
         N:       name + (doc ? '  ' + doc.fileName.split("\\").pop() : ''),
         begin()  { console.time(this.N);     return this;   },
         end()    { console.timeEnd(this.N);                 },
