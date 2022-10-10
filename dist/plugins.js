@@ -8,13 +8,13 @@ const root      = require("./root");
 const items = exports.items = {};
 
 
-exports.require = (value) => require(__dirname + '\\' + value);
+exports.require = (value) => require(__dirname + '/' + value);
 
-exports.file    = (value) => path.dirname(value) + '\\positron.js';
+exports.file    = (value) => path.dirname(value) + '/positron.js';
 
 
 exports.activate = () => {
-    for (const p of root.searchFiles(root.path.pds + 'Plugin\\VSCode', '\\bindex\\.pjs$', 1)) {
+    for (const p of root.searchFiles(root.path.pds + 'Plugin/VSCode', '\\bindex\\.pjs$', 1)) {
         exports.load(p);
     }
 }

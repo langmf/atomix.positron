@@ -17,13 +17,18 @@ exports.activate = (context) => {
 
 
 function onDidChangeConfiguration() {
-    const cfg    = vscode.workspace.getConfiguration("pos");
-    const loader = path.dirname(cfg.main.compiler) + "\\";
-    const pds    = path.resolve(cfg.main.compiler, "..\\..") + "\\";
-    const ext    = exports.extensionPath + "\\";
-    const user   = os.homedir() + "\\PDS\\";
+    const sep    = exports.sep = path.sep;
+    const cfg    = exports.config = vscode.workspace.getConfiguration('pos');
+    const win    = exports.win = process.platform === 'win32';
+    const ldr    = autoPath(cfg.main.compiler);
+    const usr    = os.homedir().split(/[\/\\]/).pop();
     
-    exports.config = cfg;       exports.debug = cfg.x.DEBUG;
+    const loader = path.dirname(ldr) + sep;
+    const pds    = path.resolve(ldr, '..' + sep + '..') + sep;
+    const ext    = exports.extensionPath + sep;
+    const user   = os.homedir() + (win ? '' : '/.wine/drive_c/users/' + usr) + sep + 'PDS' + sep;
+    
+    exports.debug = cfg.x.DEBUG;
 
     exports.path = {
         ext,
@@ -32,19 +37,19 @@ function onDidChangeConfiguration() {
         loader,
         include: {
             loader,
-            user:   user + "Includes\\",
-            main:   loader + "Includes\\",
-            src:    loader + "Includes\\Sources\\"
+            user:   user + 'Includes' + sep,
+            main:   loader + 'Includes' + sep,
+            src:    loader + 'Includes' + sep + 'Sources' + sep
         },
-        web:    ext + "web\\",
-        docs:   pds + "PDS\\Docs\\"
+        web:    ext + 'web' + sep,
+        docs:   pds + 'PDS' + sep + 'Docs' + sep
     }
 }
 
 
 exports.debugTime = (name, doc, force) => {
     return !exports.debug && !force ? { begin(){return this;}, end(){}, start(){}, stop(){} } : {
-        N:       name + (doc ? '  ' + doc.fileName.split("\\").pop() : ''),
+        N:       name + (doc ? '  ' + doc.fileName.split(/[\/\\]/).pop() : ''),
         begin()  { console.time(this.N);     return this;   },
         end()    { console.timeEnd(this.N);                 },
         start()  { this.t0 = performance.now();             },
@@ -78,6 +83,12 @@ exports.IsAsmLst = (fName) => {
 }
 
 
+function readDir(value) {
+    let result = [];        try {  result = fs.readdirSync(value);  }catch{};          return result;
+}
+exports.readDir = readDir;
+
+
 function readFile(fName, def = '', ext) {
     fName = typeof fName === 'object' ? fName.uri.fsPath : fName;               if (ext) fName = extFile(fName, ext);
     try   {  return fs.readFileSync(fName, 'utf-8');  }
@@ -101,7 +112,7 @@ exports.checkFile = checkFile;
 
 
 function extFile(fName, ext = '') {
-    const name = path.dirname(fName) + '\\' + path.parse(fName).name;           if (!Array.isArray(ext)) return name + ext;
+    const name = path.dirname(fName) + path.sep + path.parse(fName).name;           if (!Array.isArray(ext)) return name + ext;
     for (let v of ext) if (v = checkFile(name + v)) return v;
 }
 exports.extFile = extFile;
@@ -137,9 +148,15 @@ exports.limitText = limitText;
 
 
 function openURL(url) {
-    return child.exec(`start "" "${url}"`);
+    url = url.replace(/%20/g, ' ');         return child.exec(exports.win ? `start "" "${url}"` : `xdg-open '${url}'`);
 }
 exports.openURL = openURL;
+
+
+function openDoc(url, prm = {viewColumn: vscode.ViewColumn.One}) {
+    try {  vscode.workspace.openTextDocument(vscode.Uri.file(url)).then(doc => vscode.window.showTextDocument(doc, prm));  }catch{}
+}
+exports.openDoc = openDoc;
 
 
 function sleep(ms) {
@@ -159,18 +176,38 @@ function generateUUID() {
 exports.generateUUID = generateUUID;
 
 
-function objectPath(obj, path, def) {
-	path = typeof path !== 'string' ? path : path.split(/\.|\[([^\]]+)\]/g).reduce((a,k) => (k && a.push(k), a), []);
-    for (const i of path) if (i in obj) obj = obj[i];  else  return def;
+function objectPath(obj, value, def) {
+	value = typeof value !== 'string' ? value : value.split(/\.|\[([^\]]+)\]/g).reduce((a,k) => (k && a.push(k), a), []);
+    for (const i of value) if (i in obj) obj = obj[i];  else  return def;
     return obj;
 }
 exports.objectPath = objectPath;
 
 
+function autoPath(fName) {
+    return exports.win ? fName.replace(/\//g, '\\') : fName.replace(/c:/ig, os.homedir() + "/.wine/drive_c").replace(/\\/g, '/');
+}
+exports.autoPath = autoPath;
+
+
+function winver(fName) {
+    if (exports.win) { const vi = require('win-version-info');    return vi(autoPath(fName)); }
+    let tmp = '', ver = {};
+    try{  tmp = fs.readFileSync(autoPath(fName), 'ucs-2');  }catch{}
+    tmp = tmp.match(/\0StringFileInfo\0([\s\S]+?)\0VarFileInfo\0/i),  tmp = tmp ? tmp[1].replace(/[\x00-\x1F]/g, '\0') : '';
+    for (const v of tmp.matchAll(/([a-z]{4,})\0{1,2}([^\0]+)/ig))  ver[v[1]] = v[2];
+    return ver;
+}
+exports.winver = winver;
+
+
 function exeInfo(fName) {
     if (Array.isArray(fName)) return fName.map(v => exeInfo(v));
-    const winver = require('win-version-info'),   res = { name: fName, icon: extFile(fName, ['.svg', '.ico', '.webp', '.png', '.jpg', '.gif']) };
-    try {  res.stat = fs.statSync(fName);    res.date = new Date(res.stat.mtime).toLocaleString();    res.info = winver(fName);  }catch{};
+    const res = { name: fName, icon: extFile(fName, ['.svg', '.ico', '.webp', '.png', '.jpg', '.gif']) };
+    try {
+        res.stat = fs.statSync(fName);    res.date = new Date(res.stat.mtime).toLocaleString();
+        res.info = Object.assign({FileDescription:path.basename(fName), FileVersion:'', CompanyName:''},  winver(fName));
+    }catch{};
     return res;
 }
 exports.exeInfo = exeInfo;
@@ -197,10 +234,10 @@ exports.exeList = exeList;
 
 
 function searchFiles(dirPath, mask = '', deep = 0, result = []) {
-    const rxp = new RegExp(mask, 'i'),   dir = dirPath.replace(/\\$/,'');           if (deep !== true && deep >= 0) deep--;
+    const rxp = new RegExp(mask, 'i'),   dir = dirPath.replace(/[\/\\]$/,'');           if (deep !== true && deep >= 0) deep--;
 
-	for (const file of fs.readdirSync(dir)) {
-		const value = dir + "\\" + file;
+	for (const file of readDir(dir)) {
+		const value = dir + path.sep + file;
 
 		if (fs.statSync(value).isDirectory()) {
             if (deep >= 0) searchFiles(value, mask, deep, result);
@@ -217,12 +254,12 @@ exports.searchFiles = searchFiles;
 function searchDirs(dirPath, mask = '', deep = true) {
     if (!Array.isArray(mask)) mask = [mask, ''];
 
-    const rxpFile = new RegExp(mask[0], 'i'),   rxpDir = new RegExp(mask[1], 'i'),   dir = dirPath.replace(/\\$/,''),   files = [],   dirs = [];
+    const rxpFile = new RegExp(mask[0], 'i'),   rxpDir = new RegExp(mask[1], 'i'),   dir = dirPath.replace(/[\/\\]$/,''),   files = [],   dirs = [];
     
     if (deep !== true && deep >= 0) deep--;
 
-	for (const file of fs.readdirSync(dir)) {
-		const value = dir + "\\" + file;
+	for (const file of readDir(dir)) {
+		const value = dir + path.sep + file;
 
 		if (fs.statSync(value).isDirectory()) {
             if (deep >= 0 && rxpDir.test(file)) dirs.push({ [value]: searchDirs(value, mask, deep) });

@@ -75,9 +75,9 @@ function generateUUID() {
 }
 
 
-function objectPath(obj, path, def) {
-	path = typeof path !== 'string' ? path : path.split(/\.|\[([^\]]+)\]/g).reduce((a,k) => (k && a.push(k), a), []);
-	for (const i of path) if (i in obj) obj = obj[i];  else  return def;
+function objectPath(obj, value, def) {
+	value = typeof value !== 'string' ? value : value.split(/\.|\[([^\]]+)\]/g).reduce((a,k) => (k && a.push(k), a), []);
+	for (const i of value) if (i in obj) obj = obj[i];  else  return def;
 	return obj;
 }
 
@@ -87,8 +87,13 @@ function limitText(txt, count = 140) {
 }
 
 
+function openURL(value) {
+	return vscode_Eval().root.openURL(value);
+}
+
+
 function parse_OpenURL(nameClass = '.openurl') {
-	document.querySelectorAll(nameClass).forEach(el => { if (!el.onclick) el.onclick = (e) => { vscode_Eval().openURL(e.target.href) } });
+	document.querySelectorAll(nameClass).forEach(el => { if (!el.onclick) el.onclick = (e) => { vscode_Eval().root.openURL(e.target.pathname || e.target.href); } });
 }
 
 

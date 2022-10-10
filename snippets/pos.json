@@ -4,7 +4,7 @@
 		"body": [
 			"Dim ${1:Name} As ${2:Byte}\n$0"
 		],
-        "description": "dim...",
+		"description": "dim...",
 	},
 
 	"Symbol Statement": {
@@ -12,7 +12,7 @@
 		"body": [
 			"Symbol ${1:Name} = ${2:true}\n$0"
 		],
-        "description": "symbol...",
+		"description": "symbol...",
 	},
 
 	"$define Statement": {
@@ -20,7 +20,7 @@
 		"body": [
 			"\\$define ${1:Name}() ${2:true}\n$0"
 		],
-        "description": "$define...",
+		"description": "$define...",
 	},
 
 	"CData Statement": {
@@ -28,7 +28,7 @@
 		"body": [
 			"${1:Label}:	CData ${0:1,2,3}"
 		],
-        "description": "CData...",
+		"description": "CData...",
 	},
 	
 	"New Proc": {
@@ -38,9 +38,9 @@
 				"\t$0",
 			"EndProc"
 		],
-        "description": "new proc...",
+		"description": "new proc...",
 	},
-    
+	
 	"New Sub": {
 		"prefix": "Sub",
 		"body": [
@@ -48,7 +48,7 @@
 				"\t$0",
 			"EndSub"
 		],
-        "description": "new sub...",
+		"description": "new sub...",
 	},
 
 	"If Statement": {
@@ -56,9 +56,9 @@
 		"body": [
 			"If ${1:True} Then $0"
 		],
-        "description": "Single-line If statement",
+		"description": "Single-line If statement",
 	},
-    
+	
 	"If Block": {
 		"prefix": "If ",
 		"body": [
@@ -66,7 +66,7 @@
 				"\t$0",
 			"EndIf"
 		],
-        "description": "Multi-line If block",
+		"description": "Multi-line If block",
 	},
 
 	"If Else Block": {
@@ -78,7 +78,7 @@
 				"\t}",
 			"EndIf"
 		],
-        "description": "Multi-line If Else block",
+		"description": "Multi-line If Else block",
 	},
 
 	"ElseIf Statement": {
@@ -87,7 +87,7 @@
 			"ElseIf ${1:True} Then",
 				"\t$0"
 		],
-        "description": "elseif...",
+		"description": "elseif...",
 	},
 
 	"Else Statement": {
@@ -96,42 +96,62 @@
 			"Else",
 				"\t${0:True}"
 		],
-        "description": "else...",
+		"description": "else...",
 	},
-    
-	"Select Case": {
-		"prefix": "Select Case",
+	
+	"Select": {
+		"prefix": "Select",
 		"body": [
-			"Select Case ${1:statement}",
+			"Select ${1:statement}",
 				"\tCase ${2}",
 				"\t\t${3}",
 				"\tCase Else",
 				"\t\t${4}",
 			"EndSelect"
 		],
-        "description": "select case...",
+		"description": "select...",
 	},
 
 	"For Next": {
 		"prefix": "For Next",
 		"body": [
-			"For ${1:i} = 0 To ${2:value}",
+			"For ${1:i} = 0 To ${2:endcount}",
 				"\t$0",
 			"Next"
 		],
-        "description": "for... next",
+		"description": "for... next",
+	},
+	
+	"For DownTo": {
+		"prefix": "For DownTo",
+		"body": [
+			"For ${1:i} = 0 DownTo ${2:endcount}",
+				"\t$0",
+			"Next"
+		],
+		"description": "for... DownTo",
+	},
+	
+	"For UpTo": {
+		"prefix": "For UpTo",
+		"body": [
+			"For ${1:i} = 0 UpTo ${2:endcount}",
+				"\t$0",
+			"Next"
+		],
+		"description": "for... UpTo",
 	},
 
 	"For Step": {
 		"prefix": "For Step",
 		"body": [
-			"For ${1:i} = 0 To ${2:value} Step ${3:value}",
+			"For ${1:i} = 0 To ${2:endcount} Step ${3:stepval}",
 				"\t$0",
 			"Next"
 		],
-        "description": "for... step",
+		"description": "for... step",
 	},
-    
+	
 	"Do Loop Until": {
 		"prefix": "Do Until",
 		"body": [
@@ -139,7 +159,7 @@
 				"\t$0",
 			"Loop Until ${1:statement}"
 		],
-        "description": "do loop until",
+		"description": "do loop until",
 	},
 
 	"Do Loop While": {
@@ -149,7 +169,7 @@
 				"\t$0",
 			"Loop While ${1:statement}"
 		],
-        "description": "do loop while",
+		"description": "do loop while",
 	},
 
 	"Repeat Until": {
@@ -159,16 +179,16 @@
 				"\t$0",
 			"Until ${1:statement}"
 		],
-        "description": "repeat until",
+		"description": "repeat until",
 	},
-    
-    "While Wend": {
+	
+	"While Wend": {
 		"prefix": "While",
 		"body": [
 			"While ${1:statement}",
 				"\t$0",
 			"Wend"
 		],
-        "description": "while wend",
+		"description": "while wend",
 	}
 }

@@ -121,16 +121,3 @@ function messageHTML(text) {
     </style></head><body style="overflow: hidden; height: 100%;"><div class="content">${text}</div></body><html>`;
 }
 exports.messageHTML = messageHTML;
-
-
-function openURL(url) {
-    return child.exec(`start "" "${url}"`);
-}
-exports.openURL = openURL;
-
-
-function openDoc(url, prm = {viewColumn: vscode.ViewColumn.One}) {
-    try {  vscode.workspace.openTextDocument(vscode.Uri.file(url)).then(doc => vscode.window.showTextDocument(doc, prm));  }catch{}
-}
-exports.openDoc = openDoc;
-

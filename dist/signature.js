@@ -61,7 +61,7 @@ function parseItem(x) {
 
     const text = !x.sign ? (help.code || i.code) : `cmd ${x.name}(${i.code || ''})`;
 
-    const m = text.match(/(?:proc|sub|cmd|\$define|\$defeval)[\t ]+((\w+)[\t ]*(?:\((.*?)\))?(?:[\t ]*,[\t ]*([\w\d\.]+))?)/i);
+    const m = text.match(/(?:proc|sub|cmd|\$define|\$defeval)[\t ]+((\w+)[\t ]*(?:\((.*?)\))?(?:[\t ]*,[^';:]*)?)/i);
 
     if (!m || m[3] == null) return null;
 

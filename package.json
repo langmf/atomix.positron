@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "2.0.0",
+	"version": "2.0.4",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -472,8 +472,8 @@
 		]
 	},
 	"scripts": {
-		"package":    "vsce package",
-		"publish":    "vsce publish"
+		"package": "vsce package",
+		"publish": "vsce publish"
 	},
 	"license": "MIT",
 	"repository": {
@@ -486,6 +486,7 @@
 		"publisherDisplayName": "atomix"
 	},
 	"dependencies": {
+		"tree-kill": "^1.2.2",
 		"win-version-info": "^6.0.1"
 	}
 }

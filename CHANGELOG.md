@@ -1,4 +1,10 @@
 
+## 2.0.4 - 2022-10-10
+- Added the ability to stop compilation using the "Terminate" button in the "Program is already running!" window.
+- Added the ability to work extension under Linux (You will need to install Wine for the compiler to work).
+- Various minor fixes.
+
+
 ## 2.0.0 - 2022-10-01
 - Improved the "Find All References" function, when the text is not selected, the whole word search is used.
 - Added parsing of variables, symbols and labels in the "Procedure" structure and separate highlighting for procedure parameters.

@@ -24,19 +24,19 @@ function checkFileMsg(nFile) {
 
 
 function getFName(fn = "") {
-    return path.dirname(fn) + "\\" + path.parse(fn).name;
+    return path.dirname(fn) + path.sep + path.parse(fn).name;
 }
 
 
 function cmdFile(fn = "") {
-    const cmd = path.dirname(fn) + '\\programmer.cmd';         if (root.checkFile(cmd)) return cmd;
+    const cmd = path.dirname(fn) + path.sep + 'programmer.cmd';         if (root.checkFile(cmd)) return cmd;
 }
 
 
 function HELP(prm) {
-    if      (typeof prm === 'string') prm = [root.path.ext + "files\\help\\" + prm];
+    if      (typeof prm === 'string') prm = [root.path.ext + 'files/help/' + prm];
     else if (typeof prm === 'object') prm = fs.readdirSync(root.path.docs).filter(v => v.match(prm)).map( v=> root.path.docs + v);
-    if (prm && prm.length) return child.exec(`start "" "${prm[0]}"`);
+    if (prm && prm.length) return root.openURL(prm[0]);
 }
 
 
@@ -53,7 +53,8 @@ function parseBrace(v) {
 function parseACP(data) {
     let res = data.toString();
     try {
-        let p = parseInt(child.execSync('reg query HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Nls\\CodePage /v ACP').toString().match(/(\d+)[\r\n]*$/));
+        const cmd = (root.win ? '' : 'wine ') + 'reg query "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Nls\\CodePage" /v ACP';
+        let p = parseInt(child.execSync(cmd).toString().match(/(\d+)[\r\n]*$/));
         const x = { 65001:'utf-8', 51949:'euc-kr', 54936:'gb18030', 51932:'euc-jp', 21866:'koi8-u', 20866:'koi8-r', 950:'big5', 866:'ibm866' };
         if      (p in x) p = x[p];
         else if (p >= 1250  && p <= 1258)  p = 'windows-'  + p;
@@ -70,8 +71,8 @@ function outputCompiler(data, arg) {
         if (root.checkFile(a))
         res = res.replace(/^(error\[\d+\][\t ]+).+?\\a\.s[\t ]+(\d+)[\t ]+:/ig,                   function(v,p,e)  {  return p + ' [file:///' + a.replace(/ /g, '%20') + '#' + e + '] :';    });
         res = res.replace(/([\t ]+line[\t ]+\[(\d+)\][\t ]+in[\t ]+)file[\t ]+\[([^\]]+)\]/ig,    function(v,p,e,f){  return p + ' [file:///' + f.replace(/ /g, '%20') + '#' + e + ']';      });
-        res = res.replace(/(\d+)[\t ]+bytes[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,       function(v,c,t)  {  return v + " (" + ((Number(c) / Number(t)) * 100).toFixed(2) + " %)";  });
-        res = res.replace(/(\d+)[\t ]+variables[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,   function(v,c,t)  {  return v + " (" + ((Number(c) / Number(t)) * 100).toFixed(2) + " %)";  });
+        res = res.replace(/(\d+)[\t ]+[a-z]+[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,      function(v,c,t)  {  return v + " (" + ((Number(c) / Number(t)) * 100).toFixed(2) + " %)";  });
+        res = res.replace(/(?<=file:\/{3})\/+/ig, '');
     } catch(e) { console.error(e) }
     return res;
 }
@@ -94,16 +95,28 @@ async function saveFiles(doc) {
 
 
 async function run(exe, arg = "", workDir, time, fmt) {
-    if (_isRunning) { vscode.window.showInformationMessage("Program is already running!");     return; }
+    if (_isRunning) { 
+        vscode.window.showInformationMessage("Program is already running!", 'Terminate').then(s => {
+            if (s === 'Terminate') stopCompile();
+        });
+        return;
+    }
     
-    try   {   fs.accessSync(exe, fs.constants.X_OK);   } catch {   vscode.window.showErrorMessage(`Can't be executed - ${exe}`);    return; }
+    if (!root.checkFile(exe)) { vscode.window.showErrorMessage(`Can't be executed - ${exe}`);    return; }
     
     _isRunning = true;
     
     if (_statbar) _statbar.dispose();
     _statbar = vscode.window.setStatusBarMessage(`Running ${path.basename(exe)} ... `);
 
-    const cmd = `"${exe}" ${arg}`,   startTime = new Date();        let buf = Buffer.alloc(0);
+    const startTime = new Date();       let buf = Buffer.alloc(0),   cmd = `"${exe}" ${arg}`;
+
+    if (!root.win) {
+        switch (path.extname(exe || '').toLowerCase()) {
+            case '.cmd':        cmd = 'wine cmd /c ' + cmd;     break;
+            case '.exe':        cmd = 'wine ' + cmd;            break;
+        }
+    }
 
     output.appendLine("[Running]  " + cmd);
     
@@ -130,7 +143,7 @@ async function run(exe, arg = "", workDir, time, fmt) {
 async function runCompile(nFile) {
     const one = (nFile == null);        if (!runInit(one)) return;
     
-    const exe = root.config.main.compiler,   doc = vscode.window.activeTextEditor.document;
+    const exe = root.autoPath(root.config.main.compiler),   doc = vscode.window.activeTextEditor.document;
     
     try {  (root.config.smartPreprocessorJS && await PreprocessorJS());  }catch(e){  vscode.window.showErrorMessage(`Preprocessor JS => ${e}`);  }
 
@@ -155,7 +168,7 @@ async function runCompile(nFile) {
 async function runProgram(nFile) {
     const one = (nFile == null);        if (!runInit(one)) return;
     
-    const exe = root.config.main.programmer,   doc = vscode.window.activeTextEditor.document;
+    const exe = root.autoPath(root.config.main.programmer),   doc = vscode.window.activeTextEditor.document;
     const file = root.getMain(nFile || doc.fileName),   fn = getFName(file);
     
     if (!checkFileOut(fn + ".pbe") || !checkFileOut(fn + ".hex")) return;
@@ -188,8 +201,8 @@ async function runCombine() {
 
 
 function stopCompile() {
-    _process === null || _process === void 0 ? void 0 : _process.kill();
-    _statbar === null || _statbar === void 0 ? void 0 : _statbar.dispose();
+    (_process === null || _process === void 0) ? void 0 : require('tree-kill')(_process.pid);
+    (_statbar === null || _statbar === void 0) ? void 0 : _statbar.dispose();
     _isRunning = false;
 }
 
@@ -258,7 +271,7 @@ async function PreprocessorJS(doc) {
 
     const file = (fName, prm = 0) => {
         if (typeof prm === 'number') prm = [prm];
-        let r = '',   s = Array.isArray(prm),   f = fName.replace(/"/g, ''),   d = path.dirname(doc.fileName) + '\\';
+        let r = '',   s = Array.isArray(prm),   f = fName.replace(/"/g, ''),   d = path.dirname(doc.fileName) + path.sep;
         f = f.indexOf(':') === 1 ? f : d + f;       r = fs.readFileSync(f, !s ? prm : null);
         return (typeof r === 'string' || !s) ? r : chunk(r, prm);
     }

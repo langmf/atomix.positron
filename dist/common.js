@@ -203,11 +203,11 @@ function newTypes(value) {
 
 
 function findInclude(name, value) {
-    if (path.isAbsolute(name)) return root.checkFile(name);
+    name = root.autoPath(name);             if (path.isAbsolute(name)) return root.checkFile(name);
 
-    let result,  edt = vscode.window.activeTextEditor,  arr = [edt ? path.dirname(edt.document.fileName) + "\\" : ''];
+    let result,  edt = vscode.window.activeTextEditor,  arr = [edt ? path.dirname(edt.document.fileName) + path.sep : ''];
 
-    if (value) { value = value.endsWith("\\") ? value : value + "\\";    if (value !== arr[0]) arr.unshift(value); }
+    if (value) { value = value.endsWith(path.sep) ? value : value + path.sep;    if (value !== arr[0]) arr.unshift(value); }
 
     for (const x of [...arr,  ...Object.values(root.path.include)]) {
         if (Array.isArray(x)) { for (const v of x) if (result = root.checkFile(v + name)) return result; }
@@ -278,9 +278,9 @@ function getSymbols(input) {
         if (m[3] && m[3][0] === '*') help = [m[3]];
 
         if      (m[4] == null) continue;
-        else if (m[6])  d = { name: m[6],   id: "label",      local: 1  }
+        else if (m[6])  d = { name: m[6],   id: "label",    local: 1    }
         else if (m[7])  d = { name: m[7],   id: "end"                   }
-        else if (m[8])  d = { name: m[8],   id: "include",      ofs: 1  }            
+        else if (m[8])  d = { name: m[8],   id: "include",  ofs: 1      }            
         else if (m[9])  d = { name: m[9],   id: "proc",     members: {} }
         else if (m[11]) d = { name: m[12],  id: m[11].toLowerCase().replace(/^\w+[\t ]+/ig,''),   last: parseLast(m[13]),   local: 1  }
         else if (m[14]) d = { name: m[15],  id: m[14].toLowerCase().replace(/^\w+[\t ]+/ig,''),   last: parseLast(m[16])  }
@@ -303,7 +303,7 @@ function getSymbols(input) {
 
         if (d.members) {
             const id = 'prm',  type = getTypeFromID[id],  token = Tokens[type],  ofs = d.start + m[5].indexOf('(') + 1;
-            const r = /(?:\b(byval|byc?ref)[\t ]+)?(\w+)(?:[\t ]+as[\t ]+([^\,\t ]+))?/ig;
+            const r = /(?:\b(byval|byc?ref)[\t ]+)?(\w+)([\t ]*\[[^\]]+\])?(?:[\t ]+as[\t ]+([^\,\t ]+))?/ig;
 
             while ((v = r.exec(m[10])) !== null) {
                 const start = ofs + v.index,   end = start + v[0].length;
@@ -443,10 +443,7 @@ function getDevice(doc, skip = {}, result = []) {
 function openDevice(name) {
     if (name in cache_dev) return cache_dev[name];
 
-    const devFile = (fName, prf) => {
-        if (prf && !/\\rf/i.test(fName)) fName = fName.replace('\\', '\\' + prf);
-        try {  return fs.readFileSync(root.path.include.main + fName, 'utf-8');  } catch {} 
-    }
+    const devFile = (fName) => { try{  return fs.readFileSync(root.path.include.main + fName, 'utf-8');  }catch{} }
 
     const devSFR = (obj, type, rxp, txt) => {
         const items = {},  comps = [],  words = [],  token = Tokens[type],  kind  = Enums[type].com || 0;
@@ -459,10 +456,10 @@ function openDevice(name) {
         obj[type] = { items,  comps,  token,  words: words.join('|') };
     }
 
-    const obj = { name };
+    const obj = { name },  filename = DTB.files[name.toLowerCase()];
 
-    const ppi  = devFile("PPI\\"  + name + ".ppi", "P");    devSFR(obj, Types.devregs, PAT.EQU, PAT.PPI(ppi, "REG"));
-    const defs = devFile("Defs\\" + name + ".def");         devSFR(obj, Types.devbits, PAT.DEF, defs);
+    const ppi  = devFile("PPI" + path.sep + filename);              devSFR(obj, Types.devregs, PAT.EQU, PAT.PPI(ppi, "REG"));
+    const defs = devFile("Defs" + path.sep + name + ".def");        devSFR(obj, Types.devbits, PAT.DEF, defs);
 
     obj.$info = PAT.PPI(ppi, "INFO", {});
     obj.core  = obj.$info?.core;

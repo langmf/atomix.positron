@@ -67,12 +67,12 @@
     });
     
     const PrintSamples = async function(value, ext = '\.(bas)$') {
-        const el = $('#' + value.toLowerCase()),   getName = (v,e) => (v = v.split('\\').pop(), !e ? v : v.split(e).shift());
+        const el = $('#' + value.toLowerCase()),   getName = (v,e) => (v = v.split(/[\/\\]/).pop(), !e ? v : v.split(e).shift());
 
         const getSamples = function(x) {
             let res = '';
             for (const item of x) {
-                if (typeof item !== 'object') { res += `<li onclick="vscode_Eval().openDoc('${item.replace(/\\/g, '/')}')">${getName(item, '.')}</li>\n`;    continue; }
+                if (typeof item !== 'object') { res += `<li onclick="vscode_Eval().root.openDoc('${item.replace(/\\/g, '/')}')">${getName(item, '.')}</li>\n`;    continue; }
                 const [i] = Object.entries(item),  out = getSamples(i[1]);      if (out) res += '<li>' + getName(i[0]) + '\n<ul>\n' + out + '\n</ul>\n</li>\n';
                 
             }
@@ -83,7 +83,7 @@
         el.html('');
         el.append(getSamples(res));
         el.treed();
-        el.parent().parent().children().first().html(`<span style="cursor:pointer" onclick="vscode_Eval().openURL('${URI.file(URI.path.user + value)}')">${value}</span>`);
+        el.parent().parent().children().first().html(`<span style="cursor:pointer" onclick="openURL('${URI.file(URI.path.user + value)}')">${value}</span>`);
         
     }
 

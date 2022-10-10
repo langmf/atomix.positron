@@ -24,7 +24,7 @@ exports.$ = $;
 function getPPI() {
     try {
         return fs.readdirSync(root.path.include.main + "PPI").reduce((a,v) => { 
-            const m = v.match(/^P?([^.]+)\.ppi$/i);     if (m) a[m[1].toLowerCase()] = 1;     return a;
+            const m = v.match(/^P?([^.]+)\.ppi$/i);     if (m) a[m[1].toLowerCase()] = v;     return a;
         },{});
     } catch (e) { vscode.window.showErrorMessage(`Scan devices -> ${e}`); }
 }
@@ -35,7 +35,7 @@ function LoadDB(fName, fExit) {
 
     try {
         let      fn = root.checkFile(root.path.pds + fName);
-        if (!fn) fn = root.checkFile(root.extensionPath + '\\files\\' + fName);
+        if (!fn) fn = root.checkFile(root.extensionPath + '/files/' + fName);
         if (!fn) throw `Can't be opened!`;
         
         const text = fs.readFileSync(fn, 'utf-8').replace(/\/\*[\s\S]*?\*\//g, '');
@@ -137,8 +137,8 @@ if (0) {
             types };
 
         const res = JSON.stringify(obj, null, '\t').replace(/^([\t ]+"core":[\t ]+)"([^"]+)"/igm,'$1[$2]');
-        try{  text = fs.writeFileSync(__dirname + '\\' + path.parse(fName).name + '.json', res);  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
+        try{  text = fs.writeFileSync(__dirname + '/' + path.parse(fName).name + '.json', res);  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
     }
 
-    exportMCD(path.resolve(vscode.workspace.getConfiguration("pos").main.compiler, "..\\..\\") + "\\database.mcd");
+    exportMCD(path.resolve(vscode.workspace.getConfiguration("pos").main.compiler, "../../") + "/database.mcd");
 }
