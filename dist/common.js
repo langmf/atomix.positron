@@ -303,11 +303,12 @@ function getSymbols(input) {
 
         if (d.members) {
             const id = 'prm',  type = getTypeFromID[id],  token = Tokens[type],  ofs = d.start + m[5].indexOf('(') + 1;
-            const r = /(?:\b(byval|byc?ref)[\t ]+)?(\w+)([\t ]*\[[^\]]+\])?(?:[\t ]+as[\t ]+([^\,\t ]+))?/ig;
+            const r = /(?<=^|,)([\t ]*)(?:\b(byval|byc?ref)\b)?[\t ]*(\w*)[^,]*(?=$|,)/ig;
 
             while ((v = r.exec(m[10])) !== null) {
-                const start = ofs + v.index,   end = start + v[0].length;
-                res.push({ name:v[2],  id,  local:1,  start,  end,  type,  token,  code:v[0] });
+                if (!v[3]) { if (v.index === r.lastIndex) r.lastIndex++;      continue; }
+                const p = v[1].length,   start = ofs + v.index + p,   end = start + v[0].length - p;
+                res.push({ name:v[3],  id,  local:1,  start,  end,  type,  token,  code:v[0].substring(p) });
             }
         }
     }
