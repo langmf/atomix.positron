@@ -1,4 +1,7 @@
 
+## 2.0.6 - 2022-10-12
+- Various minor fixes.
+
 ## 2.0.4 - 2022-10-10
 - Added the ability to stop compilation using the "Terminate" button in the "Program is already running!" window.
 - Added the ability to work extension under Linux (You will need to install Wine for the compiler to work).

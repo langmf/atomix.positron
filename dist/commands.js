@@ -69,7 +69,7 @@ function outputCompiler(data, arg) {
     let res = parseACP(data),  a = getFName(arg.replace(/^\s*"(.+?)"\s*$/, "$1")) + '.asm';
     try {
         if (root.checkFile(a))
-        res = res.replace(/^(error\[\d+\][\t ]+).+?\\a\.s[\t ]+(\d+)[\t ]+:/ig,                   function(v,p,e)  {  return p + ' [file:///' + a.replace(/ /g, '%20') + '#' + e + '] :';    });
+        res = res.replace(/^(error\[\d+\][\t ]+).+?\\a\.s[\t ]+(\d+)[\t ]+:/igm,                  function(v,p,e)  {  return p + ' [file:///' + a.replace(/ /g, '%20') + '#' + e + '] :';    });
         res = res.replace(/([\t ]+line[\t ]+\[(\d+)\][\t ]+in[\t ]+)file[\t ]+\[([^\]]+)\]/ig,    function(v,p,e,f){  return p + ' [file:///' + f.replace(/ /g, '%20') + '#' + e + ']';      });
         res = res.replace(/(\d+)[\t ]+[a-z]+[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,      function(v,c,t)  {  return v + " (" + ((Number(c) / Number(t)) * 100).toFixed(2) + " %)";  });
         res = res.replace(/(?<=file:\/{3})\/+/ig, '');

@@ -243,7 +243,11 @@ exports.filterSymbols = filterSymbols;
 
 function getSymbols(input) {
     const getTypeFromID = Object.entries(Enums).reduce((a,[k,v]) => { for (let t of v.id) a[t] = k;   return a; }, {});
-    
+
+    const parseHelp = (v) => {
+        const x = v.match(/^([-=*]){8}/);      if (!x) (help && help.push(v));  else  help = (x[1] !== '-' && help) || [];
+    }
+
     const parseLast = (v) => {
         for (let q = 0, i = 0;  i < v.length;  i++) {
             if (v[i] === '"') q = !q;           if (q) continue;            if (v[i] === '\'' || v[i] === ';') return;
@@ -273,7 +277,7 @@ function getSymbols(input) {
 
     while ((m = rxp.exec(text)) !== null) {
         
-        if (m[2]) {  if (m[2].indexOf('----') === 0) help = [];  else if (help) help.push(m[2]);  }
+        if (m[2]) parseHelp(m[2]);
         
         if (m[3] && m[3][0] === '*') help = [m[3]];
 

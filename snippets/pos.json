@@ -40,7 +40,23 @@
 		],
 		"description": "new proc...",
 	},
-	
+
+	"New Proc and Description": {
+		"prefix": "Proc_Descr",
+		"body": [
+			"'-------------------------------------------------------------------------------",
+			"' Description",
+			"' Input     : None",
+			"' Output    : None",
+			"' Notes     : None",
+			"'",
+			"Proc ${1:Name}($2)",
+				"\t$0",
+			"EndProc"
+		],
+		"description": "new proc... and description",
+	},
+    
 	"New Sub": {
 		"prefix": "Sub",
 		"body": [
