@@ -37,12 +37,12 @@
 
 	<div class="col-sm-3 my-3 px-3">
 		<div class="card">
-			<div class="card-header bg-hdr text-center">Links</div>
+			<div class="card-header bg-hdr text-center" style="cursor:pointer" onclick="openURL('https://www.google.com/search?q=positron+compiler&newwindow=1')">Links</div>
 			<div class="card-body">
 				<ul>
-					<li><a href="https://rosettamicro.com">Positron Site</a></li>
+					<li><a href="https://sites.google.com/view/rosetta-tech/home">Positron Site</a></li>
 					<li><a href="https://protoncompiler.com">Positron Forum</a></li>
-					<li><a href="https://sites.google.com/view/rosetta-tech/home">Positron Old</a></li>
+					<li><a href="https://rosettamicro.com">Positron Site (beta)</a></li>
 					<li><a href="http://archive.protonbasic.co.uk/Files/">Proton Archive</a></li>
 					<li><a href="http://protoncompiler.com/index.php?action=profile;u=4">Les Johnson</a></li>
 				</ul>
@@ -63,7 +63,7 @@
 
 		card_doc.innerHTML = ATV_TPL(
 			`<% files.forEach(i => { %>
-				<li><a href="#" onclick="return openURL('<%= dir + i.name %>')"><%= i.name %></a></li>
+				<li><a href="#" onclick="return openURL('<%= URI.file(dir + i.name) %>')"><%= i.name %></a></li>
 			<% }); %>`,
 			{ dir, files }
 		);

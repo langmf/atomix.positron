@@ -69,7 +69,7 @@
 			},
 			{
 				"name": "As",
-				"hint": "<b>As</b><i> Bit or Byte or SByte or Word or SWord or Dword or SDword or Float or String or Code</i><br><b>As</b> <i>Constant Expression</i><br><b>As</b><i> Alias Name</i>"
+				"hint": "<b>As</b><i> Pin or Bit or Byte or SByte or Word or SWord or Long or Dword or SDword or Float or String or Code or Flash</i><br><b>As</b> <i>Constant Expression</i><br><b>As</b><i> Alias Name</i>"
 			},
 			{
 				"name": "At",
@@ -271,7 +271,7 @@
 				"name": "Num8,Num16,Num32,SNum8,SNum16,SNum32"
 			},
 			{
-				"name": "Label,Char,Code,Byte_Array_Ptr,Word_Array_Ptr,Dword_Array_Ptr,Flash,SByte_Array_Ptr,SWord_Array_Ptr,SDword_Array_Ptr"
+				"name": "Label,Char,Byte_Array_Ptr,Word_Array_Ptr,Dword_Array_Ptr,SByte_Array_Ptr,SWord_Array_Ptr,SDword_Array_Ptr"
 			}
 		],
 
@@ -324,6 +324,11 @@
 				"core": [14,16,24,33]
 			},
 			{
+				"name": "Code",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code</b> = <i>Comma Delimited any Constant Values held in Flash Memory</i>"
+			},
+			{
 				"name": "Code8",
 				"core": [14,16,24,33],
 				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Code8</b> = <i>Comma Delimited 8-bit Constant Values held in Flash Memory</i>"
@@ -354,6 +359,11 @@
 				"hint": "<b>Dim</b> <i>Table Name</i> <b>As CodeD</b> = <i>Comma Delimited 64-bit Floating Point Constant Values held in Flash Memory</i>"
 			},
 			{
+				"name": "Flash",
+				"core": [14,16,24,33],
+				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash</b> = <i>Comma Delimited any Constant Values held in Flash Memory</i>"
+			},
+			{
 				"name": "Flash8",
 				"core": [14,16,24,33],
 				"hint": "<b>Dim</b> <i>Table Name</i> <b>As Flash8</b> = <i>Comma Delimited 8-bit Constant Values held in Flash Memory</i>"
@@ -382,14 +392,6 @@
 				"name": "FlashD",
 				"core": [14,16,24,33],
 				"hint": "<b>Dim</b> <i>Table Name</i> <b>As FlashD</b> = <i>Comma Delimited 64-bit Floating Point Constant Values held in Flash Memory</i>"
-			},
-			{
-				"name": "Pin_A0...15, Pin_B0...15, Pin_C0...15, Pin_D0...15, Pin_E0...15, Pin_F0...15, Pin_G0...15, Pin_H0...15, Pin_J0...15",
-				"core": [14,16,24,33]
-			},
-			{
-				"name": "Pin_K0...7, Pin_L0...7",
-				"core": [14,16]
 			}
 		],
 
@@ -478,7 +480,8 @@
 				"hint": "<b>ISHex..ISHex8</b><i> Constant Value or Variable or Expression</i>"
 			},
 			{
-				"name": "Rep"
+				"name": "Rep",
+				"hint": "<b>Rep</b> c\\n<br><i>Character c repeated n times</i>"
 			},
 			{
 				"name": "EStr,CStr",

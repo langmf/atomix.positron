@@ -1,4 +1,8 @@
 
+## 2.0.7 - 2022-10-14
+- Fixed links in the "Positron About" window in the "Documents" tab.
+- Updated database file "main.json".
+
 ## 2.0.6 - 2022-10-12
 - Various minor fixes.
 
