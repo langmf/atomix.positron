@@ -512,8 +512,10 @@ function codeHTML(text, doc, mark, rep) {
 
     Object.entries(PAT.RXP.types).map(([k,v]) => keys[v.id] = k);
 
+    const cleanMark = (v) => v.replace(/[\\`*_{}[\]()#+\-.!]/g, '\\$&');
+
     const makeStyle = (id, txt) => {
-        let out = !(mark && esc) ? txt : txt.replace(/[\\`*_{}[\]()#+\-.!]/g, '\\$&');
+        let out = !(mark && esc) ? txt : cleanMark(txt);
         
         const s = styles[keys[id]] || {};       if (!s.enable) return out;
         
@@ -550,10 +552,10 @@ function codeHTML(text, doc, mark, rep) {
         return m;
     });
 
-    if (mark) text =  !esc ?  '<pre>' + text + '</pre>'  :  text.replace(/\t/g,    ()  => '&nbsp;'.repeat(6))
-                                                                .replace(/ {2,}/g, (m) => '&nbsp;'.repeat(m.length));
+    if (mark) text =  !esc ?  '<pre>' + text + '</pre>'  :  cleanMark(text).replace(/\t/g,    ()  => '&nbsp;'.repeat(6))
+                                                                           .replace(/ {2,}/g, (m) => '&nbsp;'.repeat(m.length));
     
-    return text.replace(/[\\]/g, '\\$&').replace(/\0(\d+)\0/g, (m,v) => res[v]);
+    return text.replace(/\0(\d+)\0/g, (m,v) => res[v]);
 }
 exports.codeHTML = codeHTML;
 

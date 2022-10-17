@@ -1,4 +1,7 @@
 
+## 2.0.8 - 2022-10-17
+- Fixed highlighting when displaying a Hover block.
+
 ## 2.0.7 - 2022-10-14
 - Fixed links in the "Positron About" window in the "Documents" tab.
 - Updated database file "main.json".

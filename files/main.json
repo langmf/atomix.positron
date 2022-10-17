@@ -38,7 +38,7 @@
 		"Keyword": [
 			{
 				"name": "Global",
-				"hint": "<b>Global <i>Dim</b></i> or <b>Global <i>Symbol</b></i>"
+				"hint": "<b>Global <i>Dim</i></b> or <b>Global <i>Symbol</i></b>"
 			},
 			{
 				"name": "Static",

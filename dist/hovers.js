@@ -5,6 +5,11 @@ const common  = require("./common");
 const DTB     = require("./database");
 
 
+function cleanMark(v) {
+    return v.replace(/[\\`*_{}[\]()#+\-.!]/g, '\\$&');
+}
+
+
 function getMarkdown(text, cb) {
     const mark = new vscode.MarkdownString();       mark.supportHtml = true;        mark.isTrusted   = true;
     if (cb) mark.appendCodeblock('');
@@ -48,7 +53,7 @@ function provideHover(doc, position) {
 
     const word2 = common.getWordRange(doc, position, /[-+*$#\w\d_]+/i),   i = DTB.find(word2, doc)
     
-    if (i && i.hint) return new vscode.Hover(getMarkdown(i.hint));
+    if (i && i.hint) return new vscode.Hover(getMarkdown(cleanMark(i.hint)));
 
 
     return null;
