@@ -10,12 +10,18 @@ const format  = require("./format");
 let legend;
 
 
-async function provideDocumentSemanticTokens(doc) {
+async function waitSymbols(doc) {
     await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', doc.uri);
     
     if (root.config.smartParentIncludes) {
-        const prt = root.getParent(doc);      if (prt) await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', vscode.Uri.file(prt));
+        const wpm = cache.get(doc).$?.wait;         if (wpm) { await wpm;    return; }
+        const prt = root.getParent(doc);            if (prt) await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', vscode.Uri.file(prt));
     }
+}
+
+
+async function provideDocumentSemanticTokens(doc) {
+    await waitSymbols(doc);
 
     const dtm = root.debugTime("sem", doc).begin();
 

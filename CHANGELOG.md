@@ -1,4 +1,7 @@
 
+## 2.0.9 - 2022-10-19
+- Improved work smart mode highlight for the included files from the parent file (when starting VSCode IDE).
+
 ## 2.0.8 - 2022-10-17
 - Fixed highlighting when displaying a Hover block.
 

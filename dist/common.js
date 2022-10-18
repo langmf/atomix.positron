@@ -73,9 +73,10 @@ function onDidChangeActiveTextEditor(editor) {
 }
 
 
-function onDidOpenTextDocument(doc) {
+async function onDidOpenTextDocument(doc) {
     if (!doc || doc.languageId !== 'pos') return;
     if (doc.fileName.startsWith('Untitled-'))  untitledHeader(doc);  else  PLG.load(PLG.file(doc.fileName));
+    if (!exports.isOpenFirst) await openFirst();
 }
 
 
@@ -87,9 +88,26 @@ function onDidChangeTextEditorSelection(sel) {
     if (sel.kind == null) openInclude(sel);
 }
 
+
 function setActive() {
     const tmo = Math.min(800, root.config.timeout.AutoFormat) * 0.9;        if (tmo <= 0) return;
     clearTimeout(setActive.tmr);            exports.active = true;          setActive.tmr = setTimeout(() => exports.active = false,  tmo);
+}
+
+
+async function openFirst() {
+    const grp = vscode.window.tabGroups.activeTabGroup,   tab = grp.activeTab;              exports.isOpenFirst = true;
+
+    if (root.config.smartParentIncludes) {
+        if (path.extname(tab.label).toLowerCase() === '.inc') {
+            const res = grp.tabs.filter(v => /\.bas$/i.test(v.label));
+            if (res.length) {
+                let rsv;             cache.get(tab.input).wait = new Promise(resolve => {rsv = resolve});
+                for (const v of res) await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', v.input.uri);
+                delete cache.get(tab.input).wait;          rsv();
+            }
+        }
+    }
 }
 
 
