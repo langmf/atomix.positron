@@ -290,7 +290,7 @@ function PS(_opts) {
     }
    
     this.play  = (value)        => this.run(`"&{$P=New-Object System.Media.SoundPlayer; $P.SoundLocation='${value}'; $P.playsync()}"`);
-    this.speak = (value)        => this.run(`"&{$V=New-Object -ComObject Sapi.spvoice; $V.volume=100; $V.rate=0; $V.speak('${value}')}"`);
+    this.speak = (value, vol)   => this.run(`"&{$V=New-Object -ComObject Sapi.spvoice; $V.volume=${vol ?? 50}; $V.rate=0; $V.speak('${value}')}"`);
     this.beep  = (freq, time)   => this.run(`[console]::beep(${freq || 1000},${time || 300})`);
     this.media = (value)        => this.run(`[System.Media.SystemSounds]::${value || 'Beep'}.Play()`);
 

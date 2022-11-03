@@ -1,4 +1,10 @@
 
+## 2.1.0 - 2022-11-03
+- Updated database file "main.json".
+- Fixed webpages not working in VSCode 1.7.3.
+- Added new setting of the editor ("Outline Collapse").
+  (version of VSCode IDE 1.7.3 is required and also developers have fixed keeping "Outline" panel when switching to another file).
+
 ## 2.0.9 - 2022-10-19
 - Improved work smart mode highlight for the included files from the parent file (when starting VSCode IDE).
 

@@ -3,8 +3,10 @@
 const vscode = require("vscode");
 const fs     = require("fs");
 const path   = require("path");
-const child  = require('child_process');
 const root   = require("./root");
+
+// can be used in external script files
+const child  = require('child_process');
 const DTB    = require("./database");
 const STS    = require("./settings");
 
@@ -35,11 +37,7 @@ class WebPanel {
 
         webview.onDidReceiveMessage(e => e.request ? this.vscode_Eval(e) : this[e.type](...(e.args || [])));
         
-        webview.html = Array.isArray(data) ? fileHTML(data[0]) : data;
-    }
-
-    webview_Loaded() {
-        if (this.onVisibleCallback) this.onVisibleCallback();
+        webview.html = Array.isArray(data) ? this.web_FILE(data[0]) : data;
     }
 
     async vscode_Eval(e) {
@@ -53,6 +51,19 @@ class WebPanel {
         this.panel.webview.postMessage(e);
     }
 
+    web_FILE(value) {
+        let text = '',   fn  = path.isAbsolute(value) ? value : path.join(root.extensionPath, 'web', path.extname(value) ? value : value + '.htm');
+        
+        const uri = (v) => this.panel.webview.asWebviewUri(vscode.Uri.file(v || '')).toString();
+
+        try   {   text = fs.readFileSync(fn, 'utf-8');   }
+        catch {   text = messageHTML();  }
+    
+        text = text.replace(/([\t ]+(?:href|src)[\t ]*=[\t ]*["'])file:\*!([^!]+)!/ig, (m,v,p) => {  return v + uri(root.objectPath(root.path, p));  });
+    
+        return text.replace(/^([\t ]*<head>)/im, '$1\n<base href="' + uri(path.dirname(fn)) + '/">');
+    }
+
     web_URI(value) {
         return this.panel.webview.asWebviewUri(vscode.Uri.file((value || '').replace(/\\/g,'/'))).toString();
     }
@@ -64,8 +75,13 @@ class WebPanel {
     sendMessage(msg, ...args) {
 		this.panel.webview.postMessage({ type: msg,  args });
     }
+
+    webview_Loaded() {
+        if (this.onVisibleCallback) this.onVisibleCallback();
+    }
 }
 exports.WebPanel = WebPanel;
+
 
 
 class WebPage {
@@ -93,24 +109,6 @@ class WebPage {
 }
 exports.WebPage = WebPage;
 
-
-function fileHTML(fName) {
-    let text = ''; 
-
-    const file = path.isAbsolute(fName) ? fName : path.join(root.extensionPath, 'web', path.extname(fName) ? fName : fName + '.htm');
-
-    try   {   text = fs.readFileSync(file, 'utf-8');   }
-    catch {   text = messageHTML();  }
-
-    text = text.replace(/([\t ]+(?:href|src)[\t ]*=[\t ]*["'])file:\*!([^!]+)!/ig, (m,v,p) => {
-        return v + vscode.Uri.file(root.objectPath(root.path, p)).with({ scheme: "vscode-resource" }).toString();
-    });
-
-    const webPath = vscode.Uri.file(path.dirname(file)).with({ scheme: "vscode-resource" }).toString() + '/';
-    
-    return text.replace(/^([\t ]*<head>)/im, `$1\n<base href="${webPath}">`);
-}
-exports.fileHTML = fileHTML;
 
 
 function messageHTML(text) {

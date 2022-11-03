@@ -76,6 +76,7 @@ const def_Editor = {
     "fontFamily":                       {  name: 'Font Family',                enum: ['Consolas', 'DejaVu Sans Mono', 'Lucida Console', 'Courier New', 'Segoe UI', 'Arial']  },
     "fontSize":                         {  name: 'Font Size',                  enum: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 36, 48, 72]    },
     "minimap.enabled":                  {  name: 'Mini Map',                   enum: [true, false]  },
+    "*outline.collapseItems":           {  name: 'Outline Collapse',           enum: ['alwaysCollapse', 'alwaysExpand']  },
     "rulers":                           {  name: 'Vertical Rulers',            enum: [[80], [120], [80, 120], [{"column":80,"color":"#FF00FF"},100,{"column":120,"color":"#FF0000"}]]  },
     "lineNumbers":                      {  name: 'Line Numbers',               enum: ['on', 'off', 'interval', 'relative']  },
     "guides.indentation":               {  name: 'Line Indentation',           enum: [true, false]  },
@@ -155,7 +156,7 @@ function Update_Editor(value) {
     const isNumeric = (num) => (typeof(num) === 'number' || typeof(num) === "string" && num.trim() !== '') && !isNaN(num);
 
     for (const [k,i] of Object.entries(value.editor)) {
-        const key = 'editor.' + k;
+        const key = k[0] === '*' ? k.substring(1) : 'editor.' + k;
 
         if (typeof i !== 'object') { delete value.editor[k];    cfg_pos[key] = undefined;    continue; }
 

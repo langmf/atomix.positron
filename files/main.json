@@ -392,6 +392,41 @@
 				"name": "FlashD",
 				"core": [14,16,24,33],
 				"hint": "<b>Dim</b> <i>Table Name</i> <b>As FlashD</b> = <i>Comma Delimited 64-bit Floating Point Constant Values held in Flash Memory</i>"
+			},
+			{
+				"name": "PSV",
+				"core": [14,16,24,33],
+				"hint": "<b>PSV</b><br><i><span style='color:#008000;'>Give the flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSV8",
+				"core": [14,16,24,33],
+				"hint": "<b>PSV8</b><br><i><span style='color:#008000;'>Give the 8-bit Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSV16",
+				"core": [14,16,24,33],
+				"hint": "<b>PSV16</b><br><i><span style='color:#008000;'>Give the 16-bit Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSV24",
+				"core": [14,16,24,33],
+				"hint": "<b>PSV24</b><br><i><span style='color:#008000;'>Give the 24-bit Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSV32",
+				"core": [14,16,24,33],
+				"hint": "<b>PSV32</b><br><i><span style='color:#008000;'>Give the 32-bit Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSVF",
+				"core": [14,16,24,33],
+				"hint": "<b>PSVF</b><br><i><span style='color:#008000;'>Give the 32-bit Floating Point Formatted flash memory table PSV visibility</span></i>"
+			},
+			{
+				"name": "PSVD",
+				"core": [14,16,24,33],
+				"hint": "<b>PSVD</b><br><i><span style='color:#008000;'>Give the 64-bit Double Formatted flash memory table PSV visibility</span></i>"
 			}
 		],
 
@@ -505,7 +540,12 @@
 			},
 			{
 				"name": "AddressOf",
-				"hint": "<i>Variable = </i><b>AddressOf</b><i> (Variable or Label)</i>"
+				"hint": "<i>Variable = </i><b>AddressOf</b><i>(Variable or Label)</i>"
+			},
+			{
+				"name": "PSV_AddressOf",
+				"core": [14,16,24,33],
+				"hint": "<i>Variable = </i><b>PSV_AddressOf</b><i>(Label)</i>"
 			},
 			{
 				"name": "ADIn",
@@ -2111,11 +2151,6 @@
 				"hint": "<b>HRSOut_Pace</b> = <i>1 to 65535 (us)</i>"
 			},
 			{
-				"name": "Hserial2_Baud",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial2_Baud</b> = <i>BaudRate for USART2</i>"
-			},
-			{
 				"name": "Hserial2_Clear",
 				"core": [14,16,24,33],
 				"hint": "<b>Hserial2_Clear</b> = <i>True or False</i><br><b>Hserial2_Clear</b> = <i>Yes or No</i><br><b>Hserial2_Clear</b> = <i>1 or 0</i>"
@@ -2146,11 +2181,6 @@
 				"hint": "<b>HRSOut2_Pace</b> = <i>1 to 65535 (us)</i>"
 			},
 			{
-				"name": "Hserial3_Baud",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial3_Baud</b> = <i>BaudRate for USART3</i>"
-			},
-			{
 				"name": "Hserial3_Clear",
 				"core": [14,16,24,33],
 				"hint": "<b>Hserial3_Clear</b> = <i>True or False</i><br><b>Hserial2_Clear</b> = <i>Yes or No</i><br><b>Hserial2_Clear</b> = <i>1 or 0</i>"
@@ -2164,11 +2194,6 @@
 				"name": "HRSOut3_Pace",
 				"core": [14,16,24,33],
 				"hint": "<b>HRSOut3_Pace</b> = <i>1 to 65535 (us)</i>"
-			},
-			{
-				"name": "Hserial4_Baud",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial4_Baud</b> = <i>BaudRate for USART4</i>"
 			},
 			{
 				"name": "Hserial4_Clear",
@@ -3568,8 +3593,16 @@
 				"hint": "<b>$SendMessage</b><br><br><i><span style='color:#008000;'>Preprocessor <b>Message</b> statement</span></i>"
 			},
 			{
+				"name": "$SendHint",
+				"hint": "<i>Send a Hint message to the user</i>"
+			},
+			{
+				"name": "$SendWarning",
+				"hint": "<i>Send a Warning message to the user</i>"
+			},
+			{
 				"name": "$SendError",
-				"hint": "<b>$SendError</b><br><br><i><span style='color:#008000;'>Preprocessor <b>Error</b> statement</span></i>"
+				"hint": "<i>Send an Error message to the user</i>"
 			},
 			{
 				"name": "$error",
@@ -3705,18 +3738,6 @@
 			{
 				"name": "_movffl",
 				"hint": "<i>Present in the def file if the device requires the Movffl mnemonic</i>"
-			},
-			{
-				"name": "$SendHint",
-				"hint": "<i>Send a Hint message to the user</i>"
-			},
-			{
-				"name": "$SendWarning",
-				"hint": "<i>Send a Warning message to the user</i>"
-			},
-			{
-				"name": "$SendError",
-				"hint": "<i>Send an Error message to the user</i>"
 			}
 		]
 	}
