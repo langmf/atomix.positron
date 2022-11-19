@@ -1953,7 +1953,7 @@
 				"hint": "<b>GLCD_Fast_Strobe</b> = <i>True or False</i><br><b>GLCD_Fast_Strobe</b> = <i>Yes or No</i><br><b>GLCD_Fast_Strobe</b> = <i>1 or 0</i>"
 			},
 			{
-				"name": "GLCD_Strobe_Delay, GLCD_Read_Delay",
+				"name": "GLCD_Strobe_Delay, GLCD_Read_Delay, GLCD_Low_level",
 				"core": [14,16,24,33]
 			},
 			{
