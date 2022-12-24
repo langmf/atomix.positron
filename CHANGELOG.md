@@ -1,4 +1,7 @@
 
+## 2.1.2 - 2022-12-24
+- Updated database file "main.json" (color has been changed for "KeywordCommand").
+
 ## 2.1.0 - 2022-11-03
 - Updated database file "main.json".
 - Fixed webpages not working in VSCode 1.7.3.

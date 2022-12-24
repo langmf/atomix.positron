@@ -23,7 +23,7 @@
 				"KeywordMain":          {  "foreground": "#D0D0D0",   "fontStyle": "bold"  },
 				"KeywordType":          {  "foreground": "#DDA0DD"                         },
 				"KeywordModifier":      {  "foreground": "#E9D3AB"                         },
-				"KeywordCommand":       {  "foreground": "#D0D0D0",   "fontStyle": "bold"  },
+				"KeywordCommand":       {  "foreground": "#87CEFA"                         },
 				"KeywordImportant":     {  "foreground": "#FF0000",   "fontStyle": "bold"  },
 				"KeywordMacro":         {  "foreground": "#D0D0D0"                         },
 				"KeywordDeclare":       {  "foreground": "#BC4F4F",   "fontStyle": "bold"  },
