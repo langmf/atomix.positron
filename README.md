@@ -34,6 +34,3 @@ provide not only syntax highlighting, but also basic snippets integration and au
 ## Snippets
 - Auto Indentation Rules
 - Many basic blocks
-
-## Version
-[![Version](https://vsmarketplacebadge.apphb.com/version/atomix.positron.svg)](https://marketplace.visualstudio.com/items?itemName=atomix.positron)
