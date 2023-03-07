@@ -82,7 +82,9 @@ async function onDidOpenTextDocument(doc) {
 
 function onDidChangeTextEditorSelection(sel) {
     if (sel.textEditor.document.languageId !== "pos") return;
+    
     const kind = vscode.TextEditorSelectionChangeKind;          setActive();
+    
     if (sel.kind == kind.Keyboard) return;
     if (sel.kind == kind.Mouse && root.config.output.ClickHide) OutputHide(1);
     if (sel.kind == null) openInclude(sel);
@@ -99,11 +101,16 @@ async function openFirst() {
     const grp = vscode.window.tabGroups.activeTabGroup,   tab = grp.activeTab;              exports.isOpenFirst = true;
 
     if (root.config.smartParentIncludes) {
-        if (path.extname(tab.label).toLowerCase() === '.inc') {
+        if (path.extname(tab.label).toLowerCase() === '.inc')
+        {
             const res = grp.tabs.filter(v => /\.bas$/i.test(v.label));
+            
             if (res.length) {
                 let rsv;             cache.get(tab.input).wait = new Promise(resolve => {rsv = resolve});
+
+                for (const v of res) await vscode.workspace.openTextDocument(v.input.uri)
                 for (const v of res) await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', v.input.uri);
+
                 delete cache.get(tab.input).wait;          rsv();
             }
         }

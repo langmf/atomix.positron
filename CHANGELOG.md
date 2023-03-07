@@ -1,4 +1,7 @@
 
+## 2.1.5 - 2023-03-07
+- Fixed that when starting VSCode, if the (*.inc) file was opened, then there was a large continuous load on the CPU.
+
 ## 2.1.2 - 2022-12-24
 - Updated database file "main.json" (color has been changed for "KeywordCommand").
 
