@@ -4,6 +4,7 @@ const vscode  = require("vscode");
 const root    = require("./root");
 const common  = require("./common");
 
+
 const $cache = {}
 
 const $last  = { name: '',  count: 0,  result: null }
@@ -11,7 +12,7 @@ const $last  = { name: '',  count: 0,  result: null }
 setInterval(() => {  $last.count = 0  }, 1000)      /* fixed circular call provideDocumentSymbols from only opened inc files when first open vscode */
 
 
-async function provideDocumentSymbols(doc, h)
+async function provideDocumentSymbols(doc)
 {
     const name = doc.fileName;                      if ($cache[name]) return $cache[name];
 

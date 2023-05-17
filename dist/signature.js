@@ -87,7 +87,7 @@ function provideSignatureHelp(doc, position, token, context) {
     result.activeSignature = context.activeSignatureHelp ? context.activeSignatureHelp.activeSignature : 0;
     result.activeParameter = caller.count;
     
-    const SEM = cache.get(doc).semantic,   items = SEM.items.$.doc,   T = common.Types;
+    const SEM = cache.get(doc).semantic,   items = SEM.items.$.idoc,   T = common.Types;
 
     const v = items[caller.name];
     if (v && (v.type === T.procedure || v.type === T.define)) {

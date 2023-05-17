@@ -1,4 +1,7 @@
 
+## 2.4.0 - 2023-05-17
+- Fixed highlighting when displaying a Hover block (VSCode v1.78).
+
 ## 2.1.5 - 2023-03-07
 - Fixed that when starting VSCode, if the (*.inc) file was opened, then there was a large continuous load on the CPU.
 

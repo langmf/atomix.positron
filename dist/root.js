@@ -49,7 +49,7 @@ function onDidChangeConfiguration() {
 
 exports.debugTime = (name, doc, force) => {
     return !exports.debug && !force ? { begin(){return this;}, end(){}, start(){}, stop(){} } : {
-        N:       name + (doc ? '  ' + doc.fileName.split(/[\/\\]/).pop() : ''),
+        N:       name + (doc ? '  ' + (doc?.fileName || doc).split(/[\/\\]/).pop() : ''),
         begin()  { console.time(this.N);     return this;   },
         end()    { console.timeEnd(this.N);                 },
         start()  { this.t0 = performance.now();             },

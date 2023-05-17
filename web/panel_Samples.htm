@@ -41,10 +41,19 @@
 
 <br />
 
-<div class="card mt-5 mb-3">
+<div class="card mt-5">
 	<div class="card-header bg-hdr text-center"></div>
 	<div class="card-body">
         <ul id="samples24"></ul>
+    </div>
+</div>
+
+<br />
+
+<div class="card mt-5 mb-3">
+	<div class="card-header bg-hdr text-center"></div>
+	<div class="card-body">
+        <ul id="includes"></ul>
     </div>
 </div>
 
@@ -91,6 +100,7 @@
             await URI.ready;
             await PrintSamples('Samples');
             await PrintSamples('Samples24');
+            await PrintSamples('Includes', '\.(inc)$');
             parse_ALL();
     });
 </script>

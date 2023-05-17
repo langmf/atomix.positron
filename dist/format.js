@@ -2,7 +2,6 @@
 
 const vscode  = require("vscode");
 const root    = require("./root");
-const cache   = require("./cache");
 const common  = require("./common");
 const PAT     = require("./patterns");
 const DTB     = require("./database");
@@ -11,7 +10,8 @@ const DTB     = require("./database");
 let tmr = {};
 
 
-function newValues(doc) {
+function newValues(doc)
+{
     if (root.IsAsmLst(doc)) return;
     if (root.config.timeout.AutoFormat <= 0) return;
     if (!vscode.window.activeTextEditor || doc.fileName !== vscode.window.activeTextEditor.document.fileName) return;
@@ -20,7 +20,8 @@ function newValues(doc) {
 exports.newValues = newValues;
 
 
-function Delay(doc, values) {
+function Delay(doc, values)
+{
     if (!values) return;  else  clearTimeout(tmr[doc.fileName]);
     
     tmr[doc.fileName] = setTimeout(() => {   
@@ -36,20 +37,19 @@ function Delay(doc, values) {
 exports.Delay = Delay;
 
 
-function Complete(values) {
+function Complete(values)
+{
     const res = [];
     for (const v of values) if (v.word !== v.name) res.push(new vscode.TextEdit(v.range, v.name));
     return res;
 }
 
 
-function Parse(doc, values = [], tokens) {
-    const files = common.parseDoc(doc),   SEM = cache.get(doc).semantic;
-    
-    let items,  words;
-
-    const newToken = (v, ofs, i = null) => {
-        if (i === null) i = items[v.toLowerCase()];           if (!i) return;
+function Parse(doc, values = [], tokens)
+{
+    const newToken = (v, ofs, items, i) =>
+    {
+        if (items) i = items[v.toLowerCase()];           if (!i) return;
         const range = new vscode.Range(doc.positionAt(ofs), doc.positionAt(ofs + v.length));
         if (tokens) tokens.push(range, i.token);
         if (values) values.push({ range,  word: v,  name: i.name });
@@ -61,14 +61,15 @@ function Parse(doc, values = [], tokens) {
 
         
     // -------------------------- parse PROC -------------------------
-    for (const p of Object.values(common.getProc(doc) || {})) {
+    for (const p of Object.values(common.getProc(doc) || {}))
+    {
         const k = Object.keys(p.members);           if (!k.length) continue;
         const b = doc.offsetAt(p.range.start);
         const e = doc.offsetAt(p.range.end);
         
-        let txt = tmp.substring(b, e);              items = p.members;
+        let txt = tmp.substring(b, e),  i = p.members;
 
-        txt = txt.replace(PAT.ALL(k), function(m,v,o){  newToken(m, b + o);     return ' '.repeat(m.length);  });
+        txt = txt.replace(PAT.ALL(k), function(m,v,o){  newToken(m, b + o, i);     return ' '.repeat(m.length);  });
 
         tmp = tmp.substring(0, b) + txt + tmp.substring(e);
     }
@@ -76,28 +77,12 @@ function Parse(doc, values = [], tokens) {
     const text = tmp;
 
 
-    // -------------------------- parse DOC --------------------------
-    items = {};
+    // --------------------- parse DOC, DEV, DTB ---------------------
+    const x = common.parseSEM(doc, true),   f = DTB.proto_find(doc)
 
-    for (const file of Object.values(files)) {
-        for (const type of Object.values(file.types)) Object.assign(items, type.$items)
-    }
-    
-    SEM.items.doc = items;              for (const m of PAT.FORMAT(text, Object.keys(items)))   newToken(m[1], m.index);
-    
-
-    // -------------------------- parse DEV --------------------------
-    items = {};     words = [];
-    
-    for (const sfr of common.getSFR(doc).filter(v => v.words)) {
-        Object.assign(items, sfr.items);    words.push(sfr.words);
-    }
-
-    SEM.items.dev = items;              for (const m of PAT.FORMAT(text, words.join('|')))      newToken(m[1], m.index);
-
-
-    // -------------------------- parse DTB --------------------------
-    const f = DTB.proto_find(doc);      for (const m of PAT.FORMAT(text, DTB.words(doc)))       newToken(m[1], m.index, f(m[1]));
+    for (const m of PAT.FORMAT(text, Object.keys(x.idoc)))      newToken(m[1],  m.index,  x.idoc);
+    for (const m of PAT.FORMAT(text, x.words.join('|')))        newToken(m[1],  m.index,  x.idev);
+    for (const m of PAT.FORMAT(text, DTB.words(doc)))           newToken(m[1],  m.index,  null,  f(m[1]));
 
 
     // ---------------------------------------------------------------
@@ -106,14 +91,8 @@ function Parse(doc, values = [], tokens) {
 exports.Parse = Parse;
 
 
-async function provideOnTypeFormattingEdits(doc, position, ch, options, token) {
-    return Complete(Parse(doc));
-}
-
-
-async function provideDocumentFormattingEdits(doc, options, token) {
-    return Complete(Parse(doc));
-}
+async function provideOnTypeFormattingEdits(doc, pos, ch, opt, token) {   return Complete(Parse(doc));   }
+async function provideDocumentFormattingEdits(doc, opt, token)        {   return Complete(Parse(doc));   }
 
 
 exports.default = () => [
