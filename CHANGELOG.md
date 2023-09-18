@@ -1,4 +1,7 @@
 
+## 2.4.1 - 2023-09-18
+- Improved display in the window "Positron Editor".
+
 ## 2.4.0 - 2023-05-17
 - Fixed highlighting when displaying a Hover block (VSCode v1.78).
 
