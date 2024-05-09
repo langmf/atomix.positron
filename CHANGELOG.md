@@ -1,4 +1,7 @@
 
+## 2.4.5 - 2024-05-09
+- Improved compilation processing algorithm.
+
 ## 2.4.1 - 2023-09-18
 - Improved display in the window "Positron Editor".
 

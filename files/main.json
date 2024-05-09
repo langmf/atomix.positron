@@ -1038,44 +1038,14 @@
 				"hint": "<b>HSerial4__ChangeBaud</b> <i>Baud Value Constant for USART4 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
 			},
 			{
-				"name": "HSerIn,HSerIn1",
+				"name": "HSerIn,HSerIn1,HSerIn2,HSerIn3,HSerIn4",
 				"core": [14,16,24,33],
 				"hint": "<b>HSerIn</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
 			},
 			{
-				"name": "HSerOut,HSerOut1",
+				"name": "HSerOut,HSerOut1,HSerOut2,HSerOut3,HSerOut4,HSerOutLn,HSerOut1Ln,HSerOut2Ln,HSerOut3Ln,HSerOut4Ln",
 				"core": [14,16,24,33],
 				"hint": "<b>HSerOut</b> <i>[Item {,Item}]</i>"
-			},
-			{
-				"name": "HSerIn2",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerIn2</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
-			},
-			{
-				"name": "HSerOut2",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerOut2</b> <i>[Item {,Item}]</i>"
-			},
-			{
-				"name": "HSerIn3",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerIn3</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
-			},
-			{
-				"name": "HSerOut3",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerOut3</b> <i>[Item {,Item}]</i>"
-			},
-			{
-				"name": "HSerIn4",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerIn4</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
-			},
-			{
-				"name": "HSerOut4",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerOut4</b> <i>[Item {,Item}]</i>"
 			},
 			{
 				"name": "HSerIn5",
@@ -1083,9 +1053,9 @@
 				"hint": "<b>HSerIn5</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
 			},
 			{
-				"name": "HSerOut6",
+				"name": "HSerOut5,HSerOut5Ln",
 				"core": [24,33],
-				"hint": "<b>HSerOut6</b> <i>[Item {,Item}]</i>"
+				"hint": "<b>HSerOut5</b> <i>[Item {,Item}]</i>"
 			},
 			{
 				"name": "I2CIn",
@@ -2676,7 +2646,7 @@
 			},
 			{
 				"name": "System,Access",
-				"core": [12,14,16],
+				"core": [12,14,16,24,33],
 				"hint": "<b>System</b><br><i><span style='color:#008000;'>Place the variable at the beginning of RAM, or in Access RAM on 18F devices</span></i>"
 			},
 			{
