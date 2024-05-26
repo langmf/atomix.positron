@@ -1,4 +1,9 @@
 
+## 2.4.7 - 2024-05-26
+- Added processing of command line arguments during compilation.
+- Added calling the "Compiler.cmd"   file instead of the compiler   if it is found in the source folder.
+- Added calling the "Programmer.cmd" file instead of the programmer if it is found in the source folder.
+
 ## 2.4.5 - 2024-05-09
 - Improved compilation processing algorithm.
 
@@ -174,7 +179,6 @@
 - Added enable header.
 - Added saving active tab on the settings page.
 - Added file processing "Positron.js" in the current folder.
-- Added file processing "Programmer.cmd" in the current folder.
 - Added version display and editing in the file (*.mci).
 
 ## 1.2.5 - 2022-02-09

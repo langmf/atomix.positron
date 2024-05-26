@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "2.4.5",
+	"version": "2.4.7",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -283,6 +283,11 @@
 					"default": "C:\\Program Files (x86)\\ProtonIDE\\PDS\\Loader.exe",
 					"description": "Path to loader for positron compiler"
 				},
+				"pos.main.compilerArgs": {
+					"type": "string",
+					"default": "",
+					"description": "Arguments for compiler. (Macro: ($exe$, $file$). Suffix: (-path, -base, -name, -ext). Example: $file-name$)"
+				},
 				"pos.main.programmer": {
 					"type": "string",
 					"default": "C:\\Program Files (x86)\\Microchip\\Pickit 2 v2\\pk2cmd.exe",
@@ -291,7 +296,7 @@
 				"pos.main.programmerArgs": {
 					"type": "string",
 					"default": "-L1 -H1 -R -J -E -M -PPIC$target-device$ -F\"$hex-filename$\" -B\"$exe-path$\"",
-					"description": "Arguments for programmer"
+					"description": "Arguments for programmer. (Macro: ($exe$, $file$). Suffix: (-path, -base, -name, -ext). Example: $file-name$)"
 				},
 				"pos.output.ClickHide": {
 					"type": "boolean",

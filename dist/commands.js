@@ -32,9 +32,9 @@ function getFName(fn = "")
 }
 
 
-function cmdFile(fn = "")
+function cmdFile(fn = "", nm)
 {
-    const cmd = path.dirname(fn) + path.sep + 'programmer.cmd';         if (root.checkFile(cmd))  return cmd
+    const cmd = path.dirname(fn) + path.sep + nm + '.cmd';         if (root.checkFile(cmd))  return cmd
 }
 
 
@@ -71,6 +71,16 @@ function parseBrace(v)
 }
 
 
+function parseArg(arg, exe, file, def)
+{  
+    const to  = { 'dir': 'path' }
+    const add = (x, p) => Object.entries(path.parse(x)).reduce((a,v) => (a[p + '-' + (to[v[0]] || v[0])] = v[1], a),   { [p]: x })
+
+    const obj = { ...add(file, 'file'),   ...add(exe, 'exe'),   ...def }
+
+    return arg.replace(/\$([\w\d\-_]+)\$/ig,  (m, k) => obj[k.toLowerCase()] || '')
+}
+
 
 function parseACP(data)
 {
@@ -95,10 +105,9 @@ function parseACP(data)
 }
 
 
-
 function outputCompiler(data, arg)
 {
-    let res = parseACP(data),  a = getFName(arg.replace(/^\s*"(.+?)"\s*$/, "$1")) + '.asm'
+    let res = parseACP(data),   m = arg.match(/^\s*"([^"]+)"/),   a = getFName((m && m[1]) || '') + '.asm'
 
     try {
         if (root.checkFile(a))
@@ -112,7 +121,6 @@ function outputCompiler(data, arg)
 
     return res
 }
-
 
 
 function runInit(clearOut = true)
@@ -142,10 +150,7 @@ async function run(exe, arg = "", workDir, time, fmt)
 {
     if (_isRunning)
     { 
-        vscode.window.showInformationMessage("Program is already running!", 'Terminate').then(s =>
-        {
-            if (s === 'Terminate')  stopCompile()
-        })
+        vscode.window.showInformationMessage("Program is already running!", 'Terminate').then(s => (s === 'Terminate' && stopCompile()))
 
         return
     }
@@ -209,21 +214,25 @@ async function runCompile(nFile)
     try {
         (root.config.smartPreprocessorJS && await PreprocessorJS())
     }
-    catch(e){    vscode.window.showErrorMessage(`Preprocessor JS => ${e}`)    }
+    catch (e) {    vscode.window.showErrorMessage(`Preprocessor JS => ${e}`)    }
 
     if (!(await saveFiles(doc)))  return
     
-    const file = root.getMain(nFile || doc.fileName),   dir = path.dirname(file);
+    const file = root.getMain(nFile || doc.fileName),   dir = path.dirname(file),   cmd = cmdFile(file, 'compiler')
+
+    const arg  = parseArg(root.config.main.compilerArgs,  exe,  file)
 
     const res  =
     {
         get pbe()   { return root.readFile(file, '', '.pbe')                },
-        get ok()    { return /^ +Program +Compiled +OK\./im.test(this.pbe)  }
+        get ok()    { return /^ +Program +Compiled +OK\./im.test(this.pbe)  },
+        output
     }
     
-    const data = { action: 'compile',  res,  one,  file,  dir,  exe,  arg: `"${file}"` }
+    const data = { action: 'compile',  res,  one,  file,  dir,  exe,  arg: `"${file}" ` + arg }
     
-    res.code = await plugins.command(data, false) || await run(data.exe,  data.arg,  data.dir,  data.time,  true)
+    res.code = await plugins.command(data, false) || (!cmd ? await run(data.exe,  data.arg,  data.dir,  data.time,  true) :
+                                                             await run(cmd,       data.arg,  data.dir,  data.time)        )
 
     res.code = await plugins.command(data, true)  || res.code
 
@@ -238,29 +247,27 @@ async function runCompile(nFile)
 
 async function runProgram(nFile)
 {
-    const one = (nFile == null);        if (!runInit(one)) return
+    const one  = (nFile == null);        if (!runInit(one)) return
     
-    const exe = root.autoPath(root.config.main.programmer),   doc = vscode.window.activeTextEditor.document
+    const exe  = root.autoPath(root.config.main.programmer),   doc = vscode.window.activeTextEditor.document
     const file = root.getMain(nFile || doc.fileName),   fn = getFName(file)
     
     if (!checkFileOut(fn + ".pbe") || !checkFileOut(fn + ".hex"))  return
     
     const txt  = fs.readFileSync(fn + ".pbe"),   dev = (/^\d{2}\w+/i.exec(txt))?.[0],   hex = fn + ".hex"
     
-    const arg  = root.config.main.programmerArgs
-                                                .replace(/\$hex-filename\$/ig,      hex)
-                                                .replace(/\$target-device\$/ig,     dev)
-                                                .replace(/\$exe-path\$/ig,          path.dirname(exe))
-    
-    const dir = path.dirname(file),   cmd = cmdFile(file)
-    
+    const dir  = path.dirname(file),   cmd = cmdFile(file, 'programmer')
+
+    const arg  = parseArg(root.config.main.programmerArgs,  exe,  file,  { 'target-device': dev,  'hex-filename' : hex })
+
     const res  =
     {
         get pbe()   { return root.readFile(file, '', '.pbe')                },
-        get ok()    { return /^ +Program +Compiled +OK\./im.test(this.pbe)  }
+        get ok()    { return /^ +Program +Compiled +OK\./im.test(this.pbe)  },
+        output
     }
 
-    const data = { action: 'program',  res, one,  file,  dir,  exe,  arg,  dev,  hex }
+    const data = { action: 'program',  res,  one,  file,  dir,  exe,  arg,  dev,  hex }
 
     res.code = await plugins.command(data, false) || (!cmd ? await run(data.exe,      data.arg,  data.dir,  data.time) :
                                                              await run(cmd,  `${dev} "${hex}"`,  data.dir,  data.time) )
