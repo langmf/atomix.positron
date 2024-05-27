@@ -87,7 +87,7 @@ function parseACP(data)
     let res = data.toString()
 
     try {
-        const cmd = (root.win ? '' : 'wine ') + 'reg query "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Nls\\CodePage" /v ACP'
+        const cmd = root.wine.cmd + 'reg query "HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Nls\\CodePage" /v ACP'
         
         let p = parseInt(child.execSync(cmd).toString().match(/(\d+)[\r\n]*$/))
         
@@ -110,10 +110,12 @@ function outputCompiler(data, arg)
     let res = parseACP(data),   m = arg.match(/^\s*"([^"]+)"/),   a = getFName((m && m[1]) || '') + '.asm'
 
     try {
-        if (root.checkFile(a))
-        res = res.replace(/^(error\[\d+\][\t ]+).+?\\a\.s[\t ]+(\d+)[\t ]+:/igm,                  function(v,p,e)  {  return p + ' [file:///' + a.replace(/ /g, '%20') + '#' + e + '] :';    })
+        const rep = (a) => root.autoPath(a.replace(/ /g, '%20'))
         
-        res = res.replace(/([\t ]+line[\t ]+\[(\d+)\][\t ]+in[\t ]+)file[\t ]+\[([^\]]+)\]/ig,    function(v,p,e,f){  return p + ' [file:///' + f.replace(/ /g, '%20') + '#' + e + ']';      })
+        if (root.checkFile(a))
+        res = res.replace(/^(error\[\d+\][\t ]+).+?\\a\.s[\t ]+(\d+)[\t ]+:/igm,                  function(v,p,e)  {  return p + ' [file:///' + rep(a) + '#' + e + '] :';    })
+        
+        res = res.replace(/([\t ]+line[\t ]+\[(\d+)\][\t ]+in[\t ]+)file[\t ]+\[([^\]]+)\]/ig,    function(v,p,e,f){  return p + ' [file:///' + rep(f) + '#' + e + ']';      })
         res = res.replace(/(\d+)[\t ]+[a-z]+[\t ]+used[\t ]+.+?[\t ]+possible[\t ]+(\d+)/ig,      function(v,c,t)  {  return v + " (" + ((Number(c) / Number(t)) * 100).toFixed(2) + " %)";  })
         res = res.replace(/(?<=file:\/{3})\/+/ig, '')
     }
@@ -167,7 +169,7 @@ async function run(exe, arg = "", workDir, time, fmt)
     
     let buf = Buffer.alloc(0),   cmd = `"${exe}" ${arg}`
 
-    if (!root.win && ['.cmd', '.exe'].includes(path.extname(exe || '').toLowerCase()))  cmd = 'wine ' + cmd
+    if (!root.win && ['.cmd', '.exe'].includes(path.extname(exe || '').toLowerCase()))  cmd = root.wine.cmd + cmd
 
     output.appendLine("[Running]  " + cmd)
     
@@ -214,7 +216,7 @@ async function runCompile(nFile)
     
     const file = root.getMain(nFile || doc.fileName),   dir = path.dirname(file),   cmd = cmdFile(file, 'compiler')
 
-    const arg  = parseArg(root.config.main.compilerArgs,  exe,  file)
+    const arg  = parseArg(root.config.main.compilerArgs,  exe,  file).trim() || `"${file}"`
 
     const res  =
     {
@@ -223,7 +225,7 @@ async function runCompile(nFile)
         output
     }
     
-    const data = { action: 'compile',  res,  one,  file,  dir,  exe,  arg: `"${file}" ` + arg }
+    const data = { action: 'compile',  res,  one,  file,  dir,  exe,  arg }
     
     res.code = await plugins.command(data, false) || (!cmd ? await run(data.exe,  data.arg,  data.dir,  data.time,  true) :
                                                              await run(cmd,       data.arg,  data.dir,  data.time)        )

@@ -1,5 +1,5 @@
 
-## 2.4.8 - 2024-05-27
+## 2.4.9 - 2024-05-28
 - Fixed processing of command file calls on Linux systems.
 
 ## 2.4.7 - 2024-05-26

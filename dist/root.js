@@ -8,6 +8,9 @@ const path   = require('path')
 const cache  = require("./cache")
 
 
+const wine_drive = os.homedir() + '/.wine/drive_c'
+
+
 exports.activate = (context) =>
 {
     exports.context       = context
@@ -24,23 +27,32 @@ function onDidChangeConfiguration()
     const cfg    = exports.config = vscode.workspace.getConfiguration('pos')
     const win    = exports.win = process.platform === 'win32'
     const ldr    = autoPath(cfg.main.compiler)
-    const usr    = os.homedir().split(/[\/\\]/).pop()
-    
+    const home   = os.homedir()
+
+    const wine   = {
+        cmd:   (win ? ''   : 'wine '),
+        drive: (win ? 'C:' : wine_drive),
+        user:  (win ? home : (wine_drive + '/users/' + home.split(/[\/\\]/).pop()))
+    }
+        
     const loader = path.dirname(ldr) + sep
     const pds    = path.resolve(ldr, '..' + sep + '..') + sep
     const ext    = exports.extensionPath + sep
-    const user   = os.homedir() + (win ? '' : '/.wine/drive_c/users/' + usr) + sep + 'PDS' + sep
-    
+    const user   = wine.user + sep + 'PDS' + sep
+
     exports.debug = cfg.x.DEBUG
+    
+    exports.wine = wine
 
     exports.path = {
         ext,
         pds,
         user,
+        home,
         loader,
         include: {
             loader,
-            user:   user + 'Includes' + sep,
+            user:   user   + 'Includes' + sep,
             main:   loader + 'Includes' + sep,
             src:    loader + 'Includes' + sep + 'Sources' + sep
         },
@@ -275,7 +287,7 @@ exports.objectPath = objectPath;
 
 function autoPath(fName)
 {
-    return exports.win ? fName.replace(/\//g, '\\') : fName.replace(/c:/ig, os.homedir() + "/.wine/drive_c").replace(/\\/g, '/')
+    return exports.win ? fName.replace(/\//g, '\\') : fName.replace(/c:/ig, wine_drive).replace(/z:/ig, '').replace(/\\/g, '/')
 }
 exports.autoPath = autoPath
 
