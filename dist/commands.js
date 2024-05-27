@@ -167,21 +167,15 @@ async function run(exe, arg = "", workDir, time, fmt)
     
     let buf = Buffer.alloc(0),   cmd = `"${exe}" ${arg}`
 
-    if (!root.win)
-    {
-        switch (path.extname(exe || '').toLowerCase())
-        {
-            case '.cmd':        cmd = 'wine cmd /c ' + cmd;     break
-            case '.exe':        cmd = 'wine ' + cmd;            break
-        }
-    }
+    if (!root.win && ['.cmd', '.exe'].includes(path.extname(exe || '').toLowerCase()))  cmd = 'wine ' + cmd
 
     output.appendLine("[Running]  " + cmd)
     
     exports.process = _process = child.spawn(cmd, [], {cwd: workDir, shell: true})
 
-    _process.stdout.on("data", data => {  if (fmt) buf = Buffer.concat([buf, data]);  else  output.append(data.toString())  })
-    _process.stderr.on("data", data => {  if (fmt) buf = Buffer.concat([buf, data]);  else  output.append(data.toString())  })
+    const ondata = (data) => {  if (fmt) buf = Buffer.concat([buf, data]);  else  output.append(data.toString())  }
+    
+    _process.stdout.on("data", ondata);		if (root.win) _process.stderr.on("data", ondata)
 
     _process.on("exit", code =>
     {

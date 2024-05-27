@@ -1,8 +1,11 @@
 
+## 2.4.8 - 2024-05-27
+- Fixed processing of command file calls on Linux systems.
+
 ## 2.4.7 - 2024-05-26
 - Added processing of command line arguments during compilation.
-- Added calling the "Compiler.cmd"   file instead of the compiler   if it is found in the source folder.
-- Added calling the "Programmer.cmd" file instead of the programmer if it is found in the source folder.
+- Added calling the "compiler.cmd"   file instead of the compiler   if it is found in the source folder.
+- Added calling the "programmer.cmd" file instead of the programmer if it is found in the source folder.
 
 ## 2.4.5 - 2024-05-09
 - Improved compilation processing algorithm.
