@@ -10,7 +10,7 @@ Full procedure support, and built in commands to do simple things like flash an 
 alphanumeric LCDs, etc... The list goes on..... It also produces code that is extremely fast, making use of even the smallest and least expensive of the PIC microcontrollers.
 The compilers also have a dedicated [user forum](https://protoncompiler.com) setup by the good people who use them.
 
-[Les Johnson (Writer and Creator of the Positron Compilers)](https://rosettamicro.com)
+[Les Johnson (Writer and Creator of the Positron Compilers)](https://sites.google.com/view/rosetta-tech/home)
 
 ## About
 This extension implements basic language features of Positron for [Visual Studio Code](https://code.visualstudio.com/) and

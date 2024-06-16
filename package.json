@@ -2,7 +2,7 @@
 	"name": "positron",
 	"displayName": "Positron",
 	"description": "Positron Language Support",
-	"version": "2.4.9",
+	"version": "2.5.0",
 	"publisher": "atomix",
 	"icon": "images/icon.png",
 	"engines": {
@@ -290,7 +290,7 @@
 				},
 				"pos.main.programmer": {
 					"type": "string",
-					"default": "C:\\Program Files (x86)\\Microchip\\Pickit 2 v2\\pk2cmd.exe",
+					"default": "C:\\Program Files (x86)\\Microchip\\Pickitminus\\pk2cmd.exe",
 					"description": "Path to programmer for program Flash-based PIC® Microcontroller Units"
 				},
 				"pos.main.programmerArgs": {
@@ -300,7 +300,7 @@
 				},
 				"pos.output.ClickHide": {
 					"type": "boolean",
-					"default": false,
+					"default": true,
 					"description": "Hide the panel (output, terminal, etc.) when the user clicks into a text editor."
 				},
 				"pos.output.DelayHide": {
@@ -411,7 +411,9 @@
 						"Beside",
 						"Active",
 						"One",
-						"Two"
+						"Two",
+						"Three",
+						"Four"
 					],
 					"default": "Beside",
 					"description": "Denotes a location of an editor in the window.",

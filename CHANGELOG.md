@@ -1,4 +1,8 @@
 
+## 2.5.0 - 2024-06-16
+- Minor updates and fixes.
+
+
 ## 2.4.9 - 2024-05-28
 - Fixed processing of command file calls on Linux systems.
 
