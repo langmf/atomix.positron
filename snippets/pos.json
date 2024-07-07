@@ -110,7 +110,8 @@
 		"prefix": "Else",
 		"body": [
 			"Else",
-				"\t${0:True}"
+				"\t$0",
+			"EndIf"
 		],
 		"description": "else...",
 	},

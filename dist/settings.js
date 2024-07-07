@@ -85,7 +85,7 @@ const def_Editor = {
     "suggestSelection":                 {  name: 'Select Suggestions',         enum: ['first', 'recentlyUsed', 'recentlyUsedByPrefix']  },
     "snippetSuggestions":               {  name: 'Snippet Suggestions',        enum: ['top', 'bottom', 'inline', 'none']  },
     "selectionHighlight":               {  name: 'Selection Highlight',        enum: [true, false]  },
-    "occurrencesHighlight":             {  name: 'Occurrences Highlight',      enum: [true, false]  },
+    "occurrencesHighlight":             {  name: 'Occurrences Highlight',      enum: ['off', 'singleFile', 'multiFile']  },
     "stickyScroll.enabled":             {  name: 'Sticky Scroll',              enum: [true, false]  },
     "formatOnType":                     {  name: 'Format On Type',             enum: [true, false]  },
     "formatOnSave":                     {  name: 'Format On Save',             enum: [true, false]  }
