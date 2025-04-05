@@ -85,7 +85,7 @@
 				"name": "exch"
 			},
 			{
-				"name": "fbcl, ff1l, ff1r, fbcl"
+				"name": "fbcl, ff1l, ff1r"
 			},
 			{
 				"name": "inc, inc2, ior"

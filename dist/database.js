@@ -11,7 +11,7 @@ exports.Init = () => {
     exports.main  = LoadDB('main.json');
     exports.asm   = LoadDB('asm.json', true);
     exports.files = getPPI() || {};
-    //compareMCD();
+    // compareMCD();
 }
 
 
@@ -31,7 +31,7 @@ function getPPI() {
 
 
 function LoadDB(fName, fExit) {
-    const obj = {},  prefix = exports.prefix;
+    const obj = {},  repJ = {},  prefix = exports.prefix;
 
     try {
         let      fn = root.checkFile(root.path.pds + fName);
@@ -39,7 +39,7 @@ function LoadDB(fName, fExit) {
         if (!fn) throw `Can't be opened!`;
         
         const text = fs.readFileSync(fn, 'utf-8').replace(/\/\*[\s\S]*?\*\//g, '');
-        obj.db = JSON.parse(text);
+        obj.db = JSON.parse(text, (k,v) => k === 'name' ? ((v in repJ) && console.log('RepJ: ', v), repJ[v] = 1, v) : v);
     }
     catch (e) { vscode.window.showErrorMessage(`"${fName}" -> ${e}`);    if (fExit) return; }
 
@@ -48,22 +48,28 @@ function LoadDB(fName, fExit) {
     obj.cache      = { comps:{},  words:{} };
     obj.items      = {};
 
-    for (const [type, arr] of Object.entries(obj.db.types)) {
-        const token = prefix + type.toLowerCase();
+    for (const [type, arr] of Object.entries(obj.db.types))
+    {
+        const items = obj.items,   token = prefix + type.toLowerCase();
         
-        for (const x of arr) {
+        for (const x of arr)
+        {
             const core = x.core,  hint = x.hint,  comp = x.comp,  sign = x.sign;
             
-            for (const name of x.name.split(',').map(v => v.trim()).filter(v => v)) {
+            for (const name of x.name.split(',').map(v => v.trim()).filter(v => v))
+            {
                 const m = name.match(/^(\w+?)(\d*)\.\.\.(\d+)(\w*)$/i);
                 
                 if (!m) {
-                    const word = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    obj.items[name.toLowerCase()] = { name,  word,  token,  core,  hint,  comp,  sign };
+                    const word = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),   n = name.toLowerCase();
+                    if (n in items) console.log('RepL: ', name);
+                    items[n] = { name,  word,  token,  core,  hint,  comp,  sign };
                 } else {
-                    for (let b = parseInt(m[2] || 0), e = parseInt(m[3]); b <= e; b++ ) {
-                        const word = m[1] + (m[2] || b ? b : '') + m[4]; 
-                        obj.items[word.toLowerCase()] = { name:word,  word,  token,  core,  hint,  comp,  sign };
+                    for (let b = parseInt(m[2] || 0), e = parseInt(m[3]); b <= e; b++ )
+                    {
+                        const word = m[1] + (m[2] || b ? b : '') + m[4],   n = word.toLowerCase();
+                        if (n in items) console.log('RepL: ', word);
+                        items[n] = { name:word,  word,  token,  core,  hint,  comp,  sign };
                     }
                 }
             }
@@ -113,10 +119,10 @@ function compareMCD() {
 
     try{  text = fs.readFileSync(root.path.pds + "database.mcd", 'utf-8');  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
     
-    const hdr = text.match(/^DATABASE([\s\S]+?)^KEY/m);
+    const hdr = text.match(/^DATABASE([\s\S]+?)^KEY/im);
     if (hdr) { for (const m of hdr[1].matchAll(/^([\w]+)[\t ]*=[\t ]*"?(\w+)"?/igm)) def[m[1].toLowerCase()] = m[2]; }
 
-    for (const m of text.matchAll(/^KEY[\t ]*\(([^\)]+)\)([\s\S]+?)^ENDKEY/gm)) {
+    for (const m of text.matchAll(/^KEY[\t ]*\(([^\)]+)\)([\s\S]+?)^ENDKEY/igm)) {
         let hint, core, tp;
         for (const x of m[2].matchAll(/^[\t ]+([\w]+)[\t ]*=[\t ]*(.+)$/igm)) {
             let v = x[2].trim();
@@ -138,17 +144,17 @@ function compareMCD() {
     const res = JSON.stringify(obj, null, '\t').replace(/^([\t ]+"core":[\t ]+)"([^"]+)"/igm,'$1[$2]');
     try{  text = fs.writeFileSync(__dirname + '/database.json', res);  }catch(e){  vscode.window.showErrorMessage(`${e}`);  }
 
-    const items = Object.assign({}, exports.main.items);
+    const repM = {},  items = Object.assign({}, exports.main.items);
 
     for (const [name, item] of Object.entries(obj.types)) {
         for (const i of item) {
             for (const k of i.name.split(',').map(v => v.trim()).filter(v => v)) {
                 const n = k.toLowerCase();
-                if ((n in items) || n.startsWith('pin_')) { delete items[n];    continue; }
-                console.log("Skip: ", k);
+                if ((n in items) || n.startsWith('pin_')) { delete items[n];    repM[n] = 1;    continue; }
+                console.log(n in repM ? "RepM: " : "Skip: ",  k);
             }
         }
     }
 
-    for (const i of Object.values(items)) console.log("Added: ", i.name);
+    for (const i of Object.values(items)) console.log("Add: ", i.name);
 }

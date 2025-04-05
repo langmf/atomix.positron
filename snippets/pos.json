@@ -74,6 +74,16 @@
 		],
 		"description": "Single-line If statement",
 	},
+
+	"Then": {
+		"prefix": "Then ",
+		"body": [
+			"Then",
+				"\t$0",
+			"EndIf"
+		],
+		"description": "Then block",
+	},
 	
 	"If Block": {
 		"prefix": "If ",

@@ -9,7 +9,7 @@
 				"KeywordMain":          {  "foreground": "#000000",   "fontStyle": "bold"  },
 				"KeywordType":          {  "foreground": "#000000",   "fontStyle": "bold"  },
 				"KeywordModifier":      {  "foreground": "#000000",   "fontStyle": "bold"  },
-				"KeywordCommand":       {  "foreground": "#000000",   "fontStyle": "bold"  },												
+				"KeywordCommand":       {  "foreground": "#000000",   "fontStyle": "bold"  },
 				"KeywordImportant":     {  "foreground": "#FF0000",   "fontStyle": "bold"  },
 				"KeywordMacro":         {  "foreground": "#000000"                         },
 				"KeywordDeclare":       {  "foreground": "#900000",   "fontStyle": "bold"  },
@@ -1023,39 +1023,19 @@
 				"hint": "<b>HSerial1__ChangeBaud</b> <i>Baud Value Constant for USART1 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
 			},
 			{
-				"name": "HSerial2_ChangeBaud",
+				"name": "HSerial2...4_ChangeBaud",
 				"core": [14,16,24,33],
-				"hint": "<b>HSerial2__ChangeBaud</b> <i>Baud Value Constant for USART2 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
+				"hint": "<b>HSerialX__ChangeBaud</b> <i>Baud Value Constant for USARTX {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
 			},
 			{
-				"name": "HSerial3_ChangeBaud",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerial3__ChangeBaud</b> <i>Baud Value Constant for USART3 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
-			},
-			{
-				"name": "HSerial4_ChangeBaud",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerial4__ChangeBaud</b> <i>Baud Value Constant for USART4 {, 0 or 1 to Display a hint message of the actual baud rate and error ratio}</i>"
-			},
-			{
-				"name": "HSerIn,HSerIn1,HSerIn2,HSerIn3,HSerIn4",
+				"name": "HSerIn,HSerIn1,HSerIn2,HSerIn3,HSerIn4,HSerIn5",
 				"core": [14,16,24,33],
 				"hint": "<b>HSerIn</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
 			},
 			{
-				"name": "HSerOut,HSerOut1,HSerOut2,HSerOut3,HSerOut4,HSerOutLn,HSerOut1Ln,HSerOut2Ln,HSerOut3Ln,HSerOut4Ln",
+				"name": "HSerOut,HSerOut1,HSerOut2,HSerOut3,HSerOut4,HSerOutLn,HSerOut1Ln,HSerOut2Ln,HSerOut3Ln,HSerOut4Ln,HSerOut5,HSerOut5Ln",
 				"core": [14,16,24,33],
 				"hint": "<b>HSerOut</b> <i>[Item {,Item}]</i>"
-			},
-			{
-				"name": "HSerIn5",
-				"core": [24,33],
-				"hint": "<b>HSerIn5</b> <i>{Timeout Value (in mS),} {Timeout Label,}  {ParityErrorLabel,} [{Modifier} Variable {, {Modifier} Variable}]</i>"
-			},
-			{
-				"name": "HSerOut5,HSerOut5Ln",
-				"core": [24,33],
-				"hint": "<b>HSerOut5</b> <i>[Item {,Item}]</i>"
 			},
 			{
 				"name": "I2CIn",
@@ -1745,19 +1725,6 @@
 				"hint": "<b>Asm</b> <i>{Asm Instructions} </i><b><span style='color:#808080;'> EndAsm</span></b>"
 			},
 			{
-				"name": "Auto_Heap_Arrays",
-				"hint": "Automatically make all Array variables in upper RAM to help conserve lower RAM for standard variables. <i>On or Off</i>"
-			},
-			{
-				"name": "Auto_Heap_Strings",
-				"hint": "Automatically make all String variables in upper RAM to help conserve lower RAM for standard variables. <i>On or Off</i>"
-			},
-			{
-				"name": "Auto_Variable_Arrange",
-				"core": [14,16,24,33],
-				"hint": "Allow the compiler to automatically arrange user variables. <i>On or Off</i>"
-			},
-			{
 				"name": "Config_Start",
 				"core": [16,24,33],
 				"hint": "<i>Start of Configuration Fuse Block</i>"
@@ -1797,8 +1764,46 @@
 				"hint": "<b>Exitm</b><br><br><i><span style='color:#008000;'>Exit a <b>Macro</b> prematurely</span></i>"
 			},
 			{
+				"name": "Access_Upper_64K",
+				"hint": "<b>Access_Upper_64K</b> = <i>True or False</i><br><b>Access_Upper_64K</b> = <i>Yes or No</i><br><b>Access_Upper_64K</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Auto_Context_Save",
+				"core": [14,16],
+				"hint": "<b>Auto_Context_Save</b> <i> On or Off</i>"
+			},
+			{
+				"name": "Auto_Variable_Bank_Cross",
+				"hint": "<b>Auto_Variable_Bank_Cross</b> = <i>True or False</i><br><b>Auto_Variable_Bank_Cross</b> = <i>Yes or No</i>,<br><b>Auto_Variable_Bank_Cross</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Auto_Heap_Arrays",
+				"hint": "Automatically make all Array variables in upper RAM to help conserve lower RAM for standard variables. <i>On or Off</i>"
+			},
+			{
+				"name": "Auto_Heap_Strings",
+				"hint": "Automatically make all String variables in upper RAM to help conserve lower RAM for standard variables. <i>On or Off</i>"
+			},
+			{
+				"name": "Auto_Variable_Arrange",
+				"core": [14,16,24,33],
+				"hint": "Allow the compiler to automatically arrange user variables. <i>On or Off</i>"
+			},
+			{
 				"name": "Actual_Banks",
 				"hint": "<b>Actual_Banks</b> = <i>0 to n</i>"
+			},
+			{
+				"name": "ADC_Resolution",
+				"hint": "<b>ADC_Resolution</b> = <i>  </i>"
+			},
+			{
+				"name": "Adin_Clock",
+				"hint": "<b>Adin_Clock</b> = <i>  </i>"
+			},
+			{
+				"name": "Adin_Type",
+				"hint": "<b>Adin_Type</b> = <i>  </i>"
 			},
 			{
 				"name": "Adin_Res",
@@ -1824,11 +1829,15 @@
 				"hint": "<b>Available_RAM</b> = <i>0 to n</i>"
 			},
 			{
-				"name": "Bank0...15_Start",
+				"name": "Bank_Resets",
+				"hint": "<b>Bank_Resets</b> = <i>  </i>"
+			},
+			{
+				"name": "Bank0...31_Start",
 				"hint": "<b>BankX_Start</b> = <i>0 to n</i>"
 			},
 			{
-				"name": "Bank0...15_End",
+				"name": "Bank0...31_End",
 				"core": [14,16,24,33],
 				"hint": "<b>BankX_End</b> = <i>0 to n</i>"
 			},
@@ -1862,6 +1871,58 @@
 				"hint": "<b>Byte_Math</b> = <i>True or False</i><br><b>Byte_Math</b> = <i>Yes or No</i><br><b>Byte_Math</b> = <i>1 or 0</i>"
 			},
 			{
+				"name": "Bus_DelayMs",
+				"hint": "<b>Bus_DelayMs</b> = <i>  </i>"
+			},
+			{
+				"name": "Bus_LSB_First",
+				"hint": "<b>Bus_LSB_First</b> = <i>  </i>"
+			},
+			{
+				"name": "Bus_SCL",
+				"hint": "<b>Bus_SCL</b> = <i>  </i>"
+			},
+			{
+				"name": "CF_AD_Port",
+				"hint": "<b>CF_AD_Port</b> = <i>  </i>"
+			},
+			{
+				"name": "CF_ADPORT_Mask",
+				"hint": "<b>CF_ADPORT_Mask</b> = <i>  </i>"
+			},
+			{
+				"name": "CF_CD1_Pin",
+				"hint": "<b>CF_CD1_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CF_CE1_Pin",
+				"hint": "<b>CF_CE1_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CF_DT_Port",
+				"hint": "<b>CF_DT_Port</b> = <i>Port</i> or <i>Port Name</i>"
+			},
+			{
+				"name": "CF_OE_Pin",
+				"hint": "<b>CF_OE_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CF_RDY_Pin",
+				"hint": "<b>CF_RDY_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CF_Read_Write_Inline",
+				"hint": "<b>CF_Read_Write_Inline</b> = <i>True or False</i><br><b>CF_Read_Write_Inline</b> = <i>Yes or No</i><br><b>CF_Read_Write_Inline</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "CF_RST_Pin",
+				"hint": "<b>CF_RST_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "CF_WE_Pin",
+				"hint": "<b>CF_WE_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
 				"name": "CCP1...10_Pin",
 				"core": [14,16,24,33],
 				"hint": "<b>CCPX_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
@@ -1876,16 +1937,24 @@
 				"hint": "<b>Count_Errors</b> = <i>True or False</i><br><b>Count_Errors</b> = <i>Yes or No</i><br><b>Count_Errors</b> = <i>1 or 0</i>"
 			},
 			{
-				"name": "Dead_Code_Remove",
-				"hint": "<b>Dead_Code_Remove</b> = <i>True or False</i><br><b>Dead_Code_Remove</b> = <i>Yes or No</i><br><b>Dead_Code_Remove</b> = <i>1 or 0</i>"
-			},
-			{
-				"name": "DMA",
-				"hint": "<b>DMA</b><br><i><span style='color:#008000;'>Place the variable in DMA RAM (if available)</span></i>"
+				"name": "Compiler_Start_Address",
+				"hint": "<b>Compiler_Start_Address</b> = <i>  </i>"
 			},
 			{
 				"name": "Create_Coff",
 				"hint": "<b>Create_Coff</b> = <i>True or False</i><br><b>Create_Coff</b> = <i>Yes or No</i><br><b>Create_Coff</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Dead_Code_Remove",
+				"hint": "<b>Dead_Code_Remove</b> = <i>True or False</i><br><b>Dead_Code_Remove</b> = <i>Yes or No</i><br><b>Dead_Code_Remove</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Debug_Req",
+				"hint": "<b>Debug_Req</b> = <i>  </i>"
+			},
+			{
+				"name": "DMA",
+				"hint": "<b>DMA</b><br><i><span style='color:#008000;'>Place the variable in DMA RAM (if available)</span></i>"
 			},
 			{
 				"name": "EEPROM_Size",
@@ -1893,9 +1962,37 @@
 				"hint": "<b>EEPROM_Size</b> = <i>The size of teh on-board EEPROM on the device (0 to 1024)</i>"
 			},
 			{
+				"name": "EEPROM_Address",
+				"hint": "<b>EEPROM_Address</b> = <i>  </i>"
+			},
+			{
+				"name": "EEPROM_Type",
+				"hint": "<b>EEPROM_Type</b> = <i>  </i>"
+			},
+			{
+				"name": "Float_Rounding_Code",
+				"hint": "<b>Float_Rounding_Code</b> = <i>  </i>"
+			},
+			{
+				"name": "FSR_Context_Save",
+				"hint": "<b>FSR_Context_Save</b> = <i>True or False</i><br><b>FSR_Context_Save</b> = <i>Yes or No</i><br><b>FSR_Context_Save</b> = <i>1 or 0</i>"
+			},
+			{
 				"name": "Flash_Capable",
 				"core": [14,16,24,33],
 				"hint": "<b>Flash_Capable</b> = <i>True or False</i><br><b>Flash_Capable</b> = <i>Yes or No</i><br><b>Flash_Capable</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Flash_Memory_Read_Switching",
+				"hint": "<b>Flash_Memory_Read_Switching</b> = <i>  </i>"
+			},
+			{
+				"name": "Flash_Tables_At_End",
+				"hint": "<b>Flash_Tables_At_End</b> = <i>  </i>"
+			},
+			{
+				"name": "Flash_Type",
+				"hint": "<b>Flash_Type</b> = <i>  </i>"
 			},
 			{
 				"name": "Float_Display_Type",
@@ -1911,6 +2008,14 @@
 				"name": "Font_Addr",
 				"core": [14,16,24,33],
 				"hint": "<b>Font_Addr</b> = <i>0 to 65535</i>"
+			},
+			{
+				"name": "GLCD_External_Print",
+				"hint": "<b>GLCD_External_Print</b> = <i>  </i>"
+			},
+			{
+				"name": "GLCD_Graphic_Pages",
+				"hint": "<b>GLCD_Graphic_Pages</b> = <i>  </i>"
 			},
 			{
 				"name": "GLCD_CS_Invert",
@@ -1966,54 +2071,39 @@
 				"hint": "<i>End of the Managed <b>High</b> Priority Hardware Interrupt Subroutine Block</i>"
 			},
 			{
-				"name": "HPWM1_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HPWM1_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"name": "Hints",
+				"hint": "<b>Hints</b> = <i>True or False</i><br><b>Hints</b> = <i>Yes or No</i><br><b>Hints</b> = <i>1 or 0</i>"
 			},
 			{
-				"name": "HPWM2_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HPWM2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"name": "HSCL_Pin,HSCL1_Pin",
+				"hint": "<b>HSCL_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP1 SCL line"
 			},
 			{
-				"name": "HPWM3_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HPWM3_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"name": "HSCL2_Pin",
+				"core": [16,24,33],
+				"hint": "<b>HSCL2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP2 SCL line"
 			},
 			{
-				"name": "HPWM4_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HPWM4_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"name": "HSDA_Pin,HSDA1_Pin",
+				"hint": "<b>HSDA_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP1 SDA line"
 			},
 			{
-				"name": "HPWM5_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HPWM5_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"name": "HSDA2_Pin",
+				"core": [24,33],
+				"hint": "<b>HSDA2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP2 SDA line"
 			},
 			{
-				"name": "HPWM6_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HPWM6_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"name": "HPWM_Channels",
+				"hint": "<b>HPWM_Channels</b> = <i>  </i>"
 			},
 			{
-				"name": "HPWM7_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HPWM7_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"name": "HPWM_Type",
+				"hint": "<b>HPWM_Type</b> = <i>  </i>"
 			},
 			{
-				"name": "HPWM8_Pin",
+				"name": "HPWM1...10_Pin",
 				"core": [14,16,24,33],
-				"hint": "<b>HPWM8_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "HPWM9_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HPWM9_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "HPWM10_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HPWM10_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"hint": "<b>HPWMX_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
 			},
 			{
 				"name": "HRSOut_Pin,HRSOut1_Pin",
@@ -2021,29 +2111,9 @@
 				"hint": "<b>HRSOut_Pin</b> = <i>Port.Pin or Pin Name for USART1 transmit</i>"
 			},
 			{
-				"name": "HRSOut2_Pin",
+				"name": "HRSOut2...6_Pin",
 				"core": [14,16,24,33],
-				"hint": "<b>HRSOut2_Pin</b> = <i>Port.Pin or Pin Name for USART2 transmit</i>"
-			},
-			{
-				"name": "HRSOut3_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HRSOut3_Pin</b> = <i>Port.Pin or Pin Name for USART3 transmit</i>"
-			},
-			{
-				"name": "HRSOut4_Pin",
-				"core": [14,16,24,33],
-				"hint": "<b>HRSOut4_Pin</b> = <i>Port.Pin or Pin Name for USART4 transmit</i>"
-			},
-			{
-				"name": "HRSOut5_Pin",
-				"core": [24,33],
-				"hint": "<b>HRSOut5_Pin</b> = <i>Port.Pin or Pin Name for USART5 transmit</i>"
-			},
-			{
-				"name": "HRSOut6_Pin",
-				"core": [24,33],
-				"hint": "<b>HRSOut6_Pin</b> = <i>Port.Pin or Pin Name for USART6 transmit</i>"
+				"hint": "<b>HRSOutX_Pin</b> = <i>Port.Pin or Pin Name for USARTX transmit</i>"
 			},
 			{
 				"name": "HRSIn_Pin,HRSIn1_Pin",
@@ -2051,29 +2121,35 @@
 				"hint": "<b>HRSIn_Pin</b> = <i>Port.Pin or Pin Name for USART1 receive</i>"
 			},
 			{
-				"name": "HRSIn2_Pin",
+				"name": "HRSIn2...6_Pin",
 				"core": [14,16,24,33],
-				"hint": "<b>HRSIn2_Pin</b> = <i>Port.Pin or Pin Name for USART2 receive</i>"
+				"hint": "<b>HRSInX_Pin</b> = <i>Port.Pin or Pin Name for USARTX receive</i>"
 			},
 			{
-				"name": "HRSIn3_Pin",
+				"name": "Hserial2_Auto_PPS",
+				"hint": "<b>Hserial2_Auto_PPS</b> = <i>True or False</i><br><b>Hserial2_Auto_PPS</b> = <i>Yes or No</i><b>Hserial2_Auto_PPS</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hserial4_Auto_PPS",
+				"hint": "<b>Hserial4_Auto_PPS</b> = <i>True or False</i><br><b>Hserial4_Auto_PPS</b> = <i>Yes or No</i><b>Hserial4_Auto_PPS</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hserial2...5_Auto_Setup",
+				"hint": "<b>HserialX_Auto_Setup</b> = <i>True or False</i><br><b>HserialX_Auto_Setup</b> = <i>Yes or No</i><br><b>HserialX_Auto_Setup</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Hserial2...4_Extended_Timeout",
+				"hint": "<b>HserialX_Extended_Timeout</b> = <i>  </i>"
+			},
+			{
+				"name": "HSerial_Terminator,HSerial1_Terminator",
 				"core": [14,16,24,33],
-				"hint": "<b>HRSIn3_Pin</b> = <i>Port.Pin or Pin Name for USART3 receive</i>"
+				"hint": "<b>HSerial1_Terminator</b> = <i>CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USART1 serial coms"
 			},
 			{
-				"name": "HRSIn4_Pin",
+				"name": "HSerial2...4_Terminator",
 				"core": [14,16,24,33],
-				"hint": "<b>HRSIn4_Pin</b> = <i>Port.Pin or Pin Name for USART4 receive</i>"
-			},
-			{
-				"name": "HRSIn5_Pin",
-				"core": [24,33],
-				"hint": "<b>HRSIn5_Pin</b> = <i>Port.Pin or Pin Name for USART5 receive</i>"
-			},
-			{
-				"name": "HRSIn6_Pin",
-				"core": [24,33],
-				"hint": "<b>HRSIn6_Pin</b> = <i>Port.Pin or Pin Name for USART6 receive</i>"
+				"hint": "<b>HSerialX_Terminator</b> <i> CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USARTX serial coms"
 			},
 			{
 				"name": "Hserial_Baud,Hserial1_Baud",
@@ -2081,29 +2157,24 @@
 				"hint": "<b>Hserial_Baud</b> = <i>BaudRate for USART1</i>"
 			},
 			{
-				"name": "Hserial2_Baud",
+				"name": "Hserial2...5_Baud",
 				"core": [14,16,24,33],
-				"hint": "<b>Hserial2_Baud</b> = <i>BaudRate for USART2</i>"
-			},
-			{
-				"name": "Hserial3_Baud",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial3_Baud</b> = <i>BaudRate for USART3</i>"
-			},
-			{
-				"name": "Hserial4_Baud",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial4_Baud</b> = <i>BaudRate for USART4</i>"
+				"hint": "<b>HserialX_Baud</b> = <i>BaudRate for USARTX</i>"
 			},
 			{
 				"name": "Hserial_Clear,Hserial1_Clear",
 				"core": [14,16,24,33],
 				"hint": "<b>Hserial_Clear</b> = <i>True or False</i><br><b>Hserial_Clear</b> = <i>Yes or No</i><br><b>Hserial_Clear</b> = <i>1 or 0</i>"
 			},
+						{
+				"name": "Hserial2...6_Clear",
+				"core": [14,16,24,33],
+				"hint": "<b>HserialX_Clear</b> = <i>True or False</i><br><b>HserialX_Clear</b> = <i>Yes or No</i><br><b>HserialX_Clear</b> = <i>1 or 0</i>"
+			},
 			{
-				"name": "Hserial_RCSTA,Hserial1_RCSTA",
-				"core": [14,16],
-				"hint": "<b>Hserial_RCSTA</b> = <i>0 to 255</i>"
+				"name": "Hserial2...6_Parity",
+				"core": [14,16,24,33],
+				"hint": "<b>HserialX_Parity</b> = <i>Odd or Even</i>"
 			},
 			{
 				"name": "Hserial_SPBRG,Hserial1_SPBRG",
@@ -2111,9 +2182,29 @@
 				"hint": "<b>Hserial_SPBRG</b> = <i>0 to 255</i>"
 			},
 			{
+				"name": "Hserial2...5_SPBRG",
+				"core": [14,16],
+				"hint": "<b>HserialX_SPBRG</b> = <i>0 to 255</i>"
+			},
+			{
+				"name": "Hserial_RCSTA,Hserial1_RCSTA",
+				"core": [14,16],
+				"hint": "<b>Hserial_RCSTA</b> = <i>0 to 255</i>"
+			},
+			{
+				"name": "Hserial2...5_RCSTA",
+				"core": [14,16],
+				"hint": "<b>HserialX_RCSTA</b> = <i>0 to 255</i>"
+			},
+			{
 				"name": "Hserial_TXSTA,Hserial1_TXSTA",
 				"core": [14,16],
 				"hint": "<b>Hserial_TXSTA</b> = <i>0 to 255</i>"
+			},
+			{
+				"name": "Hserial2...5_TXSTA",
+				"core": [14,16],
+				"hint": "<b>HserialX_TXSTA</b> = <i>0 to 255</i>"
 			},
 			{
 				"name": "HRSOut_Pace,HRSOut1_Pace",
@@ -2121,104 +2212,17 @@
 				"hint": "<b>HRSOut_Pace</b> = <i>1 to 65535 (us)</i>"
 			},
 			{
-				"name": "Hserial2_Clear",
+				"name": "HRSOut2...6_Pace",
 				"core": [14,16,24,33],
-				"hint": "<b>Hserial2_Clear</b> = <i>True or False</i><br><b>Hserial2_Clear</b> = <i>Yes or No</i><br><b>Hserial2_Clear</b> = <i>1 or 0</i>"
+				"hint": "<b>HRSOutX_Pace</b> = <i>1 to 65535 (us)</i>"
 			},
 			{
-				"name": "Hserial2_Parity",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial2_Parity</b> = <i>Odd or Even</i>"
+				"name": "I2C_Bus_SCL",
+				"hint": "<b>I2C_Bus_SCL</b> = <i>  </i>"
 			},
 			{
-				"name": "Hserial2_RCSTA",
-				"core": [14,16],
-				"hint": "<b>Hserial2_RCSTA</b> = <i>0 to 255</i>"
-			},
-			{
-				"name": "Hserial2_SPBRG",
-				"core": [14,16],
-				"hint": "<b>Hserial2_SPBRG</b> = <i>0 to 255</i>"
-			},
-			{
-				"name": "Hserial2_TXSTA",
-				"core": [14,16],
-				"hint": "<b>Hserial2_TXSTA</b> = <i>0 to 255</i>"
-			},
-			{
-				"name": "HRSOut2_Pace",
-				"core": [14,16,24,33],
-				"hint": "<b>HRSOut2_Pace</b> = <i>1 to 65535 (us)</i>"
-			},
-			{
-				"name": "Hserial3_Clear",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial3_Clear</b> = <i>True or False</i><br><b>Hserial2_Clear</b> = <i>Yes or No</i><br><b>Hserial2_Clear</b> = <i>1 or 0</i>"
-			},
-			{
-				"name": "Hserial3_Parity",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial3_Parity</b> = <i>Odd or Even</i>"
-			},
-			{
-				"name": "HRSOut3_Pace",
-				"core": [14,16,24,33],
-				"hint": "<b>HRSOut3_Pace</b> = <i>1 to 65535 (us)</i>"
-			},
-			{
-				"name": "Hserial4_Clear",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial4_Clear</b> = <i>True or False</i><br><b>Hserial2_Clear</b> = <i>Yes or No</i><br><b>Hserial2_Clear</b> = <i>1 or 0</i>"
-			},
-			{
-				"name": "Hserial4_Parity",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial4_Parity</b> = <i>Odd or Even</i>"
-			},
-			{
-				"name": "HRSOut4_Pace",
-				"core": [14,16,24,33],
-				"hint": "<b>HRSOut4_Pace</b> = <i>1 to 65535 (us)</i>"
-			},
-			{
-				"name": "Hserial5_Baud",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial5_Baud</b> = <i>BaudRate for USART5</i>"
-			},
-			{
-				"name": "Hserial5_Clear",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial5_Clear</b> = <i>True or False</i><br><b>Hserial5_Clear</b> = <i>Yes or No</i><br><b>Hserial5_Clear</b> = <i>1 or 0</i>"
-			},
-			{
-				"name": "Hserial5_Parity",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial5_Parity</b> = <i>Odd or Even</i>"
-			},
-			{
-				"name": "HRSOut5_Pace",
-				"core": [14,16,24,33],
-				"hint": "<b>HRSOut5_Pace</b> = <i>1 to 65535 (us)</i>"
-			},
-			{
-				"name": "Hserial6_Baud",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial6_Baud</b> = <i>BaudRate for USART6</i>"
-			},
-			{
-				"name": "Hserial6_Clear",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial6_Clear</b> = <i>True or False</i><br><b>Hserial6_Clear</b> = <i>Yes or No</i><br><b>Hserial6_Clear</b> = <i>1 or 0</i>"
-			},
-			{
-				"name": "Hserial6_Parity",
-				"core": [14,16,24,33],
-				"hint": "<b>Hserial6_Parity</b> = <i>Odd or Even</i>"
-			},
-			{
-				"name": "HRSOut6_Pace",
-				"core": [14,16,24,33],
-				"hint": "<b>HRSOut6_Pace</b> = <i>1 to 65535 (us)</i>"
+				"name": "I2C_Slow_Bus",
+				"hint": "<b>I2C_Slow_Bus</b> = <i>  </i>"
 			},
 			{
 				"name": "ICD_Req",
@@ -2246,76 +2250,20 @@
 				"hint": "<i>End of the Managed Hardware Interrupt Subroutine Block</i>"
 			},
 			{
+				"name": "Jump_To_Main",
+				"hint": "<b>Jump_To_Main</b> = <i>  </i>"
+			},
+			{
+				"name": "Keep_Hex_File",
+				"hint": "<b>Keep_Hex_File</b> = <i>True or False</i><br><b>Keep_Hex_File</b> = <i>Yes or No</i><b>Keep_Hex_File</b> = <i>1 or 0</i>"
+			},
+			{
 				"name": "Keypad_Port",
 				"hint": "<b>Keypad_Port</b> = <i>Port</i>"
 			},
 			{
-				"name": "Serial_Terminator",
-				"core": [14,16,24,33],
-				"hint": "<b>Serial_Terminator</b> = <i>CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for RSout serial coms"
-			},
-			{
-				"name": "Show_All_BitNames",
-				"core": [14,16,24,33],
-				"hint": "<b>Show_All_BitNames</b> = <i>On or Off</i><br>Show all SFR bit names in the Asm listing"
-			},
-			{
-				"name": "HSCL_Pin,HSCL1_Pin",
-				"hint": "<b>HSCL_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP1 SCL line"
-			},
-			{
-				"name": "HSCL2_Pin",
-				"core": [16,24,33],
-				"hint": "<b>HSCL2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP2 SCL line"
-			},
-			{
-				"name": "HSDA_Pin,HSDA1_Pin",
-				"hint": "<b>HSDA_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP1 SDA line"
-			},
-			{
-				"name": "HSDA2_Pin",
-				"core": [24,33],
-				"hint": "<b>HSDA2_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i><br>Chooses the pin to use for MSSP2 SDA line"
-			},
-			{
-				"name": "HSerial_Terminator,HSerial1_Terminator",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerial1_Terminator</b> = <i>CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USART1 serial coms"
-			},
-			{
-				"name": "HSerial2_Terminator",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerial2_Terminator</b> <i> CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USART2 serial coms"
-			},
-			{
-				"name": "HSerial3_Terminator",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerial3_Terminator</b> <i> CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USART3 serial coms"
-			},
-			{
-				"name": "HSerial4_Terminator",
-				"core": [14,16,24,33],
-				"hint": "<b>HSerial4_Terminator</b> <i> CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for USART4 serial coms"
-			},
-			{
-				"name": "Touch_DINPin",
-				"core": [24,33],
-				"hint": "<b>Touch_DINPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "Touch_DOUTPin",
-				"core": [24,33],
-				"hint": "<b>Touch_DOUTPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "Touch_CLKPin",
-				"core": [24,33],
-				"hint": "<b>Touch_CLKPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
-			},
-			{
-				"name": "Touch_CSPin",
-				"core": [24,33],
-				"hint": "<b>Touch_CSPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+				"name": "Label_Bank_Resets",
+				"hint": "<b>Label_Bank_Resets</b> = <i>True or False</i><br><b>Label_Bank_Resets</b> = <i>Yes or No</i><br><b>Label_Bank_Resets</b> = <i>1 or 0</i>"
 			},
 			{
 				"name": "LCD_CS1Pin",
@@ -2456,7 +2404,23 @@
 				"hint": "<i>End of the Managed <b>Low</b> Priority Hardware Interrupt Subroutine Block</i>"
 			},
 			{
+				"name": "Library_Core",
+				"hint": "<b>Library_Core</b> = <i>  </i>"
+			},
+			{
 				"name": "Lst_Prm_Type"
+			},
+			{
+				"name": "Max_Macro_Params",
+				"hint": "<b>Max_Macro_Params</b> = <i>  </i>"
+			},
+			{
+				"name": "MemWrite_Int_Control",
+				"hint": "<b>MemWrite_Int_Control</b> = <i>  </i>"
+			},
+			{
+				"name": "MSSP_Amount",
+				"hint": "<b>MSSP_Amount</b> = <i>  </i>"
 			},
 			{
 				"name": "MSSP_Type",
@@ -2467,6 +2431,10 @@
 				"name": "Onboard_ADC",
 				"core": [14,16,24,33],
 				"hint": "<b>Onboard_ADC</b> = <i>True or False</i><br><b>Onboard_ADC</b> = <i>Yes or No</i><br><b>Onboard_ADC</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Onboard_HPWM",
+				"hint": "<b>Onboard_HPWM</b> = <i>  </i>"
 			},
 			{
 				"name": "Onboard_UART",
@@ -2482,6 +2450,10 @@
 				"name": "Optimiser_Level",
 				"core": [14,16,24,33],
 				"hint": "<b>Optimiser_Level</b> = <i>0 to 3</i>"
+			},
+			{
+				"name": "Optimise_Bit_Test",
+				"hint": "<b>Optimise_Bit_Test</b> = <i>  </i>"
 			},
 			{
 				"name": "Page",
@@ -2517,6 +2489,22 @@
 				"name": "Prm_Count"
 			},
 			{
+				"name": "Proc_Enable",
+				"hint": "<b>Proc_Enable</b> = <i>  </i>"
+			},
+						{
+				"name": "PIC_Pages",
+				"hint": "<b>PIC_Pages</b> = <i>  </i>"
+			},
+			{
+				"name": "PPS",
+				"hint": "<b>PPS</b> = <i>  </i>"
+			},
+			{
+				"name": "PPS_Type",
+				"hint": "<b>PPS_Type</b> = <i>  </i>"
+			},
+			{
 				"name": "RAM_Bank",
 				"core": [12,14,16],
 				"hint": "<b>RAM_Bank</b> = <i>1 to 16</i>"
@@ -2529,10 +2517,6 @@
 			{
 				"name": "Reminders",
 				"hint": "<b>Reminders</b> = <i>True or False</i><br><b>Reminders</b> = <i>Yes or No</i><br><b>Reminders</b> = <i>1 or 0</i>"
-			},
-			{
-				"name": "Hints",
-				"hint": "<b>Hints</b> = <i>True or False</i><br><b>Hints</b> = <i>Yes or No</i><br><b>Hints</b> = <i>1 or 0</i>"
 			},
 			{
 				"name": "Reset_Bank",
@@ -2577,7 +2561,57 @@
 				"hint": "<b>RC5In_Pin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
 			},
 			{
+				"name": "RC5In_Extended",
+				"hint": "<b>RC5In_Extended</b> = <i>  </i>"
+			},
+			{
 				"name": "Return_Var,Return_Type"
+			},
+			{
+				"name": "Show_All_BitNames",
+				"core": [14,16,24,33],
+				"hint": "<b>Show_All_BitNames</b> = <i>On or Off</i><br>Show all SFR bit names in the Asm listing"
+			},
+			{
+				"name": "Serial_Terminator",
+				"core": [14,16,24,33],
+				"hint": "<b>Serial_Terminator</b> = <i>CR or CRLF or LFCR</i><br>Choose which set of characters will be used as a terminator for RSout serial coms"
+			},
+			{
+				"name": "Serial_Data",
+				"hint": "<b>Serial_Data</b> = <i>  </i>"
+			},
+			{
+				"name": "Signed_Dword_Terms",
+				"hint": "<b>Signed_Dword_Terms</b> = <i>  </i>"
+			},
+			{
+				"name": "Signed_Right_Shifts",
+				"hint": "<b>Signed_Right_Shifts</b> = <i>  </i>"
+			},
+			{
+				"name": "Single_Bank_Model",
+				"hint": "<b>Single_Bank_Model</b> = <i>  </i>"
+			},
+			{
+				"name": "Single_Page_Model",
+				"hint": "<b>Single_Page_Model</b> = <i>  </i>"
+			},
+			{
+				"name": "Stamp_Compatible_Cos",
+				"hint": "<b>Stamp_Compatible_Cos</b> = <i>True or False</i><br><b>Stamp_Cos</b> = <i>Yes or No</i><br><b>Stamp_Cos</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Stamp_Compatible_Sin",
+				"hint": "<b>Stamp_Compatible_Sin</b> = <i>True or False</i><br><b>Stamp_Sin</b> = <i>Yes or No</i><br><b>Stamp_Sin</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Stamp_Compatible_Sqr",
+				"hint": "<b>Stamp_Compatible_Sqr</b> = <i>True or False</i><br><b>Stamp_Sqr</b> = <i>Yes or No</i><br><b>Stamp_Sqr</b> = <i>1 or 0</i>"
+			},
+			{
+				"name": "Str_NullTerminate",
+				"hint": "<b>Str_NullTerminate</b> = <i>True or False</i><br><b>Str_NullTerminate</b> = <i>Yes or No</i><br><b>Str_NullTerminate</b> = <i>1 or 0</i>"
 			},
 			{
 				"name": "Sonyin_Pin",
@@ -2646,12 +2680,35 @@
 			},
 			{
 				"name": "System,Access",
-				"core": [12,14,16,24,33],
 				"hint": "<b>System</b><br><i><span style='color:#008000;'>Place the variable at the beginning of RAM, or in Access RAM on 18F devices</span></i>"
+			},
+			{
+				"name": "Touch_DINPin",
+				"core": [24,33],
+				"hint": "<b>Touch_DINPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "Touch_DOUTPin",
+				"core": [24,33],
+				"hint": "<b>Touch_DOUTPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "Touch_CLKPin",
+				"core": [24,33],
+				"hint": "<b>Touch_CLKPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
+			},
+			{
+				"name": "Touch_CSPin",
+				"core": [24,33],
+				"hint": "<b>Touch_CSPin</b> = <i>Port.Pin</i> or <i>Pin Name</i>"
 			},
 			{
 				"name": "TRIS_Offset",
 				"hint": "<b>TRIS_Offset</b> = <i>The difference between a PORT's address and its TRIS address</i>"
+			},
+			{
+				"name": "TRIS_Reverse",
+				"hint": "<b>TRIS_Reverse</b> = <i>  </i>"
 			},
 			{
 				"name": "USB_Class_File",
@@ -2687,6 +2744,30 @@
 				"name": "USBOut_Auto_Poll",
 				"core": [16],
 				"hint": "<b>USBOut_Auto_Poll</b> = <i>True or False</i><br><i><span style='color:#008000;'>Enable\\Disable Auto polling within the USBOut command</span></i>"
+			},
+			{
+				"name": "USB_Count_Errors",
+				"hint": "<b>USB_Count_Errors</b> = <i>  </i>"
+			},
+			{
+				"name": "USB_Type",
+				"hint": "<b>USB_Type</b> = <i>  </i>"
+			},
+			{
+				"name": "USBIn_Buffer_Length",
+				"hint": "<b>USBIn_Buffer_Length</b> = <i>  </i>"
+			},
+			{
+				"name": "USBIn_Buffer_Start",
+				"hint": "<b>USBIn_Buffer_Start</b> = <i>  </i>"
+			},
+			{
+				"name": "USBOut_Buffer_Length",
+				"hint": "<b>USBOut_Buffer_Length</b> = <i>  </i>"
+			},
+			{
+				"name": "USBOut_Buffer_Start",
+				"hint": "<b>USBOut_Buffer_Start</b> = <i>  </i>"
 			},
 			{
 				"name": "UnHandled",
@@ -2822,20 +2903,6 @@
 			{
 				"name": "#Disable",
 				"hint": "<b>#Disable</b> <i><span style='color:#008000;'> Command Library Routines to Disable</span></i>"
-			},
-			{
-				"name": "Auto_Context_Save",
-				"core": [14,16],
-				"hint": "<b>Auto_Context_Save</b> <i> On or Off</i>"
-			},
-			{
-				"name": "Auto_Variable_Bank_Cross, Access_Upper_64K, Proc_Enable"
-			},
-			{
-				"name": "FSR_CONTEXT_SAVE, LABEL_BANK_RESET"
-			},
-			{
-				"name": "MemWrite_Int_Control, Compiler_Start_Address"
 			}
 		],
 
@@ -2973,7 +3040,7 @@
 			},
 			{
 				"name": "Daw",
-				"core": [14,16]
+				"core": [14,16,24,33]
 			},
 			{
 				"name": "Dcfsnz",
@@ -3548,7 +3615,7 @@
 				"hint": "<i>Crystal frequency used</i>"
 			},
 			{
-				"name": "_PIC24E, _PIC24F, _PIC24H, _dsPIC33CK, _dsPIC33CH, _dsPIC33E, _dsPIC33F",
+				"name": "_PIC24E,_PIC24F,_PIC24H,_dsPIC33E,_dsPIC33F,_dsPIC33CH,_dsPIC33CK",
 				"hint": "<i>Microcontroller type</i>"
 			},
 			{

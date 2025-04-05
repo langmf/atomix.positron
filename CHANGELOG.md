@@ -1,4 +1,7 @@
 
+## 2.7.0 - 2025-04-05
+- Updated database file "main.json"
+
 ## 2.5.1 - 2024-07-07
 - Minor updates.
 
