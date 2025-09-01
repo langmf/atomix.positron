@@ -73,22 +73,23 @@ const def_Header =
 `;
 
 const def_Editor = {
-    "fontFamily":                       {  name: 'Font Family',                enum: ['Consolas', 'DejaVu Sans Mono', 'Lucida Console', 'Courier New', 'Segoe UI', 'Arial']  },
-    "fontSize":                         {  name: 'Font Size',                  enum: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 36, 48, 72]    },
-    "minimap.enabled":                  {  name: 'Mini Map',                   enum: [true, false]  },
-    "*outline.collapseItems":           {  name: 'Outline Collapse',           enum: ['alwaysCollapse', 'alwaysExpand']  },
-    "rulers":                           {  name: 'Vertical Rulers',            enum: [[80], [120], [80, 120], [{"column":80,"color":"#FF00FF"},100,{"column":120,"color":"#FF0000"}]]  },
-    "lineNumbers":                      {  name: 'Line Numbers',               enum: ['on', 'off', 'interval', 'relative']  },
-    "guides.indentation":               {  name: 'Line Indentation',           enum: [true, false]  },
-    "scrollBeyondLastLine":             {  name: 'Scroll LastLine',            enum: [true, false]  },
-    "quickSuggestions":                 {  name: 'Quick Suggestions',          enum: [false]        },
-    "suggestSelection":                 {  name: 'Select Suggestions',         enum: ['first', 'recentlyUsed', 'recentlyUsedByPrefix']  },
-    "snippetSuggestions":               {  name: 'Snippet Suggestions',        enum: ['top', 'bottom', 'inline', 'none']  },
-    "selectionHighlight":               {  name: 'Selection Highlight',        enum: [true, false]  },
-    "occurrencesHighlight":             {  name: 'Occurrences Highlight',      enum: ['off', 'singleFile', 'multiFile']  },
-    "stickyScroll.enabled":             {  name: 'Sticky Scroll',              enum: [true, false]  },
-    "formatOnType":                     {  name: 'Format On Type',             enum: [true, false]  },
-    "formatOnSave":                     {  name: 'Format On Save',             enum: [true, false]  }
+    "fontFamily":                   {  name: 'Font Family',                 enum: ['Consolas', 'DejaVu Sans Mono', 'Lucida Console', 'Courier New', 'Segoe UI', 'Arial']  },
+    "fontSize":                     {  name: 'Font Size',                   enum: [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 36, 48, 72]    },
+    "minimap.enabled":              {  name: 'Mini Map',                    enum: [true, false]  },
+    "*outline.collapseItems":       {  name: 'Outline Collapse',            enum: ['alwaysCollapse', 'alwaysExpand']  },
+    "rulers":                       {  name: 'Vertical Rulers',             enum: [[80], [120], [80, 120], [{"column":80,"color":"#FF00FF"},100,{"column":120,"color":"#FF0000"}]]  },
+    "lineNumbers":                  {  name: 'Line Numbers',                enum: ['on', 'off', 'interval', 'relative']  },
+    "guides.indentation":           {  name: 'Line Indentation',            enum: [true, false]  },
+    "scrollBeyondLastLine":         {  name: 'Scroll LastLine',             enum: [true, false]  },
+    "quickSuggestions":             {  name: 'Quick Suggestions',           enum: [false]        },
+    "quickSuggestionsDelay":        {  name: 'Quick Suggestions Delay',     enum: [500, 700, 900]},
+    "suggestSelection":             {  name: 'Select Suggestions',          enum: ['first', 'recentlyUsed', 'recentlyUsedByPrefix']  },
+    "snippetSuggestions":           {  name: 'Snippet Suggestions',         enum: ['top', 'bottom', 'inline', 'none']  },
+    "selectionHighlight":           {  name: 'Selection Highlight',         enum: [true, false]  },
+    "occurrencesHighlight":         {  name: 'Occurrences Highlight',       enum: ['off', 'singleFile', 'multiFile']  },
+    "stickyScroll.enabled":         {  name: 'Sticky Scroll',               enum: [true, false]  },
+    "formatOnType":                 {  name: 'Format On Type',              enum: [true, false]  },
+    "formatOnSave":                 {  name: 'Format On Save',              enum: [true, false]  }
 }
 
 

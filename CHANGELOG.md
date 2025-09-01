@@ -1,3 +1,6 @@
+## 2.8.0 - 2025-09-01
+- Added new setting of the editor ("Quick Suggestions Delay").
+- Fixed that when clicking on a tree of the included files, they did not open.
 
 ## 2.7.0 - 2025-04-05
 - Updated database file "main.json"

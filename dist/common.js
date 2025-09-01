@@ -100,7 +100,7 @@ function onDidChangeTextEditorSelection(sel)
     
     if (sel.kind == kind.Keyboard)                              return
     if (sel.kind == kind.Mouse && root.config.output.ClickHide) OutputHide(1)
-    if (sel.kind == null)                                       openInclude(sel)
+    if (sel.kind == kind.Command)                               openInclude(sel)
 }
 
 
