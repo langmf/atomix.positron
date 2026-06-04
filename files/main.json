@@ -37,6 +37,9 @@
 	"types": {
 		"Keyword": [
 			{
+				"name": "Default"
+			},
+			{
 				"name": "Global",
 				"hint": "<b>Global <i>Dim</i></b> or <b>Global <i>Symbol</i></b>"
 			},
@@ -167,7 +170,7 @@
 			},
 			{
 				"name": "Case",
-				"hint": "<b>Case</b> <i>Constant or Variable or Expression</i>"
+				"hint": "<b>Case</b> <i>Constant or Variable or Expression</i><br><b>Case Else</b><br><b>Case Default</b>"
 			},
 			{
 				"name": "If",
@@ -179,7 +182,7 @@
 			},
 			{
 				"name": "Else",
-				"hint": "<b>Else</b> <i> {Instructions}</i>"
+				"hint": "<b>Else</b> <i> {Instructions}</i><br><b>Case Else</b>"
 			},
 			{
 				"name": "ElseIf",
@@ -3357,6 +3360,10 @@
 			{
 				"name": "Add",
 				"core": [14,16,24,33]
+			},
+			{
+				"name": "All_WREG",
+				"core": [24,33]
 			},
 			{
 				"name": "Addc",

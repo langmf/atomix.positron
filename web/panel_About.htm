@@ -20,28 +20,28 @@
 	<h4 id="extver" style="cursor:pointer" onclick="openURL(URI.path.ext)">Positron extension v</h4>
 </div>
 
-<div class="row justify-content-between">
-	<div class="col-sm-4 my-3 px-3">
+<div class="row gap-3">
+	<div class="col-auto my-3">
 		<div class="card">
 			<div class="card-header bg-hdr text-center">Versions</div>
 			<div class="card-body"><ol id="card_version" class="list-group"></ol></div>
 		</div>
 	</div>
 
-	<div class="col-sm-4 my-3 px-3">
+	<div class="col-auto my-3">
 		<div class="card">
 			<div class="card-header bg-hdr text-center">Documents</div>
-			<div class="card-body"><ul id="card_doc"></ul></div>
+			<div class="card-body"><ul id="card_doc" class="pe-3"></ul></div>
 		</div>
 	</div>
 
-	<div class="col-sm-3 my-3 px-3">
+	<div class="col-auto my-3">
 		<div class="card">
 			<div class="card-header bg-hdr text-center" style="cursor:pointer"
 				 onclick="openURL('https://www.google.com/search?q=positron+compiler&newwindow=1')">Links
 			</div>
 			<div class="card-body">
-				<ul>
+				<ul class="pe-3">
 					<li><a href="https://sites.google.com/view/rosetta-tech/home">Positron Site</a></li>
 					<li><a href="https://protoncompiler.com">Positron Forum</a></li>
 					<li><a href="https://protoncompiler.com/old-files/archive.protonbasic.co.uk/Files/">Proton Archive</a></li>
@@ -55,46 +55,55 @@
 
 <script>
 	$(async () => {
-		await URI.ready;
+		await URI.ready
 
-		const extver = await vscode_Eval('vscode.extensions.getExtension("atomix.positron").packageJSON.version');
-		$('#extver').append(extver);
+		const extver = await vscode_Eval('vscode.extensions.getExtension("atomix.positron").packageJSON.version')
+		$('#extver').append(extver)
 
-		const dir = URI.path.pds + "PDS/Docs/",   files = await vscode_Eval().fs.readdirSync(dir, { withFileTypes:true });
+		const dir = URI.path.pds + "PDS/Docs/",   files = await vscode_Eval().fs.readdirSync(dir, { withFileTypes:true })
 
 		card_doc.innerHTML = ATV_TPL(
 			`<% files.forEach(i => { %>
 				<li><a href="#" onclick="return openURL('<%= URI.file(dir + i.name) %>')"><%= i.name %></a></li>
 			<% }); %>`,
 			{ dir, files }
-		);
+		)
 
-		$('#card_version').html('Update ... Please wait a few moments.');
+		$('#card_version').html('Update ... Please wait.')
 		
 
-		const comps = ['Loader.exe', 'Includes/PreProcessor_custom.exe', 'Includes/PreProcessor.exe', 'Pos8.exe', 'Pos16.exe', 'P8t.exe', 'P16t.exe'];
-		const list  = await vscode_Eval().root.exeInfo(comps.map(v => URI.path.loader + v));
+		const comps = ['Loader.exe', 'Includes/PreProcessor.exe', 'Pos8.exe', 'Pos16.exe']			//, 'P8t.exe', 'P16t.exe']
+		const list  = await vscode_Eval().root.exeInfo(comps.map(v => URI.path.loader + v))
+		const prf   = parse_ExeIcon()
 
-		$('#card_version').html('');
+		$('#card_version').html('')
+		
+		for (const x of list.filter(v => v.stat))
+		{
+			const f    = x.info
+			const ver  = f.FileVersion.replace(/(?<=\.)((0)0+(?=\.|$)|0{2,}(?=[^0]|$))/g, '$2')
+			const path = URI.file(x.name.match(/^(.+?)[\/\\][^\/\\]+$/)[1]);
+			const icon = `<img id="${prf + x.id}" src="${x.icon ? URI.parse(x.icon) : ''}" class="icon-32 icon-none mx-1 my-auto">`
 
-		for (const file of list.filter(v => v.stat)) {
-			const i = file.info,   ver = i.FileVersion.replace(/(?<=\.)((0)0+(?=\.|$)|0{2,}(?=[^0]|$))/g, '$2'),   path = URI.file(file.name.match(/^(.+?)[\/\\][^\/\\]+$/)[1]);
-			const icon = file.icon ? `<img src="${URI.parse(file.icon)}" class="icon-32 mx-1 my-auto">` : '';
-			
 			$('#card_version').append(
-				`<li class="list-group-item d-flex flex-sm-wrap justify-content-between align-items-start">${icon}
-					<div class="ms-2 me-auto">
-						<div class="fw-bold fg-lnk">${i.FileDescription || i.ProductName}</div>
-						<div style="font-size: 0.8rem;">${i.CompanyName}</div>
+				`<li class="list-group-item d-flex flex-sm-wrap justify-content-between align-items-start">
+					<div style="display: flex;">
+						${icon}
+						<div class="ms-3 me-4">
+							<div class="fw-bold fg-lnk">${f.FileDescription || f.ProductName}</div>
+							<div style="font-size: 0.8rem;">${f.CompanyName}</div>
+						</div>
 					</div>
-					<span class="badge bg-lnk rounded-pill fs-6 my-auto" data-bs-toggle="tooltip" data-bs-placement="right" title="${file.date}"
+					<span class="badge bg-lnk rounded-pill fs-6 my-auto" data-bs-toggle="tooltip" data-bs-placement="right" title="${x.date}"
 					style="cursor:pointer" onclick="openURL('${path}')">${ver}</span>
 				</li>`
-			);
+			)
+
+			parse_ExeIcon(x)
 		}
 	
-		parse_ALL();
-	});
+		parse_ALL()
+	})
 </script>
 
 

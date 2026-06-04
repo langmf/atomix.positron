@@ -1,3 +1,8 @@
+## 2.9.0 - 2026-06-04
+- Minor improvements.
+- Updated database file "main.json"
+- Added display of application icons on the "Tools" and "About" tabs.
+
 ## 2.8.0 - 2025-09-01
 - Added new setting of the editor ("Quick Suggestions Delay").
 - Fixed that when clicking on a tree of the included files, they did not open.

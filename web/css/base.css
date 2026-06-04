@@ -2,11 +2,6 @@ a:link, a:visited, a:hover, a:active {
     text-decoration: none;
 }
 
-img.icon-32 {
-    height: 32px;
-    object-fit: contain;
-}
-
 a:hover, .nav-link:hover {
     color:              var(--vscode-editor-foreground);
 }
@@ -80,6 +75,10 @@ body.vscode-dark .form-select {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23A0A0A0' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
 }
 
+
+img.icon-32             { height: 32px;   min-width: 32px;   object-fit: contain;  }
+img.icon-none           { background: var(--vscode-panelSectionHeader-background);   border-radius: 8px; }
+img.icon-err::after     { content: "⚠️";  display: flex;  font-size: 18px;  justify-content: center; }
 
 .select-editable                { position: relative; }
 .select-editable input          { width: calc(100% - 26px); position: absolute; top: 1px; left: 1px; border: none; background-image: none; }

@@ -6,6 +6,7 @@ const fs     = require("fs")
 const os     = require("os")
 const path   = require('path')
 const cache  = require("./cache")
+const crypto = require('crypto')
 
 
 const wine_drive = os.homedir() + '/.wine/drive_c'
@@ -17,6 +18,7 @@ exports.activate = (context) =>
     exports.extensionPath = context.extensionPath
     vscode.workspace.onDidChangeConfiguration(onDidChangeConfiguration)
     onDidChangeConfiguration()
+    emptyFolder(exports.path.temp)
 }
 
 
@@ -56,8 +58,9 @@ function onDidChangeConfiguration()
             main:   loader + 'Includes' + sep,
             src:    loader + 'Includes' + sep + 'Sources' + sep
         },
-        web:    ext + 'web' + sep,
-        docs:   pds + 'PDS' + sep + 'Docs' + sep
+        web:    ext + 'web'   + sep,
+        temp:   ext + 'files' + sep + 'temp' + sep,
+        docs:   pds + 'PDS'   + sep + 'Docs' + sep
     }
 }
 
@@ -117,6 +120,17 @@ exports.IsAsmLst = (fName) =>
     
     return ['.asm', '.lst'].includes(path.extname(fName || '').toLowerCase())
 }
+
+
+
+function emptyFolder(dirPath)
+{
+  try {
+    fs.rmSync(dirPath, { recursive: true,  force: true })
+    fs.mkdirSync(dirPath)
+  } catch {}
+}
+exports.emptyFolder = emptyFolder
 
 
 
@@ -248,6 +262,14 @@ exports.sleep = sleep
 
 
 
+function getHash(data, alg = 'sha256', enc = 'hex')
+{
+    return crypto.createHash(alg).update(data).digest(enc)
+}
+exports.getHash = getHash
+
+
+
 function generateUUID()
 {
     let d = new Date().getTime(),   d2 = (performance && performance.now && performance.now() * 1000) || 0
@@ -312,17 +334,33 @@ exports.winver = winver
 
 
 
-function exeInfo(fName)
+async function exeIcon(fName)
 {
-    if (Array.isArray(fName))  return fName.map(v => exeInfo(v))
+    if (!exports.win) return
+
+    const png = exports.path.temp + path.basename(fName) + '__' + getHash(fName) +  '.png';         if (checkFile(png)) return png
+
+    try {
+        const res = await new PS().icon(fName, png);            if (!res) return png
+    } catch {}
+}
+exports.exeIcon = exeIcon
+
+
+
+function exeInfo(fName, id = 0)
+{
+    if (Array.isArray(fName))  return fName.map((v,i) => exeInfo(v,i))
     
-    const res = { name: fName,  icon: extFile(fName, ['.svg', '.ico', '.webp', '.png', '.jpg', '.gif']) }
+    const res = { id,  name: fName,  icon: extFile(fName, ['.svg', '.ico', '.webp', '.png', '.jpg', '.gif']) }
     
     try {
         res.stat = fs.statSync(fName)
         res.date = new Date(res.stat.mtime).toLocaleString()
-        res.info = Object.assign({FileDescription:path.basename(fName), FileVersion:'', CompanyName:''},  winver(fName))
-    } catch {}
+        res.info = { FileDescription: path.parse(fName).name,   FileVersion: '',   CompanyName: '' }
+        Object.assign(res.info,  winver(fName))
+    }
+    catch {}
     
     return res
 }
@@ -336,23 +374,21 @@ function exeList(dirPath, mask = '', deep = 1, result = [])
   
 	for (const file of searchFiles(dirPath, mask, deep))
     {
-        const exe = exeInfo(file)
+        const exe = exeInfo(file, result.length),   ext = path.extname(file).toLowerCase()
 
-        if (!exe.info)
+        if (ext !== '.exe')
         {
             try {
-                const mts = rxp.exec(fs.readFileSync(file, path.extname(file).toLowerCase() === '.lnk' ? 'utf-16le' : 'utf-8'))
+                const mts = rxp.exec(fs.readFileSync(file, ext === '.lnk' ? 'utf-16le' : 'utf-8'))
 
                 if (mts) {
-                    exe.info = JSON.parse(mts[1])
-                    if (exe.info.icon) exe.icon = path.resolve(path.dirname(file), exe.info.icon)
+                    const info = JSON.parse(mts[1]);        if (info.icon) { exe.icon = path.resolve(path.dirname(file), info.icon);    delete info.icon }
+                    Object.assign(exe.info, info)
                 }
             }
-            catch(e) {  console.error("exeList => ", e)  }
+            catch (e) {  console.error("exeList => ", e)  }
         }
 
-        exe.info = Object.assign({ FileDescription: path.basename(file), FileVersion:'', CompanyName:'' }, exe.info)
-        
         result.push(exe)
 	}
   
@@ -425,9 +461,10 @@ function PS(_opts)
         {
             const tmr = (time || 0) <= 0 ? 0 : setTimeout(() => resolve(proc.exitCode), time)
             proc.on('close', () => { clearTimeout(tmr);         resolve(proc.exitCode) })
-        });
+        })
     }
-   
+
+    this.icon  = (fn, png)      => this.run(`"Add-Type -AssemblyName System.Drawing; $I = [System.Drawing.Icon]::ExtractAssociatedIcon('${fn}'); $B = $I.ToBitmap(); $B.Save('${png}', [System.Drawing.Imaging.ImageFormat]::Png); $B.Dispose(); $I.Dispose()"`)
     this.play  = (value)        => this.run(`"&{$P=New-Object System.Media.SoundPlayer; $P.SoundLocation='${value}'; $P.playsync()}"`)
     this.speak = (value, vol)   => this.run(`"&{$V=New-Object -ComObject Sapi.spvoice; $V.volume=${vol ?? 100}; $V.rate=0; $V.speak('${value}')}"`)
     this.media = (value)        => this.run(`[System.Media.SystemSounds]::${value || 'Beep'}.Play()`)
